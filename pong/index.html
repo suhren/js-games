@@ -1,0 +1,209 @@
+<canvas style="background-color: black; margin: 0 auto; display:block;"
+        id="canvas"
+        width="400"
+        height="400">
+
+</canvas>
+
+<script>
+    // This is the HTML element
+    canvas = document.getElementById("canvas");
+    // This is the object drawing the HTML element
+    context = canvas.getContext("2d");
+
+    class Rectangle {
+        constructor(x, y, w, h) {
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+        }
+    }
+
+    var ball = new Rectangle(x=200, y=200, w=10, h=10);
+    var bvx = 0;
+    var bvy = 0;
+    
+    var bv0 = 5;
+    var bv = bv0;
+    var bi = 1.1;
+
+    var pv = 5;
+    var p1 = new Rectangle(x=10, y=10, w=10, h=50);
+    var p1d = 0;
+
+    var p2 = new Rectangle(x=380, y=10, w=10, h=50);
+    var p2d = 0;
+
+    var s1 = s2 = 0;
+    
+    var serving = true;
+    var servingStartTime = new Date();
+
+    window.onload = gameStart;
+    window.addEventListener("keydown", keyDown);
+    window.addEventListener("keyup", keyUp);
+
+    function keyDown(e) {
+        
+        switch(e.keyCode) {
+            case 38:
+                // Up arrow
+                p2d = -1;
+                break;
+            case 40:
+                // Down arrow
+                p2d = 1;
+                break;
+            case 87:
+                // W key
+                p1d = -1;
+                break;
+            case 83:
+                // S key
+                p1d = 1;
+                break;
+        }
+    }
+
+    function keyUp(e) {
+        
+        switch(e.keyCode) {
+            case 38:
+                // Up arrow
+                p2d = 0;
+                break;
+            case 40:
+                // Down arrow
+                p2d = 0;
+                break;
+            case 87:
+                // W key
+                p1d = 0;
+                break;
+            case 83:
+                // S key
+                p1d = 0;
+                break;
+        }
+    }
+
+     // 30 frames per sec
+    setInterval(gameLoop, 1000/45);
+
+    //Serve on gamestart
+    function gameStart() {
+        serve();
+    }
+    
+    function intersect(r1, r2) {
+        return (r1.x < r2.x + r2.w &&
+                r1.x + r1.w > r2.x &&
+                r1.y < r2.y + r2.h &&
+                r1.y + r1.h > r2.y);
+    }
+
+    function serve() {
+        servingStartTime = new Date();
+        serving = true;
+        // Set start position to the middle
+        bv = bv0;
+        ball.x = 200;
+        ball.y = 200;
+        // Set random angle between -45 and +45 degrees
+        angle = (2 * Math.random() - 1) * Math.PI / 4;
+        // With 50% chance, add 180 degrees to go left
+        // angle += Math.round(Math.random()) * Math.PI;
+        angle = angle + Math.round(Math.random()) * Math.PI;
+        bvx = Math.cos(angle) * bv;
+        bvy = Math.sin(angle) * bv;
+    }
+    function gameLoop() {
+        
+        // Clear the screen
+        context.fillStyle = "black";
+        context.fillRect(x=0, y=0, width=400, height=400);
+        
+        // Draw the ball
+        context.fillStyle = "white";
+        context.fillRect(x=ball.x, y=ball.y, width=ball.w, height=ball.h);
+        
+        // Draw the players
+        context.fillStyle = "white";
+        context.fillRect(x=p1.x, y=p1.y, width=p1.w, height=p1.h);
+        context.fillRect(x=p2.x, y=p2.y, width=p2.w, height=p2.h);
+
+        // Write scores
+        context.font = "20px Courier new";
+        context.textAlign = "center";
+        context.fillText(`${s1} | ${s2}`, canvas.width / 2 - 10, 30);
+
+        // Update player positions
+        p1.y += p1d * pv;
+        p2.y += p2d * pv;
+
+        // Update ball position
+        if (!serving) {
+            ball.x += bvx;
+            ball.y += bvy;
+        }
+        else {
+            now = new Date();
+            if (now - servingStartTime > 1000) {
+                serving = false;
+            }
+        }
+        // Check if bounce
+        if (ball.y <= 0 || ball.y + ball.h >= canvas.height) {
+            bvy = -bvy;
+        }
+        
+        // Check if player 1 scored
+        if (ball.x + ball.w >= canvas.width) {
+            serve();
+            s1 ++;
+        }
+        // Check if player 2 scored
+        else if(ball.x <= 0){
+            serve();
+            s2 ++;
+        }
+        
+        // Check if collision with players
+        if (intersect(ball, p1)) {
+            bvx = - bvx;
+            ball.x = p1.x + p1.w;
+            bvx = bvx * bi;
+            bvy = bvy * bi;
+        }
+        if (intersect(ball, p2)) {
+            bvx = - bvx;
+            ball.x = p2.x - ball.w;
+            bvx = bvx * bi;
+            bvy = bvy * bi;
+        }
+
+        if(p1.y < 0) {
+            p1.y = 0;
+        }
+        // p1.y checks the uppermost corner of the rectangle.
+        // p1.h adds the actual height from the corner down to the bottom of rectangle
+        else if (p1.y + p1.h > canvas.height) {
+            p1.y = canvas.height - p1.h;
+        }
+        
+        if(p2.y < 0) {
+            p2.y = 0;
+        }
+        // p2.y checks the uppermost corner of the rectangle.
+        // p2.h adds the actual height from the corner down to the bottom of rectangle
+        else if (p2.y + p2.h > canvas.height) {
+            p2.y = canvas.height - p2.h;
+        }
+
+    }
+
+    
+
+
+</script>
