@@ -1,0 +1,316 @@
+<style type="text/css">
+    .title {
+        color: lime;
+        font-family: courier;
+        font-weight: bold;
+        padding: 0px 8px 0px 8px;
+        position: absolute;
+        background-color: #000;
+        border: solid 1px lime;
+        left: 50%;
+        top: 15%;
+        animation: move 1s alternate infinite ease-in;
+    }
+    @keyframes move {
+        0%   {
+            transform: translateX(-50%) translateY(+50%) scale(1);
+        }
+        100% {
+            transform: translateX(-50%) translateY(+50%) scale(2);
+        }
+    }
+    .button {
+        position: absolute;
+        font-size: 32px;
+        background-color: rgba(255, 255, 255, 0);
+        color:lime;
+        border: solid 4px lime;
+        cursor: pointer;
+        font-family: courier;
+        font-weight: bold;
+        transform: translateX(-50%) translateY(+50%);
+    }
+</style>
+
+<html style="background-color: #000;">
+
+<body>
+
+    <div class="wrapper"
+        style="margin-top: 1cm;
+               margin-left: auto;
+               margin-right: auto;
+               width: 512px;
+               height: 512px;
+               position: relative;">
+
+        <button id="buttonOpen"
+                class="button"
+                onClick="openGame()"
+                style="left: 50%; bottom: 8%">
+            OPEN GAME
+        </button>
+        
+        <button id="buttonStart"
+                class="button"
+                onClick="gameStart()"
+                style="left: 50%; bottom: 8%; display: none;">
+            START GAME
+        </button>
+
+        <canvas id="canvas"
+                width="512"
+                height="512"
+                style="background-color: black;
+                       border: solid 2px lime;
+                       border-radius: 5px;
+                       background-size: 512px;
+                       background-position: center;
+                       background-repeat: no-repeat;">
+        </canvas>
+
+        <h1 id="title"
+            class="title">
+            SNOK-3000
+        </h1>
+
+</body>
+
+<script>
+
+    var title = document.getElementById("title");
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    var buttonStart = document.getElementById("buttonStart");
+    var buttonOpen = document.getElementById("buttonOpen");
+    window.addEventListener("keydown", keyDown);
+
+    var gameInterval;
+
+    var MUSIC_MENU = "sounds/music_menu.mp3";
+    var MUSIC_GAME = "sounds/music_game.mp3";
+    var MUSIC_GAME_OVER = "sounds/music_game_over.mp3";
+    var SOUND_START = "sounds/sound_start.mp3";
+    var SOUND_EAT = "sounds/sound_eat.mp3";
+
+    var IMAGE_MENU = "url('images/menu.png')";
+    var IMAGE_GAME_OVER = "url('images/game_over.png')";
+
+    
+    function Sound(src, volume = 1.0, loop = false) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.loop = loop;
+        this.sound.volume = volume;
+        //this.sound.setAttribute("preload", "auto");
+        //this.sound.setAttribute("controls", "none");
+        //this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+
+        this.play = function(){
+            this.sound.play();
+        }
+        this.pause = function(){
+            this.sound.pause();
+        }
+        this.stop = function(){
+            this.sound.pause();
+            this.sound.currentTime = 0
+        }
+    }
+
+    var musicGame = new Sound(src=MUSIC_GAME, volume=0.3, loop=true);
+    var musicGameOver = new Sound(src=MUSIC_GAME_OVER, volume=0.3);
+    var musicMenu = new Sound(src=MUSIC_MENU, volume=0.3, loop=true);
+    var soundEat = new Sound(src=SOUND_EAT, volume=0.1);
+    var soundStart = new Sound(src=SOUND_START, volume=0.3);
+
+    var TILE_SIZE = 16;
+    var GAME_WIDTH = 32;
+    var GAME_HEIGHT = 32;
+    
+    canvas.width = TILE_SIZE * GAME_WIDTH;
+    canvas.height = TILE_SIZE * GAME_HEIGHT;
+
+    var isStarted = false; 
+    
+    var INITIAL_SNAKE_POS_X = GAME_WIDTH / 2;
+    var INITIAL_SNAKE_POS_Y = GAME_HEIGHT / 2;
+    var INITIAL_SNAKE_VEL_X = 1;
+    var INITIAL_SNAKE_VEL_Y = 0;
+
+    // Position and velocity in tiles
+    var snakePosX;
+    var snakePosY;
+    var snakeVelX;
+    var snakeVelY;
+
+    var INITIAL_SNAKE_LENGTH = 10;
+    var foodPosX = 10;
+    var foodPosY = 10;
+    var snakeLength;
+    var snakeTrail;
+    var score = 0;
+
+    function keyDown(e) {
+        switch(e.keyCode) {
+            case 38:
+                // Up arrow
+                if (snakeVelY != 1) {
+                    snakeVelX = 0;
+                    snakeVelY = -1;
+                }
+                break;
+            case 40:
+                // Down arrow
+                if (snakeVelY != -1) {
+                    snakeVelX = 0;
+                    snakeVelY = 1;
+                }
+                break;
+            case 37:
+                // Left key
+                if (snakeVelX != 1) {
+                    snakeVelX = -1;
+                    snakeVelY = 0;
+                }
+                break;
+            case 39:
+                // Right key
+                if (snakeVelX != -1) {
+                    snakeVelX = 1;
+                    snakeVelY = 0;
+                }
+                break;
+        }
+    }
+    
+    function openGame() {
+        buttonOpen.style.display = "none";
+        showMenu();
+    }
+
+    function showMenu() {
+        isStarted = false;
+        musicGame.stop();
+        musicMenu.play();
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.backgroundImage = IMAGE_MENU;
+        buttonStart.style.display = "block";
+    }
+
+    function showGameOver() {
+        isStarted = false;
+        musicGame.stop();
+        musicGameOver.play();
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.backgroundImage = IMAGE_GAME_OVER;
+        context.textAlign = "center";
+        context.fillText(`SCORE: ${score}`, canvas.width / 2, canvas.width * 0.85);
+        buttonStart.style.display = "block";
+    }
+
+    function randomizeFood() {
+        foodPosX = Math.floor(Math.random() * GAME_WIDTH);
+        foodPosY = Math.floor(Math.random() * GAME_HEIGHT);
+    }
+
+    function resetSnake() {
+        snakeLength = INITIAL_SNAKE_LENGTH;
+        snakeTrail = [];
+        snakePosX = INITIAL_SNAKE_POS_X;
+        snakePosY = INITIAL_SNAKE_POS_Y;
+        snakeVelX = INITIAL_SNAKE_VEL_X;
+        snakeVelY = INITIAL_SNAKE_VEL_Y;
+    }
+
+    function gameStart() {
+        resetSnake();
+        randomizeFood();
+        title.style.display = "none";
+        soundStart.play();
+        if (!isStarted) {
+            isStarted = true;
+            musicMenu.stop();
+            musicGameOver.stop();
+            musicGame.play();
+            musicGame.volume = 0.2;
+            gameInterval= setInterval(gameLoop, 1000 / 15);
+            buttonStart.style.display = "none";
+        }
+    }
+
+    function gameLoop() {
+
+        // Clear the screen
+        context.fillStyle = "black";
+        context.fillRect(x=0, y=0, width=canvas.width, height=canvas.height);
+
+        snakePosX += snakeVelX;
+        snakePosY += snakeVelY;
+        
+        if (snakePosX > GAME_WIDTH - 1) {
+            snakePosX = 0;
+        }
+        if (snakePosX < 0) {
+            snakePosX = GAME_WIDTH - 1;
+        }
+        if (snakePosY > GAME_HEIGHT - 1) {
+            snakePosY = 0;
+        }
+        if (snakePosY < 0) {
+            snakePosY = GAME_HEIGHT - 1;
+        }
+        
+        // Draw food
+        context.fillStyle = "red";
+        context.fillRect(x=foodPosX * TILE_SIZE + 1,
+                         y=foodPosY * TILE_SIZE + 1,
+                         width=TILE_SIZE - 2,
+                         height=TILE_SIZE - 2);
+
+        // Draw the snake and check collision
+        context.fillStyle = "lime";
+        for (var i = 0; i < snakeTrail.length; i++) {
+            context.fillRect(x=snakeTrail[i].x * TILE_SIZE + 1,
+                             y=snakeTrail[i].y * TILE_SIZE + 1,
+                             width=TILE_SIZE - 2,
+                             height=TILE_SIZE - 2)
+            if (snakePosX == snakeTrail[i].x &&
+                snakePosY == snakeTrail[i].y) {
+                    resetSnake();
+                    clearInterval(gameInterval);
+                    showGameOver();
+                    return;
+                }
+        }
+
+        // Check collision with food 
+        if (snakePosX == foodPosX &&
+            snakePosY == foodPosY) {
+            snakeLength ++;
+            randomizeFood();
+            soundEat.play();
+        }
+        
+        score = snakeLength - INITIAL_SNAKE_LENGTH;
+        // Draw the score
+        context.font = "25px Courier";
+        context.fillStyle = "lime";
+        context.textAlight = "start";
+        context.textAlign = "left";
+        context.fillText(`SCORE: ${score}`, 8, 20);
+
+        // Add the new position to the end of the array
+        // 1: [p1, p2, p3, p4, p5]
+        // 2: [p2, p3, p4, p5, n1]
+        // 3: [p3, p4, p5, n1, n2]
+        snakeTrail.push({x: snakePosX, y: snakePosY});
+        while (snakeTrail.length > snakeLength) {
+            snakeTrail.shift();
+        } 
+    }
+    
+</script>
+
+</html>
