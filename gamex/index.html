@@ -1,0 +1,326 @@
+<body>
+    
+    <h1 id="Game X"
+        class="title">
+        Chetreo's DMCA Dodge Delve
+    </h1>
+
+    <canvas id="canvas"
+                width="512"
+                height="512"
+                style="background-color: white;
+                       border: solid 2px black;
+                       border-radius: 5px;
+                       background-size: 512px;
+                       background-position: center;
+                       background-repeat: no-repeat;">
+                       
+    </canvas>
+
+</body>
+
+
+
+
+
+<script type="text/javascript">
+
+    //document.write("<h1>Whatsup lovers!</h1><p>Have a nice day!</p>");
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    
+    // Entry point of program
+    window.onload = function() {
+        // Set up a listener to call the function "keyDown" when a key is pressed down
+        document.addEventListener("keydown", keyDown);
+        // Set up a listener to call the function "keyUp" when a key is let go
+        document.addEventListener("keyup", keyUp);
+        // Set up to call the function "gameLoop" 60 times/second
+        setInterval(gameLoop, 1000/60);
+    }
+
+    var GAME_WIDTH = 768;
+    var GAME_HEIGHT = 384;
+    
+    context.canvas.width = GAME_WIDTH;
+    context.canvas.height = GAME_HEIGHT;
+    
+    var player_sprite = new Image();
+    player_sprite.src = "https://cdn.discordapp.com/attachments/498942124079972367/797582830645149736/Chetreo_NewMember_Badge.png";
+
+    var ball_sprite= new Image();
+    ball_sprite.src = "https://cdn.discordapp.com/attachments/498942124079972367/797591929180127242/demonitized3.png";
+    
+    class Rectangle {
+        constructor(x, y, w, h) {
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;                
+        }
+    }
+
+    class DeathBallCircle {
+        
+        constructor(centerX, centerY, radius=75, speed=0.08){
+            this.size_radius = 32;
+            this.radius = radius;
+            this.centerX = centerX;
+            this.centerY = centerY;
+            this.angle = 0;
+            this.speed = speed;
+        }
+
+        getRectangle() {
+            var x = this.centerX + Math.cos(this.angle) * this.radius;  
+            var y = this.centerY + Math.sin(this.angle) * this.radius;
+            x = x - this.size_radius * 1 / Math.sqrt(2);
+            y = y - this.size_radius * 1 / Math.sqrt(2);
+            var w = 2 * this.size_radius * 1 / Math.sqrt(2);
+            var h = 2 * this.size_radius * 1 / Math.sqrt(2);
+            return new Rectangle(x, y, w, h);    
+        }
+
+        update_position() {
+            this.angle = this.angle + this.speed;
+        }
+
+        drawMovement(ctx) {
+            ctx.beginPath();
+            ctx.arc(x=this.centerX, y=this.centerY, radius=this.radius, 0, Math.PI * 2, false);
+            ctx.strokeStyle = "#CCC";
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x=this.centerX, y=this.centerY, radius=2, 0, Math.PI * 2, false);
+            ctx.strokeStyle = "#CCC";
+            ctx.stroke();
+        }
+    }
+
+    class DeathBallLinear {
+
+        constructor(startX, startY, enxX, endY, speed=0.08){
+            this.size_radius = 32;
+            this.startX = startX;
+            this.startY = startY;
+            this.endX = endX;
+            this.endY = endY;
+            this.speed = speed;
+            this.t = 0.0; // Between 0.0 and 1.0
+            this.vel = 1.0;
+            this.dx = this.endX - this.startX;
+            this.dy = this.endY - this.startY;
+        }
+
+        getRectangle() {
+
+            // If t = 0.0 -> At start point
+            // If t = 0.5 -> At middle point
+            // If t = 1.0 -> At end point
+
+            var x = this.startX + this.dx * this.t
+            var y = this.startY + this.dy * this.t
+
+            x = x - this.size_radius * 1 / Math.sqrt(2);
+            y = y - this.size_radius * 1 / Math.sqrt(2);
+            var w = 2 * this.size_radius * 1 / Math.sqrt(2);
+            var h = 2 * this.size_radius * 1 / Math.sqrt(2);
+            
+            return new Rectangle(x, y, w, h);    
+        }
+
+        update_position() {
+            if (this.t <= 0.0) {
+                this.vel = this.speed;
+            }
+            if (this.t > 1.0) {
+                this.vel = -this.speed;
+            }
+            this.t = this.t + this.vel;
+        }
+
+        drawMovement(ctx) {
+            ctx.beginPath();
+            ctx.moveTo(this.startX, this.startY);
+            ctx.lineTo(this.endX, this.endY);
+            ctx.stroke();
+        }
+    }
+
+    
+    // Establish the Player, aka WHAT IS THE PLAYER!?
+    class Player {
+        constructor(startX, startY) {
+            this.startX = startX;
+            this.startY = startY;
+            this.x = startX;
+            this.y = startY;
+            this.width = 50;
+            this.height = 50;
+            this.velX = 0;
+            this.velY = 0;
+            this.speed = 3;                
+        }
+
+        getRectangle() {
+            return new Rectangle(this.x, this.y, this.width, this.height);    
+        }
+    }
+
+    var player = new Player(startX=32, startY=32);
+
+
+    var deathBalls = [
+        new DeathBallCircle(centerX=200, centerY=200, radius=20),
+        new DeathBallCircle(centerX=400, centerY=200, radius=150, speed=0.01),
+        new DeathBallCircle(centerX=600, centerY=200),
+        new DeathBallLinear(startX=50, startY=150, endX=300, endY=100, speed=0.01)
+    ];
+
+    //Check how two rectangles (Player & Deathball for example) collide with each other
+    function intersect(rect1, rect2) {
+        
+        return  (
+            rect1.x + rect1.w > rect2.x &&
+            rect1.x < rect2.x + rect2.w &&
+            rect1.y + rect1.h > rect2.y &&
+            rect1.y < rect2.y + rect2.h
+        )
+    }
+
+    function keyDown(e) {
+        // Up arrow
+        if (e.keyCode == 38) {
+            player.velY = -player.speed;
+        }
+        // Down arrow
+        if (e.keyCode == 40) {
+            player.velY = player.speed;
+        }
+        // Left arrow
+        if (e.keyCode == 37) {
+            player.velX = -player.speed;
+        }
+        // Right arrow
+        if (e.keyCode == 39) {
+            player.velX = player.speed;
+        }
+    }
+    
+    function keyUp(e) {
+        // Up arrow
+        if (e.keyCode == 38) {
+            player.velY = 0;
+        }
+        // Down arrow
+        if (e.keyCode == 40) {
+            player.velY = 0;
+        }
+        // Left arrow
+        if (e.keyCode == 37) {
+            player.velX = 0;
+        }
+        // Right arrow
+        if (e.keyCode == 39) {
+            player.velX = 0;
+        }
+    }    
+
+
+    function gameLoop() {
+        //posX = posX + 1;
+        
+        // Update deathball positions
+        for (i = 0; i < deathBalls.length; i++) {
+            deathBalls[i].update_position();
+        }
+
+        // Update player position
+        player.x = player.x + player.velX;
+        player.y = player.y + player.velY;
+        
+        // Check if we are within bounds
+        // Check left
+        if (player.x < 0) {
+            player.x = 0;
+        }
+        // Check up
+        if (player.y < 0) {
+            player.y = 0;
+        }
+        // Check right
+        if (player.x > GAME_WIDTH - player.width) {
+            player.x = GAME_WIDTH - player.width;
+        }
+        // Check down
+        if (player.y > GAME_HEIGHT - player.height) {
+            player.y = GAME_HEIGHT - player.height;
+        }
+
+        // (Clear) draw background color on the entire screen
+        context.fillStyle = "#fff";
+        context.fillRect(x=0, y=0, width=canvas.width, height=canvas.height);
+
+        // Draw death ball circles outline
+        for (i = 0; i < deathBalls.length; i++) {
+
+            ball = deathBalls[i];
+
+            var rect = ball.getRectangle()
+
+            ball.drawMovement(context)
+            context.drawImage(ball_sprite, x=rect.x, y=rect.y, rect.w, rect.h);
+
+            //context.beginPath();
+            //context.arc(x=x, y=y, radius=ball.size_radius, 0, Math.PI * 2, false);
+            //context.fillStyle = "red";
+            //context.fill();
+            //context.lineWidth = 2;
+            //context.strokeStyle = '#003300';
+            //context.stroke();
+            
+            var r1 = player.getRectangle();
+            var r2 = ball.getRectangle();
+            var collide = intersect(r1, r2);
+
+            // Check if the player rectangle has collided with the circle rectangle
+            if (collide) {
+                player.x = player.startX;
+                player.y = player.startY;
+                player.velX = 0;
+                player.velY = 0;
+            }
+
+
+        }
+
+        // Draw player position and other debug information
+        context.font = "16px Courier";
+        context.fillStyle = "black";
+        context.textAlight = "start";
+        context.textAlign = "left";
+        context.fillText(`player: ${r1.x} ${r1.y}`, 8, 20);
+        
+
+        //Draw player
+        context.drawImage(player_sprite, x=player.x, y=player.y, player.width, player.height);
+
+        //context.fillStyle = "black";
+        //context.fillRect(x=player.x, y=player.y, width=player.width, height=player.height);
+
+        // Convert from polar (angle, radius) coordinates to cartesian (xy) coordinates 
+        
+
+
+        //var rect = deathBall.getRectangle();
+        //context.strokeStyle = "black";
+        //context.strokeRect(x=rect.x, y=rect.y, width=rect.w, height=rect.h);
+
+
+    }
+
+</script>
+
+
+
