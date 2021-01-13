@@ -116,6 +116,52 @@ export class Checkpoint {
 }
 
 
+export class Goal {
+
+    constructor(rectangle){
+        this.rectangle = rectangle;
+        this.activated = false;
+    }
+
+    getRectangle() {
+        return this.rectangle;    
+    }
+    
+    draw(ctx) {
+        if (this.activated) {
+            ctx.fillStyle = "aqua";
+        }
+        else {
+            ctx.fillStyle = "blue";
+        }
+        let rect = this.getRectangle();
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+    }
+}
+
+export var TILE_SIZE = 32;
+
+export class Level {
+    constructor(playerStart, deathBalls, checkpoints, goal, tileMap) {
+        this.playerStart = playerStart;
+        this.deathBalls = deathBalls;
+        this.checkpoints = checkpoints;
+        this.goal = goal;
+        this.tileMap = tileMap
+        this.nrows = this.tileMap.length;
+        this.ncols = this.tileMap[0].length;        
+        this.width = this.ncols * TILE_SIZE;
+        this.height = this.nrows * TILE_SIZE;            
+    }
+}
+
+
+export var ACCELERATION_ICE = 0.05;
+export var FRICTION_ICE = 0.01;
+
+export var ACCELERATION_DEFAULT = 1.0;
+export var FRICTION_DEFAULT = 0.8;
+
 // Establish the Player, aka WHAT IS THE PLAYER!?
 export class Player {
     constructor(start = new Vector()) {
@@ -126,8 +172,8 @@ export class Player {
         this.vel = new Vector();
         this.wish = new Vector();
         this.maxSpeed = 4;
-        this.acceleration = 1;
-        this.friction = 0.5;
+        this.acceleration = ACCELERATION_DEFAULT;
+        this.friction = FRICTION_DEFAULT;
         this.activeCheckpoint = null;                 
     }
 
