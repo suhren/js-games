@@ -4,17 +4,21 @@ import {Vector, Rectangle, solve, clamp, rectIntersect, rectCircleInterset} from
 
 // Load levels
 
-var LEVEL_FILES = [
-    'Map_collission_test.json'
+const LEVEL_FILES = [
+    'test.json'
 ];
-var LEVEL_JSONS = []
-var LEVELS = []
+
+const TILESET_JSON_FILE = './assets/MyTileset.json'
+
+var LEVEL_JSONS = [];
+var TILESET_JSON = null;
+var LEVELS = [];
 
 function loadJSON(callback, fileName) {   
 
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', `./levels/${fileName}`, true);
+    xobj.open('GET', fileName, true);
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -28,8 +32,13 @@ for (let i = 0; i < LEVEL_FILES.length; i++) {
     loadJSON(function(response) {
         let levelJson = JSON.parse(response);
         LEVEL_JSONS.push(levelJson);
-    }, LEVEL_FILES[i])
+    }, `./levels/${LEVEL_FILES[i]}`)
 }
+
+
+loadJSON(function(response) {
+    TILESET_JSON = JSON.parse(response);
+}, TILESET_JSON_FILE)
 
 
 var button = document.getElementById("play");
@@ -66,17 +75,17 @@ var drawDebug = false;
 var drawGrid = false;
 
 var playerSprite = new Image();
-playerSprite.src = "images/Womp3.png";
+playerSprite.src = "assets/Womp3.png";
 playerSprite = playerSprite;
 
 var ballSprite= new Image();
-ballSprite.src = "images/DeathBot.png"
+ballSprite.src = "assets/DeathBot.png"
 var wallSprite= new Image();
-wallSprite.src = "images/Wall2.png"
+wallSprite.src = "assets/Wall2.png"
 var floorSprite= new Image();
-floorSprite.src = "images/Floor1.png"
+floorSprite.src = "assets/Floor1.png"
 var iceSprite= new Image();
-iceSprite.src = "images/ice.png"
+iceSprite.src = "assets/ice.png"
 
 
 var TILE_FLOOR = 1;
@@ -228,25 +237,123 @@ function keyUp(e) {
             player.wish.x = 0;
         }
     }
-}    
+}
 
 
-function loadLevelFromJson(json) {
-    let data = json['layers'][0]['data'];
-    let ncols = json['layers'][0]['width'];
-    let nrows = json['layers'][0]['height'];
+function getTiledVector(obj) {
+    return new Vector(TILE_SIZE * obj["x"] / 16, TILE_SIZE * obj["y"] / 16);
+}
 
-    let tileMap = [];
+function getTiledRectangle(obj) {
+    return new Rectangle(TILE_SIZE * obj["x"] / 16,
+                         TILE_SIZE * obj["y"] / 16,
+                         TILE_SIZE * obj["width"] / 16,
+                         TILE_SIZE * obj["height"] / 16);
+}
+
+function loadLevelFromJson(json, tileLookup) {
+
+    // Load the tile data
+    let tileLayer = json['layers'].find(x => {
+        return x['type']  == 'tilelayer';
+    })
+    let data = tileLayer['data'];
+    let ncols = tileLayer['width'];
+    let nrows = tileLayer['height'];
+
+    let tileMap = Array(nrows).fill(null).map(()=>Array(ncols).fill(0))
     
-    for (let row = 0; row < nrows; row++) {
-        tileMap.push(data.slice(row * ncols, (row + 1) * ncols));
+
+    for (let i = 0; i < data.length; i++) {
+        let row = Math.floor(i / ncols);
+        let col = i % ncols;
+        tileMap[row][col] = tileLookup.get(data[i]);
     }
+
+    // Load the object data
+    let objectLayer = json['layers'].find(x => {
+        return x['type']  == 'objectgroup';
+    })
+    let objects = objectLayer["objects"];
+
+    let spawn = null;
+    let checkpoints = [];
+    let deathBalls = [];
+    let goal = null;
+
+    for (let i = 0; i < objects.length; i++) {
+        let o = objects[i];
+
+        switch (o["type"]) {
+
+            case "spawn":
+                spawn = getTiledVector(o);
+                break;
+
+            case "checkpoint":
+                
+                checkpoints.push(new Checkpoint(getTiledRectangle(o)));
+                break;
+
+            case "goal":
+                goal = new Goal(getTiledRectangle(o));
+                break;
+
+            case "ball":
+                var rect = new getTiledRectangle(o);
+                var position = rect.center();
+                let size = rect.w / 2;
+
+                var speed = o['properties'].find(x => {
+                    return x['name']  == 'speed';
+                })["value"];
+                
+                var centerIdx = o['properties'].find(x => {
+                    return x['name']  == 'center';
+                })["value"];
+                
+                if (centerIdx != 0) {
+                    var centerObj = objects.find(x => {
+                        return x['id']  == centerIdx;
+                    });
     
+                    var center = getTiledVector(centerObj);
+                    let radius = position.subtract(center).length();
+                    let angle = Math.atan2(position.y - center.y, position.x - center.x);
+                    deathBalls.push(new DeathBallCircle(center, radius, speed, angle, size));
+                }
+                else {
+
+                    console.log(o);
+
+                    var lineIdx = o['properties'].find(x => {
+                        return x['name']  == 'line';
+                    })["value"];
+
+                    if (lineIdx != 0) {
+                        var lineObj = objects.find(x => {
+                            return x['id']  == lineIdx;
+                        });
+                    }
+
+                    let p = getTiledVector(lineObj);
+                    let p1 = p.add(getTiledVector(lineObj["polyline"][0]));
+                    let p2 = p.add(getTiledVector(lineObj["polyline"][1]));
+
+                    deathBalls.push(new DeathBallLinear(p1, p2, speed, size));
+                    
+
+                } 
+                
+                break;
+        }
+    }
+
     return new Level(
-        new Vector(128, 128),
-        [],
-        [],
-        new Goal(tileRectangleToCoords(13, 5, 2, 2)),
+        spawn,
+        deathBalls,
+        checkpoints,
+        goal,
         tileMap
     );
 }
@@ -274,8 +381,22 @@ function loadAllLevels() {
 
 
 function init() {
+    
+    let tileLookup = new Map();
+    
+    for (let i = 0; i < TILESET_JSON['tiles'].length; i++) {
+        let tile = TILESET_JSON['tiles'][i];
+
+        let tileIdProperty = tile['properties'].find(x => {
+            return x['name']  == 'tileId';
+        })
+
+        let tileId = tileIdProperty['value'];
+        tileLookup.set(i + 1, tileId);
+    }
+
     for (let i = 0; i < LEVEL_JSONS.length; i++) {
-        LEVELS.push(loadLevelFromJson(LEVEL_JSONS[i]))
+        LEVELS.push(loadLevelFromJson(LEVEL_JSONS[i], tileLookup))
     }
     LEVELS.push(level1);
     LEVELS.push(level2);
@@ -312,6 +433,8 @@ function loadLevel(lvl) {
     ctx.canvas.width = level.width;
     ctx.canvas.height = level.height;
     player.pos = level.playerStart;
+    player.pos.x -= player.width / 2;
+    player.pos.y -= player.height / 2;
     player.start = level.playerStart;
 }
 
