@@ -1,20 +1,46 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet"> 
+<!-- Fix issue with favicon 404 not found when using the music button -->
+<link rel="shortcut icon" href="#">
 
-<body style="  background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);;height: 100%;
-    margin: 0;
-    background-repeat: no-repeat;
-    background-attachment: fixed;">
+<body style="background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+             height: 100%;
+             margin: 0;
+             background-repeat: no-repeat;
+             background-attachment: fixed;">
     
     <h1 id="Game X"
-        class="title" style="display:block; text-align:center;font-family: 'Indie Flower', sans-serif;">
+        class="title"
+        style="display:block;
+               text-align:center;
+               font-family: 'Indie Flower', sans-serif;">
+        
         WOMPBOY ADVENTURES
     </h1>
 
-    <audio id="sounds" loop="true" volume = "60">
-        <source src="https://cdn.discordapp.com/attachments/498942124079972367/797548016092315688/Dissonant_lat_t_spel.mp3" id="A" type="audio/wav">
-      </audio> 
-      <p style="display:block; text-align: center; display:block; font-family: 'Indie Flower', sans-serif">Play Music Here</p> <button id="play" style="display:block; margin: 0 auto;">►</button>
+    <audio id="sounds"
+           loop="true"
+           volume="60">
+
+        <source src="./assets/sounds/Dissonant_lat_t_spel.mp3"
+                id="A"
+                type="audio/wav">
+
+    </audio>
+    
+    <p style="display:block;
+              text-align: center;
+              display:block;
+              font-family: 'Indie Flower',
+              sans-serif">
+        Play Music Here
+    </p>
+    
+    <button id="play"
+            style="display:block;
+                   margin: 0 auto;">
+        ►
+    </button>
 
     <canvas id="canvas"
                 width="512"

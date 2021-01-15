@@ -1,30 +1,30 @@
 import {Vector, Rectangle, Circle} from './utils.js';
-
+import {FRICTION_DEFAULT} from './assets.js';
 
 export class DeathBallCircle {
     
-    constructor(center, radius=75, speed=0.08){
-        this.size_radius = 16;
+    constructor(center, radius=75, speed=0.08, size=16, angle=0){
+        this.size = size;
         this.radius = radius;
         this.center = center;
-        this.angle = 0;
+        this.angle = angle;
         this.speed = speed;
     }
 
     getRectangle() {
         let x = this.center.x + Math.cos(this.angle) * this.radius;  
         let y = this.center.y + Math.sin(this.angle) * this.radius;
-        x = x - this.size_radius;
-        y = y - this.size_radius;
-        let w = 2 * this.size_radius;
-        let h = 2 * this.size_radius;
+        x = x - this.size;
+        y = y - this.size;
+        let w = 2 * this.size;
+        let h = 2 * this.size;
         return new Rectangle(x, y, w, h);    
     }
 
     getCircle() {
         let x = this.center.x + Math.cos(this.angle) * this.radius;  
         let y = this.center.y + Math.sin(this.angle) * this.radius;
-        return new Circle(new Vector(x, y), this.size_radius);
+        return new Circle(new Vector(x, y), this.size);
     }
 
     update_position() {
@@ -44,31 +44,32 @@ export class DeathBallCircle {
     }
 }
 
+
 export class DeathBallLinear {
 
-    constructor(start, end, speed=0.08){
-        this.size_radius = 16;
-        this.start = start;
-        this.end = end;
-        this.speed = speed;
-        this.t = 0.0; // Between 0.0 and 1.0
-        this.vel = 1.0;
-        this.delta = this.end.subtract(this.start);
+    constructor(p1, p2, speed=0.08, size=16, t=0.0){
+        this.size = size;
+        this.p1 = p1;
+        this.p2 = p2;
+        this.speed = Math.abs(speed);
+        this.t = t; // Between 0.0 and 1.0
+        this.vel = speed;
+        this.delta = this.p2.subtract(this.p1);
     }
 
     getRectangle() {
-        // If t = 0.0 -> At start point, t = 1.0 -> At end point
-        let pos = this.start.add(this.delta.multiply(this.t));
-        let x = pos.x - this.size_radius;
-        let y = pos.y - this.size_radius;
-        let w = 2 * this.size_radius;
-        let h = 2 * this.size_radius;
+        // t = 0.0: At start point, t = 1.0: At end point
+        let pos = this.p1.add(this.delta.multiply(this.t));
+        let x = pos.x - this.size;
+        let y = pos.y - this.size;
+        let w = 2 * this.size;
+        let h = 2 * this.size;
         return new Rectangle(x, y, w, h);    
     }
     
     getCircle() {
-        let pos = this.start.add(this.delta.multiply(this.t));
-        return new Circle(pos, this.size_radius);
+        let pos = this.p1.add(this.delta.multiply(this.t));
+        return new Circle(pos, this.size);
     }
 
 
@@ -85,8 +86,8 @@ export class DeathBallLinear {
     drawMovement(ctx) {
         ctx.strokeStyle = "#CCC";
         ctx.beginPath();
-        ctx.moveTo(this.start.x, this.start.y);
-        ctx.lineTo(this.end.x, this.end.y);
+        ctx.moveTo(this.p1.x, this.p1.y);
+        ctx.lineTo(this.p2.x, this.p2.y);
         ctx.stroke();
     }
 }
@@ -142,12 +143,13 @@ export class Goal {
 export var TILE_SIZE = 32;
 
 export class Level {
-    constructor(playerStart, deathBalls, checkpoints, goal, tileMap) {
+    constructor(name, playerStart, deathBalls, checkpoints, goal, tileMap) {
+        this.name = name;
         this.playerStart = playerStart;
         this.deathBalls = deathBalls;
         this.checkpoints = checkpoints;
         this.goal = goal;
-        this.tileMap = tileMap
+        this.tileMap = tileMap;
         this.nrows = this.tileMap.length;
         this.ncols = this.tileMap[0].length;        
         this.width = this.ncols * TILE_SIZE;
@@ -156,11 +158,7 @@ export class Level {
 }
 
 
-export var ACCELERATION_ICE = 0.05;
-export var FRICTION_ICE = 0.01;
-
-export var ACCELERATION_DEFAULT = 1.0;
-export var FRICTION_DEFAULT = 0.8;
+export var ACCELERATION_DEFAULT = 1.2;
 
 // Establish the Player, aka WHAT IS THE PLAYER!?
 export class Player {

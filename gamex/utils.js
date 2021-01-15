@@ -25,6 +25,10 @@ export class Vector {
         this.y = y;                
     }
 
+    copy() {
+        return new Vector(this.x, this.y);
+    }
+
     add(v) {
         return new Vector(this.x + v.x, this.y + v.y);
     }
@@ -46,9 +50,23 @@ export class Vector {
         return length > 0 ? this.multiply(1 / length) : this;        
     }
 
-    limit(max) {
+    dot(v) {
+        return this.x * v.x + this.y * v.y;
+    }
+    
+    project(v) {
+        // Project this vector onto the given vetor v
+        return v.multiply(this.dot(v) / v.dot(v)); 
+    }
+
+    max(max) {
         let length = this.length();
         return length > max ? this.multiply(max / length) : this;        
+    }
+
+    min(min) {
+        let length = this.length();
+        return length < min ? this.multiply(min / length) : this;        
     }
 
     setLength(length) {

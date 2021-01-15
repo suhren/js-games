@@ -14,7 +14,7 @@
  "tiles":[
         {
          "id":0,
-         "image":"images\/Checkpoint.png",
+         "image":"assets\/images\/Checkpoint.png",
          "imageheight":16,
          "imagewidth":16,
          "properties":[
@@ -26,12 +26,12 @@
                 {
                  "name":"friction",
                  "type":"float",
-                 "value":0
+                 "value":-1
                 }]
         }, 
         {
          "id":1,
-         "image":"images\/Floor1.png",
+         "image":"assets\/images\/Floor1.png",
          "imageheight":16,
          "imagewidth":16,
          "properties":[
@@ -43,12 +43,12 @@
                 {
                  "name":"friction",
                  "type":"float",
-                 "value":0
+                 "value":-1
                 }]
         }, 
         {
          "id":2,
-         "image":"images\/Goal.png",
+         "image":"assets\/images\/Goal.png",
          "imageheight":16,
          "imagewidth":16,
          "properties":[
@@ -60,12 +60,12 @@
                 {
                  "name":"friction",
                  "type":"float",
-                 "value":0
+                 "value":-1
                 }]
         }, 
         {
          "id":3,
-         "image":"images\/ice.png",
+         "image":"assets\/images\/ice.png",
          "imageheight":16,
          "imagewidth":16,
          "properties":[
@@ -77,12 +77,12 @@
                 {
                  "name":"friction",
                  "type":"float",
-                 "value":0
+                 "value":0.01
                 }]
         }, 
         {
          "id":4,
-         "image":"images\/Start.png",
+         "image":"assets\/images\/Start.png",
          "imageheight":16,
          "imagewidth":16,
          "properties":[
@@ -94,12 +94,12 @@
                 {
                  "name":"friction",
                  "type":"float",
-                 "value":0
+                 "value":-1
                 }]
         }, 
         {
          "id":5,
-         "image":"images\/Wall2.png",
+         "image":"assets\/images\/Wall2.png",
          "imageheight":16,
          "imagewidth":16,
          "properties":[
@@ -111,7 +111,7 @@
                 {
                  "name":"friction",
                  "type":"float",
-                 "value":0
+                 "value":-1
                 }]
         }],
  "tilewidth":16,
