@@ -1,6 +1,6 @@
 import * as utils from "./utils.js";
 import * as go from "./objects.js";
-import {TILE_SIZE} from "./objects.js";
+import * as cfg from "./config.js";
 
 
 function getSprite(path) {
@@ -18,9 +18,6 @@ const LEVEL_FILES = [
     "./assets/levels/test1.json",
     "./assets/levels/test2.json"
 ];
-
-const ASSET_DIR = './assets/'
-const TILESET_JSON_FILE = ASSET_DIR + 'tileset.json'
 
 var LEVEL_JSONS = new Map();
 var TILESET_JSON = null;
@@ -43,7 +40,7 @@ function loadJson(path, callback) {
 
 LEVEL_FILES.forEach(path => loadJson(path, json => LEVEL_JSONS.set(path, json)));
 
-loadJson(TILESET_JSON_FILE, json => TILESET_JSON = json);
+loadJson(cfg.TILESET_JSON_FILE, json => TILESET_JSON = json);
 
 
 function getProperty(objs, property, value) {
@@ -51,14 +48,11 @@ function getProperty(objs, property, value) {
 }
 
 function tiledVector(obj) {
-    return new utils.Vector(TILE_SIZE * obj["x"] / 16, TILE_SIZE * obj["y"] / 16);
+    return new utils.Vector(obj["x"], obj["y"]);
 }
 
 function tiledRectangle(obj) {
-    return new utils.Rectangle(TILE_SIZE * obj["x"] / 16,
-                               TILE_SIZE * obj["y"] / 16,
-                               TILE_SIZE * obj["width"] / 16,
-                               TILE_SIZE * obj["height"] / 16);
+    return new utils.Rectangle(obj["x"], obj["y"], obj["width"], obj["height"]);
 }
 
 function levelFromJson(json, path) {
@@ -156,15 +150,13 @@ function levelFromJson(json, path) {
 }
 
 
-export const FRICTION_DEFAULT = 2000.0;
-
 export class Tile {
     constructor(image, imagePath, id, collision=false, friction=null){
         this.image = image;
         this.imagePath = imagePath;
         this.id = id;
         this.collision = collision;
-        this.friction = (friction == null || friction < 0) ? FRICTION_DEFAULT : friction;
+        this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
     }
 }
 
@@ -174,7 +166,7 @@ export function loadAllLevels() {
     // Initialize the tileset object
     TILESET_JSON["tiles"].forEach(tile => {
         let id = tile["id"];
-        let imagePath = ASSET_DIR + tile["image"];
+        let imagePath = cfg.ASSET_DIR + tile["image"];
         let image = getSprite(imagePath);
         let properties = tile["properties"];
         let collision = getProperty(properties, "name", "collision")["value"];

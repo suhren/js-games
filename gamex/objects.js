@@ -1,5 +1,5 @@
 import {Vector, Rectangle, Circle, clamp} from './utils.js';
-import {FRICTION_DEFAULT} from './assets.js';
+import * as cfg from './config.js';
 
 
 export class Text {
@@ -41,18 +41,6 @@ export class DeathBallCircle {
 
     update(dT) {
         this.angle = this.angle + this.speed * dT;
-    }
-
-    drawMovement(ctx) {
-        ctx.beginPath();
-        ctx.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2, false);
-        ctx.strokeStyle = "#CCC";
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(this.center.x, this.center.y, 2, 0, Math.PI * 2, false);
-        ctx.strokeStyle = "#CCC";
-        ctx.stroke();
     }
 }
 
@@ -98,14 +86,6 @@ export class DeathBallLinear {
         }
         this.t += this.vel * dT;
     }
-
-    drawMovement(ctx) {
-        ctx.strokeStyle = "#CCC";
-        ctx.beginPath();
-        ctx.moveTo(this.p1.x, this.p1.y);
-        ctx.lineTo(this.p2.x, this.p2.y);
-        ctx.stroke();
-    }
 }
 
 
@@ -115,26 +95,8 @@ export class Checkpoint {
         this.rectangle = rectangle;
         this.active = false;
     }
-
     getRectangle() {
         return this.rectangle;    
-    }
-    
-    draw(ctx) {
-        let rect = this.getRectangle();
-        ctx.lineWidth = 3;
-        if (this.active) {
-            ctx.strokeStyle = "#FFD700";
-            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.globalAlpha = 0.5;
-            ctx.fillStyle = "#FFD700";
-            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.globalAlpha = 1;
-        }
-        else {
-            ctx.strokeStyle = "#DAA520";
-            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-        }
     }
 }
 
@@ -149,26 +111,7 @@ export class Goal {
     getRectangle() {
         return this.rectangle;    
     }
-    
-    draw(ctx) {
-        let rect = this.getRectangle();
-        ctx.lineWidth = 3;
-        if (this.activated) {
-            ctx.strokeStyle = "#7FFF00";
-            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.globalAlpha = 0.5;
-            ctx.fillStyle = "#7FFF00";
-            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.globalAlpha = 1;
-        }
-        else {
-            ctx.strokeStyle = "#228B22";
-            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-        }
-    }
 }
-
-export var TILE_SIZE = 32;
 
 export class Level {
     constructor(name, playerStart, deathBalls, checkpoints, goal, texts, tileMap) {
@@ -181,31 +124,28 @@ export class Level {
         this.tileMap = tileMap;
         this.nrows = this.tileMap.length;
         this.ncols = this.tileMap[0].length;        
-        this.width = this.ncols * TILE_SIZE;
-        this.height = this.nrows * TILE_SIZE;            
+        this.width = this.ncols * cfg.TILE_SIZE;
+        this.height = this.nrows * cfg.TILE_SIZE;            
     }
 }
 
 
 function coordToTile(x) {
-    return Math.floor(x / TILE_SIZE);
+    return Math.floor(x / cfg.TILE_SIZE);
 }
-
-
-export var ACCELERATION_DEFAULT = 128;
 
 // Establish the Player, aka WHAT IS THE PLAYER!?
 export class Player {
     constructor(start = new Vector()) {
         this.start = start;
         this.pos = start;
-        this.width = 32;
-        this.height = 32;
+        this.width = 16;
+        this.height = 16;
         this.vel = new Vector();
         this.wish = new Vector();
-        this.maxSpeed = 256;
-        this.acceleration = ACCELERATION_DEFAULT;
-        this.friction = FRICTION_DEFAULT;
+        this.maxSpeed = cfg.PLAYER_MAX_SPEED;
+        this.acceleration = cfg.PLAYER_ACCELERATION_DEFAULT;
+        this.friction = cfg.FRICTION_DEFAULT;
         this.activeCheckpoint = null;    
         this.col0 = 0;
         this.row0 = 0;
