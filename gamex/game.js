@@ -34,11 +34,6 @@ var drawColliders = false;
 var drawDebug = true;
 var drawGrid = false;
 
-var col0 = 0;
-var row0 = 0;
-var col1 = 0;
-var row1 = 0;
-
 var player = new Player(new Vector(128, 128));
 var level;
 var levelIndex = 0;
@@ -108,11 +103,6 @@ function gameLoop() {
 }
 
 
-function coordToTile(x) {
-    return Math.floor(x / TILE_SIZE);
-}
-
-
 function changeLevel() {
     levelChanging = true;
     levelIndex = (levelIndex + 1) % assets.LEVELS.length;
@@ -136,60 +126,18 @@ function loadLevel(lvl) {
     player.start = level.playerStart.copy();
 }
 
+
 function update() {
     
     if (levelChanging)
         return
 
-    // Check friciton: Always pick the highest friction
-    
-    let friction = 0.0;
-
-    for (let row = row0; row < row1; row++) {
-        for (let col = col0; col < col1; col++) {
-            try {
-                if (!level.tileMap[row][col].collision) {
-                    friction = Math.max(friction, level.tileMap[row][col].friction);
-                }
-            }
-            catch{
-                console.log(row, col);
-                console.log(level.tileMap);
-            }
-        }
-    }
-    player.friction = friction;
-
     // Update player movement
-    let speed = player.vel.length();
-    // Clamp the impact of friction on acceleration so that the player
-    // can still retain some control when on e.g. ice
-    let frictionAccFactor = clamp(player.friction, 0.05, 1.0);
-    let frictionAcc = player.vel.normalize().multiply(-player.friction).max(speed);
-    let acc = player.wish.normalize().multiply(player.acceleration * frictionAccFactor);
-    let resultant = acc.add(frictionAcc);
-    player.vel = player.vel.add(resultant);
-    player.vel = player.vel.max(player.maxSpeed);
-    player.pos = player.pos.add(player.vel);
-
-    // Make sure we stay within bounds
-    player.pos.x = clamp(player.pos.x, 0, level.width - player.width);
-    player.pos.y = clamp(player.pos.y, 0, level.height - player.height);
-
-    // Check intersecting tiles
-    // Perform after player movement update for collisions to work correctly
-    col0 = coordToTile(player.pos.x);
-    row0 = coordToTile(player.pos.y);
-    col1 = coordToTile(player.pos.x + player.width) + 1;
-    row1 = coordToTile(player.pos.y + player.height) + 1;
-    col0 = Math.max(col0, 0);
-    row0 = Math.max(row0, 0);
-    col1 = Math.min(col1, level.ncols);
-    row1 = Math.min(row1, level.nrows);
-
+    player.updateMovement(level);
+    
     // Check collisions
-    for (let row = row0; row < row1; row++) {
-        for (let col = col0; col < col1; col++) {
+    for (let row = player.row0; row < player.row1; row++) {
+        for (let col = player.col0; col < player.col1; col++) {
             if (level.tileMap[row][col].collision) {
                 let tileRect = new Rectangle(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 let collide = rectIntersect(player.getRectangle(), tileRect);
@@ -288,7 +236,10 @@ function draw() {
     if (drawDebug) {
         ctx.strokeStyle = "red";
         ctx.lineWidth = 2;
-        ctx.strokeRect(col0 * TILE_SIZE, row0 * TILE_SIZE, TILE_SIZE * (col1 - col0), TILE_SIZE * (row1 - row0));
+        ctx.strokeRect(player.col0 * TILE_SIZE,
+                       player.row0 * TILE_SIZE,
+                       TILE_SIZE * (player.col1 - player.col0),
+                       TILE_SIZE * (player.row1 - player.row0));
     }
 
     // Draw Checkpoints

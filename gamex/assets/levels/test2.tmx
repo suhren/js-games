@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
- <tileset firstgid="1" source="MyTileset.tsx"/>
+ <tileset firstgid="1" source="../tileset.tsx"/>
  <layer id="1" name="Tile Layer 1" width="16" height="16">
   <data encoding="csv">
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
@@ -22,13 +22,13 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" template="templates/spawn.tx" x="48" y="48"/>
-  <object id="2" template="templates/goal.tx" x="192" y="192"/>
-  <object id="3" template="templates/checkpoint.tx" x="208" y="32"/>
-  <object id="4" template="templates/line.tx" x="77.5" y="109.5">
+  <object id="1" template="../templates/spawn.tx" x="48" y="48"/>
+  <object id="2" template="../templates/goal.tx" x="192" y="192"/>
+  <object id="3" template="../templates/checkpoint.tx" x="208" y="32"/>
+  <object id="4" template="../templates/line.tx" x="77.5" y="109.5">
    <polyline points="-45.5,18.5 146.5,18.5"/>
   </object>
-  <object id="5" template="templates/ball.tx" x="16" y="112" width="32" height="32">
+  <object id="5" template="../templates/ball.tx" x="16" y="112" width="32" height="32">
    <properties>
     <property name="line" type="object" value="4"/>
     <property name="speed" type="float" value="0.02"/>

@@ -15,11 +15,12 @@ export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
 export const SPRITE_BALL = getSprite("assets/images/DeathBot.png");
 
 const LEVEL_FILES = [
-    "./levels/test1.json",
-    "./levels/test2.json"
+    "./assets/levels/test1.json",
+    "./assets/levels/test2.json"
 ];
 
-const TILESET_JSON_FILE = './MyTileset.json'
+const ASSET_DIR = './assets/'
+const TILESET_JSON_FILE = ASSET_DIR + 'tileset.json'
 
 var LEVEL_JSONS = new Map();
 var TILESET_JSON = null;
@@ -162,7 +163,7 @@ export function loadAllLevels() {
     // Initialize the tileset object
     TILESET_JSON["tiles"].forEach(tile => {
         let id = tile["id"];
-        let imagePath = tile["image"];
+        let imagePath = ASSET_DIR + tile["image"];
         let image = getSprite(imagePath);
         let properties = tile["properties"];
         let collision = getProperty(properties, "name", "collision")["value"];

@@ -1,4 +1,4 @@
-import {Vector, Rectangle, Circle} from './utils.js';
+import {Vector, Rectangle, Circle, clamp} from './utils.js';
 import {FRICTION_DEFAULT} from './assets.js';
 
 export class DeathBallCircle {
@@ -158,6 +158,11 @@ export class Level {
 }
 
 
+function coordToTile(x) {
+    return Math.floor(x / TILE_SIZE);
+}
+
+
 export var ACCELERATION_DEFAULT = 1.2;
 
 // Establish the Player, aka WHAT IS THE PLAYER!?
@@ -172,7 +177,52 @@ export class Player {
         this.maxSpeed = 4;
         this.acceleration = ACCELERATION_DEFAULT;
         this.friction = FRICTION_DEFAULT;
-        this.activeCheckpoint = null;                 
+        this.activeCheckpoint = null;    
+        this.col0 = 0;
+        this.row0 = 0;
+        this.col1 = 0;
+        this.row1 = 0;           
+    }
+
+    updateMovement(level) {
+        
+        let speed = this.vel.length();
+
+        // Clamp the impact of friction on acceleration so that the player
+        // can still retain some control when on e.g. ice
+        let frictionAccFactor = clamp(this.friction, 0.05, 1.0);
+        let frictionAcc = this.vel.normalize().multiply(-this.friction).max(speed);
+        let acc = this.wish.normalize().multiply(this.acceleration * frictionAccFactor);
+        let resultant = acc.add(frictionAcc);
+        this.vel = this.vel.add(resultant);
+        this.vel = this.vel.max(this.maxSpeed);
+        this.pos = this.pos.add(this.vel);
+
+        // Make sure we stay within bounds
+        this.pos.x = clamp(this.pos.x, 0, level.width - this.width);
+        this.pos.y = clamp(this.pos.y, 0, level.height - this.height);
+
+        // Check intersecting tiles
+        // Perform after player movement update for collisions to work correctly
+        this.col0 = coordToTile(this.pos.x);
+        this.row0 = coordToTile(this.pos.y);
+        this.col1 = coordToTile(this.pos.x + this.width) + 1;
+        this.row1 = coordToTile(this.pos.y + this.height) + 1;
+        this.col0 = Math.max(this.col0, 0);
+        this.row0 = Math.max(this.row0, 0);
+        this.col1 = Math.min(this.col1, level.ncols);
+        this.row1 = Math.min(this.row1, level.nrows);
+
+        // Check friciton: Always pick the highest friction
+        let friction = 0.0;
+        for (let row = this.row0; row < this.row1; row++) {
+            for (let col = this.col0; col < this.col1; col++) {
+                if (!level.tileMap[row][col].collision) {
+                    friction = Math.max(friction, level.tileMap[row][col].friction);
+                }
+            }
+        }
+        this.friction = friction;
     }
 
     respawn() {

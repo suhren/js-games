@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"test.json"
+         "target":"test1.json"
         }
     },
  "height":16,
@@ -175,7 +175,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/tiled\/MyTileset.tsx"
+         "source":"..\/tileset.tsx"
         }],
  "tilewidth":16,
  "type":"map",
