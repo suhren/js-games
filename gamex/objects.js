@@ -1,6 +1,18 @@
 import {Vector, Rectangle, Circle, clamp} from './utils.js';
 import {FRICTION_DEFAULT} from './assets.js';
 
+
+export class Text {
+    
+    constructor(text, pixelsize, rectangle, wrap) {
+        this.text = text;
+        this.pixelsize = (pixelsize != null) ? pixelsize : 16;
+        this.rectangle = rectangle;
+        this.wrap = wrap;
+    }
+}
+
+
 export class DeathBallCircle {
     
     constructor(center, radius=75, speed=0.08, size=16, angle=0){
@@ -27,8 +39,8 @@ export class DeathBallCircle {
         return new Circle(new Vector(x, y), this.size);
     }
 
-    update_position() {
-        this.angle = this.angle + this.speed;
+    update(dT) {
+        this.angle = this.angle + this.speed * dT;
     }
 
     drawMovement(ctx) {
@@ -57,9 +69,13 @@ export class DeathBallLinear {
         this.delta = this.p2.subtract(this.p1);
     }
 
+    getOffset() {
+        return 0.5 * (Math.cos( (this.t - 0.5) * 2 * Math.PI) + 1);
+    }
+
     getRectangle() {
         // t = 0.0: At start point, t = 1.0: At end point
-        let pos = this.p1.add(this.delta.multiply(this.t));
+        let pos = this.p1.add(this.delta.multiply(this.getOffset()));
         let x = pos.x - this.size;
         let y = pos.y - this.size;
         let w = 2 * this.size;
@@ -68,19 +84,19 @@ export class DeathBallLinear {
     }
     
     getCircle() {
-        let pos = this.p1.add(this.delta.multiply(this.t));
+        let pos = this.p1.add(this.delta.multiply(this.getOffset()));
         return new Circle(pos, this.size);
     }
 
 
-    update_position() {
+    update(dT) {
         if (this.t <= 0.0) {
             this.vel = this.speed;
         }
         if (this.t > 1.0) {
             this.vel = -this.speed;
         }
-        this.t += this.vel;
+        this.t += this.vel * dT;
     }
 
     drawMovement(ctx) {
@@ -155,12 +171,13 @@ export class Goal {
 export var TILE_SIZE = 32;
 
 export class Level {
-    constructor(name, playerStart, deathBalls, checkpoints, goal, tileMap) {
+    constructor(name, playerStart, deathBalls, checkpoints, goal, texts, tileMap) {
         this.name = name;
         this.playerStart = playerStart;
         this.deathBalls = deathBalls;
         this.checkpoints = checkpoints;
         this.goal = goal;
+        this.texts = texts;
         this.tileMap = tileMap;
         this.nrows = this.tileMap.length;
         this.ncols = this.tileMap[0].length;        
@@ -175,7 +192,7 @@ function coordToTile(x) {
 }
 
 
-export var ACCELERATION_DEFAULT = 1.2;
+export var ACCELERATION_DEFAULT = 128;
 
 // Establish the Player, aka WHAT IS THE PLAYER!?
 export class Player {
@@ -186,7 +203,7 @@ export class Player {
         this.height = 32;
         this.vel = new Vector();
         this.wish = new Vector();
-        this.maxSpeed = 4;
+        this.maxSpeed = 256;
         this.acceleration = ACCELERATION_DEFAULT;
         this.friction = FRICTION_DEFAULT;
         this.activeCheckpoint = null;    
@@ -196,23 +213,47 @@ export class Player {
         this.row1 = 0;           
     }
 
-    updateMovement(level) {
+    updateMovement(level, dT) {
         
         let speed = this.vel.length();
 
-        // Clamp the impact of friction on acceleration so that the player
+        // The impact of friction on the player acceleration.
+        // There is a minimum level of this impact so that the player
         // can still retain some control when on e.g. ice
-        let frictionAccFactor = clamp(this.friction, 0.05, 1.0);
-        let frictionAcc = this.vel.normalize().multiply(-this.friction).max(speed);
-        let acc = this.wish.normalize().multiply(this.acceleration * frictionAccFactor);
-        let resultant = acc.add(frictionAcc);
-        this.vel = this.vel.add(resultant);
+        let frictionAccFactor = Math.max(this.friction, 0.1);
+        
+        // The amount of acceleration (retardation) provided by the friction 
+        // It is always pointed opposite to the current velocity
+        let frictionAcc = this.vel.normalize().multiply(-this.friction);
+        // The friction can not reduce the velocity below zero
+        let frictionVel = frictionAcc.multiply(dT).max(speed);
+
+        let movementAcc = this.wish.normalize().multiply(this.acceleration * frictionAccFactor);
+        let movementVel = movementAcc.multiply(dT);
+        
+        this.vel = this.vel.add(movementVel.add(frictionVel));
         this.vel = this.vel.max(this.maxSpeed);
-        this.pos = this.pos.add(this.vel);
+
+        this.displacement = this.vel.multiply(dT)
+        this.pos = this.pos.add(this.displacement);
 
         // Make sure we stay within bounds
-        this.pos.x = clamp(this.pos.x, 0, level.width - this.width);
-        this.pos.y = clamp(this.pos.y, 0, level.height - this.height);
+        if (this.pos.x < 0) {
+            this.pos.x = 0;
+            this.vel.x = 0;
+        }
+        if (this.pos.y < 0) {
+            this.pos.y = 0;
+            this.vel.y = 0;
+        }
+        if (this.pos.x > level.width - this.width) {
+            this.pos.x = level.width - this.width;
+            this.vel.x = 0;
+        }
+        if (this.pos.y > level.height - this.height) {
+            this.pos.y = level.height - this.height;
+            this.vel.y = 0;
+        }
 
         // Check intersecting tiles
         // Perform after player movement update for collisions to work correctly

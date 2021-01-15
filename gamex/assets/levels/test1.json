@@ -80,7 +80,7 @@
                         {
                          "name":"speed",
                          "type":"float",
-                         "value":0.01
+                         "value":50
                         }],
                  "rotation":0,
                  "type":"ball",
@@ -140,7 +140,7 @@
                         {
                          "name":"speed",
                          "type":"float",
-                         "value":0.03
+                         "value":180
                         }],
                  "rotation":0,
                  "type":"ball",
@@ -159,6 +159,27 @@
                  "width":16,
                  "x":208,
                  "y":160
+                }, 
+                {
+                 "height":19,
+                 "id":42,
+                 "name":"",
+                 "rotation":0,
+                 "text":
+                    {
+                     "bold":true,
+                     "fontfamily":"Courier",
+                     "halign":"center",
+                     "pixelsize":13,
+                     "text":"Hello World",
+                     "valign":"center",
+                     "wrap":true
+                    },
+                 "type":"text",
+                 "visible":true,
+                 "width":148,
+                 "x":216,
+                 "y":112
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -167,7 +188,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":41,
+ "nextobjectid":43,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

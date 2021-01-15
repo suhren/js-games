@@ -2,6 +2,7 @@ import {Player, DeathBallCircle, DeathBallLinear, Checkpoint, Goal, Level, TILE_
 import {Vector, Rectangle, solve, clamp, rectIntersect, rectCircleInterset} from "./utils.js";
 import * as assets from "./assets.js";
 
+var fps = 240;
 
 var button = document.getElementById("play");
 var audio = document.getElementById("sounds")
@@ -30,8 +31,8 @@ window.onload = function() {
     init();
 }
 
-var drawColliders = false;
-var drawDebug = false;
+var drawColliders = true;
+var drawDebug = true;
 var drawGrid = false;
 
 var player = new Player(new Vector(128, 128));
@@ -98,13 +99,22 @@ function init() {
     levelIndex = 0;
     loadLevel(assets.LEVELS[levelIndex]);
     // Set up to call the function "gameLoop" 60 times/second
-    setInterval(gameLoop, 1000/60);
+    setInterval(gameLoop, 1000 / fps);
 }
 
+var startTime, endTime;
+
+
+var lastLoopTime = new Date();
+var dT = 0;
 
 function gameLoop() {
-    update();
+    // ms -> s
+    dT = (new Date() - lastLoopTime) / 1000;
+    update(dT);
+    lastLoopTime = new Date();
     draw();
+
 }
 
 
@@ -132,13 +142,13 @@ function loadLevel(lvl) {
 }
 
 
-function update() {
+function update(dT) {
     
     if (levelChanging)
         return
 
     // Update player movement
-    player.updateMovement(level);
+    player.updateMovement(level, dT);
     
     // Check collisions
     for (let row = player.row0; row < player.row1; row++) {
@@ -177,7 +187,7 @@ function update() {
     // Check death ball collisions
     for (let i = 0; i < level.deathBalls.length; i++) {
         let ball = level.deathBalls[i];
-        ball.update_position();
+        ball.update(dT);
         if (rectCircleInterset(player.getRectangle(), ball.getCircle())) {
             player.respawn();
         }
@@ -282,28 +292,44 @@ function draw() {
     //Draw player
     ctx.drawImage(assets.SPRITE_PLAYER, player.pos.x, player.pos.y, player.width, player.height);
 
+    //Draw texts
+    for (let i = 0; i < level.texts.length; i++) {
+        let text = level.texts[i];
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.font = `bold ${text.pixelsize * TILE_SIZE / 16}px Courier`;
+
+        ctx.textAlign = "center";
+        let center = text.rectangle.center();
+        ctx.strokeText(text.text, center.x, center.y);
+        ctx.fillText(text.text, center.x, center.y);
+    }
+    
 
     // Draw player position and other debug information
     if (drawDebug) {
         // Draw status text
-        ctx.font = "bold 14px Courier";
+        ctx.font = "bold 15px Courier";
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
-        ctx.textAlight = "start";
         ctx.textAlign = "left";
         
         let txt = level.name;
         ctx.strokeText(txt, 8, 20);
         ctx.fillText(txt, 8, 20);
 
-        txt = `player: ${player.pos.x.toFixed(2)} ${player.pos.y.toFixed(2)} ${player.vel.x.toFixed(2)} ${player.vel.y.toFixed(2)} ${player.vel.length().toFixed(2)}`;
+        txt = `player: ${player.pos.x.toFixed(2)} ${player.pos.y.toFixed(2)} ${player.vel.x.toFixed(2)} ${player.vel.y.toFixed(2)} ${player.vel.length().toFixed(2)} ${player.friction.toFixed(2)}`;
         ctx.strokeText(txt, 8, 40);
         ctx.fillText(txt, 8, 40);
+
+        txt = `FPS: ${(1/dT).toFixed(2)}`;
+        ctx.strokeText(txt, 8, 60);
+        ctx.fillText(txt, 8, 60);
 
         // Draw movement vectors
         ctx.lineWidth = 3;
         ctx.strokeStyle = "red";
-        strokeVector(player.getRectangle().center(), player.vel.multiply(25));
+        strokeVector(player.getRectangle().center(), player.vel.max(128));
         ctx.strokeStyle = "blue";
         strokeVector(player.getRectangle().center(), player.wish.setLength(50));
     }

@@ -1,4 +1,12 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"test2.json"
+        }
+    },
  "height":16,
  "infinite":false,
  "layers":[
@@ -92,7 +100,7 @@
                         {
                          "name":"speed",
                          "type":"float",
-                         "value":0.02
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"ball",
@@ -108,7 +116,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":6,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

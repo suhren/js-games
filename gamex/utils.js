@@ -112,13 +112,13 @@ export function clamp(x, min, max) {
 export function solve(player, box, epsilon=0) {
     
     // Moving to the right
-    if (player.vel.x > 0) {
+    if (player.displacement.x > 0) {
         // Moving down to the right
-        if (player.vel.y > 0) {
-            let ox = player.pos.x - player.vel.x 
-            let oy = player.pos.y - player.vel.y
-            let tx = Math.abs((box.x - (ox + player.width)) / player.vel.x);
-            let ty = Math.abs((box.y - (oy + player.height)) / player.vel.y);
+        if (player.displacement.y > 0) {
+            let ox = player.pos.x - player.displacement.x 
+            let oy = player.pos.y - player.displacement.y
+            let tx = Math.abs((box.x - (ox + player.width)) / player.displacement.x);
+            let ty = Math.abs((box.y - (oy + player.height)) / player.displacement.y);
             
             // Horizontal collision
             if (tx < ty) {
@@ -132,11 +132,11 @@ export function solve(player, box, epsilon=0) {
             }
         }
         // Moving up to the right
-        else if (player.vel.y < 0) {
-            let ox = player.pos.x - player.vel.x 
-            let oy = player.pos.y - player.vel.y
-            let tx = Math.abs((box.x - (ox + player.width)) / player.vel.x);
-            let ty = Math.abs((box.y + box.h - oy) / player.vel.y);
+        else if (player.displacement.y < 0) {
+            let ox = player.pos.x - player.displacement.x 
+            let oy = player.pos.y - player.displacement.y
+            let tx = Math.abs((box.x - (ox + player.width)) / player.displacement.x);
+            let ty = Math.abs((box.y + box.h - oy) / player.displacement.y);
             
             // Horizontal collision
             if (tx < ty) {
@@ -156,14 +156,14 @@ export function solve(player, box, epsilon=0) {
     }
 
     // Moving to the left
-    else if (player.vel.x < 0) {
+    else if (player.displacement.x < 0) {
 
         // Moving down to the left
-        if (player.vel.y > 0) {
-            let ox = player.pos.x - player.vel.x 
-            let oy = player.pos.y - player.vel.y
-            let tx = Math.abs((box.x + box.w - ox) / player.vel.x);
-            let ty = Math.abs((box.y - (oy + player.height)) / player.vel.y);
+        if (player.displacement.y > 0) {
+            let ox = player.pos.x - player.displacement.x 
+            let oy = player.pos.y - player.displacement.y
+            let tx = Math.abs((box.x + box.w - ox) / player.displacement.x);
+            let ty = Math.abs((box.y - (oy + player.height)) / player.displacement.y);
             
             // Horizontal collision
             if (tx < ty) {
@@ -177,11 +177,11 @@ export function solve(player, box, epsilon=0) {
             }
         }
         // Moving up to the left
-        else if (player.vel.y < 0) {
-            let ox = player.pos.x - player.vel.x 
-            let oy = player.pos.y - player.vel.y
-            let tx = Math.abs((box.x + box.w - ox) / player.vel.x);
-            let ty = Math.abs((box.y + box.h - oy) / player.vel.y);
+        else if (player.displacement.y < 0) {
+            let ox = player.pos.x - player.displacement.x 
+            let oy = player.pos.y - player.displacement.y
+            let tx = Math.abs((box.x + box.w - ox) / player.displacement.x);
+            let ty = Math.abs((box.y + box.h - oy) / player.displacement.y);
             
             // Horizontal collision
             if (tx < ty) {
@@ -203,12 +203,12 @@ export function solve(player, box, epsilon=0) {
     // Not moving horizontally
     else {
         // Moving down
-        if (player.vel.y > 0) {
+        if (player.displacement.y > 0) {
             player.vel.y = 0;
             player.pos.y = box.y - player.height - epsilon;
         }
         // Moving up
-        else if(player.vel.y < 0) {
+        else if(player.displacement.y < 0) {
             player.vel.y = 0;
             player.pos.y = box.y + box.h + epsilon;
         }

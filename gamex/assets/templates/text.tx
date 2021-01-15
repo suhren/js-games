@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object type="text" width="148" height="19">
+  <text fontfamily="Courier" pixelsize="13" wrap="1" bold="1" halign="center" valign="center">Hello World</text>
+ </object>
+</template>

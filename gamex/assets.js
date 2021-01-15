@@ -85,6 +85,7 @@ function levelFromJson(json, path) {
     let spawn = null;
     let checkpoints = [];
     let balls = [];
+    let texts = [];
     let goal = null;
 
     for (let i = 0; i < objects.length; i++) {
@@ -108,6 +109,14 @@ function levelFromJson(json, path) {
                 goal = new go.Goal(tiledRectangle(obj));
                 break;
 
+            case "text":
+                var rect = tiledRectangle(obj);
+                let text = obj["text"]["text"];
+                let pixelsize = obj["text"]["pixelsize"];
+                let wrap = obj["text"]["wrap"];
+                texts.push(new go.Text(text, pixelsize, rect, wrap));
+                break;
+    
             case "ball":
                 var rect = new tiledRectangle(obj);
                 var pos = rect.center();
@@ -121,6 +130,7 @@ function levelFromJson(json, path) {
                     var center = tiledVector(centerObj);
                     let radius = pos.subtract(center).length();
                     let angle = Math.atan2(pos.y - center.y, pos.x - center.x);
+                    speed = speed / 180 * Math.PI;
                     balls.push(new go.DeathBallCircle(center, radius, speed, size, angle));
                 }
                 else {
@@ -130,6 +140,7 @@ function levelFromJson(json, path) {
                         let p = tiledVector(lineObj);
                         let p1 = p.add(tiledVector(lineObj["polyline"][0]));
                         let p2 = p.add(tiledVector(lineObj["polyline"][1]));
+                        speed = speed / 100;
                         // Relative to p1
                         let lineVector = p2.subtract(p1);
                         let proj =  pos.subtract(p1).project(lineVector);                    
@@ -140,12 +151,12 @@ function levelFromJson(json, path) {
                 break;
         }
     }
-    let level = new go.Level(path, spawn, balls, checkpoints, goal, tileMap);
+    let level = new go.Level(path, spawn, balls, checkpoints, goal, texts, tileMap);
     return level;
 }
 
 
-export const FRICTION_DEFAULT = 1.0;
+export const FRICTION_DEFAULT = 2000.0;
 
 export class Tile {
     constructor(image, imagePath, id, collision=false, friction=null){

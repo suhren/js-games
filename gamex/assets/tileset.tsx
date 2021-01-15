@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.4" tiledversion="1.4.3" name="tileset" tilewidth="16" tileheight="16" tilecount="6" columns="0">
  <editorsettings>
-  <export target="../tileset.json" format="json"/>
+  <export target="tileset.json" format="json"/>
  </editorsettings>
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
@@ -28,7 +28,7 @@
  <tile id="3">
   <properties>
    <property name="collision" type="bool" value="false"/>
-   <property name="friction" type="float" value="0.01"/>
+   <property name="friction" type="float" value="2"/>
   </properties>
   <image width="16" height="16" source="images/ice.png"/>
  </tile>
