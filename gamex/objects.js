@@ -105,21 +105,27 @@ export class Checkpoint {
     }
     
     draw(ctx) {
+        let rect = this.getRectangle();
+        ctx.lineWidth = 3;
         if (this.active) {
-            ctx.fillStyle = "lime";
+            ctx.strokeStyle = "#FFD700";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = "#FFD700";
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 1;
         }
         else {
-            ctx.fillStyle = "darkgreen";
+            ctx.strokeStyle = "#DAA520";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
         }
-        let rect = this.getRectangle();
-        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
     }
 }
 
 
 export class Goal {
 
-    constructor(rectangle){
+    constructor(rectangle) {
         this.rectangle = rectangle;
         this.activated = false;
     }
@@ -129,14 +135,20 @@ export class Goal {
     }
     
     draw(ctx) {
+        let rect = this.getRectangle();
+        ctx.lineWidth = 3;
         if (this.activated) {
-            ctx.fillStyle = "aqua";
+            ctx.strokeStyle = "#7FFF00";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = "#7FFF00";
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 1;
         }
         else {
-            ctx.fillStyle = "blue";
+            ctx.strokeStyle = "#228B22";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
         }
-        let rect = this.getRectangle();
-        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
     }
 }
 
@@ -227,13 +239,14 @@ export class Player {
 
     respawn() {
         if (this.activeCheckpoint != null) {
-            let pos = this.activeCheckpoint.getRectangle().center();
-            pos.x -= this.width / 2;
-            pos.y -= this.height / 2;
-            this.pos = pos;
+            this.pos = this.activeCheckpoint.getRectangle().center();
+            this.pos.x -= this.width / 2;
+            this.pos.y -= this.height / 2;
         }
         else {
-            this.pos = this.start;
+            this.pos = this.start.copy();
+            this.pos.x -= this.width / 2;
+            this.pos.y -= this.height / 2;
         }
         this.vel.x = 0;
         this.vel.y = 0;

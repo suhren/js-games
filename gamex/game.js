@@ -27,11 +27,11 @@ window.onload = function() {
     // Set up a listener to call the function "keyUp" when a key is let go
     document.addEventListener("keyup", keyUp);
     // Call the init function before the loop
-    setTimeout(init, 100);
+    init();
 }
 
 var drawColliders = false;
-var drawDebug = true;
+var drawDebug = false;
 var drawGrid = false;
 
 var player = new Player(new Vector(128, 128));
@@ -84,6 +84,11 @@ function keyUp(e) {
         if (player.wish.x > 0) {
             player.wish.x = 0;
         }
+    }
+    // x key (88)
+    if (e.keyCode == 88) {
+        drawDebug = !drawDebug;
+        drawColliders = !drawColliders;
     }
 }
 
@@ -258,13 +263,13 @@ function draw() {
         let circle = ball.getCircle()
         let rect = ball.getRectangle()
 
-        if (drawDebug)
+        if (drawDebug) {
             ctx.lineWidth = 2;
             ball.drawMovement(ctx)
+        }
 
         if (drawColliders) {
-            ctx.strokeStyle = "red";
-            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
             ctx.strokeStyle = "red";
@@ -305,6 +310,7 @@ function draw() {
 
     //Draw bounding boxes
     if (drawColliders) {
+        ctx.lineWidth = 2;
         ctx.strokeStyle = "red";
         ctx.strokeRect(player.pos.x, player.pos.y, player.width, player.height);
     }
