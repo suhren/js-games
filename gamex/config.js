@@ -4,6 +4,8 @@ export const TILESET_JSON_FILE = ASSET_DIR + 'tileset.json'
 export const FRICTION_DEFAULT = 768;
 export const PLAYER_ACCELERATION_DEFAULT = 1536;
 export const PLAYER_MAX_SPEED = 128;
+export const PLAYER_DASH_COOLDOWN = 1;
+export const PLAYER_DASH_TIME = 0.25;
 
 export const WINDOW_TILE_SIZE = 48;
 export const TILE_SIZE = 16;

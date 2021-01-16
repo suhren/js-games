@@ -2,6 +2,108 @@ import * as utils from './utils.js';
 import * as cfg from './config.js';
 
 
+
+export class Particle {
+    
+    constructor(size, pos, rot, vel, rotationSpeed, lifeTime, color, alpha=1.0, alphaDecay=true) {
+        this.size = size;
+        this.pos = pos;
+        this.rot = rot;
+        this.vel = vel;
+        this.rotationSpeed = rotationSpeed;
+        this.lifeTime = lifeTime;
+        this.color = color;
+        this.alpha = alpha;
+        this.age = 0;
+        this.dead = false;
+        this.alphaDelta = alphaDecay ? this.alpha / this.lifeTime : 0;
+    }
+
+    update(dT) {
+        
+        this.pos = this.pos.add(this.vel.multiply(dT));
+        this.rot += this.rotationSpeed * dT;
+        this.alpha -= this.alphaDelta * dT;
+
+        this.age += dT;
+        if (this.age > this.lifeTime) {
+            this.dead = true;
+        }
+    }
+
+    getRectangle() {
+        let x = this.pos.x - this.size / 2;
+        let y = this.pos.y - this.size / 2;
+        return new utils.Rectangle(x, y, this.size, this.size);    
+    }
+}
+
+function random(min, max) {  
+    return Math.random() * (max - min) + min; 
+}  
+
+export class ParticleEmitter {
+    
+    constructor(pos, rate, sizes, rotations, moveSpeeds, rotationSpeeds, lifeTimes, color, alphas, alphaDecay=true) {
+        this.pos = pos;
+        this.rate = rate;
+        this.sizes = sizes;
+        this.rotations = rotations;
+        this.moveSpeeds = moveSpeeds;
+        this.rotationSpeeds = rotationSpeeds;
+        this.lifeTimes = lifeTimes;
+        this.color = color;
+        this.alphas = alphas;
+        this.alphaDecay = alphaDecay;
+        this.active = false;
+        this.lastEmitTimer = 0;
+        this.emitTime = 1 / rate;
+        this.particles = [];
+    }
+
+    update(dT) {
+
+        // Update particles
+        let deadParticles = [];
+        for (let i = 0; i < this.particles.length; i++) {
+            let p = this.particles[i];
+            p.update(dT);
+            if (p.dead) {
+                deadParticles.push(p);
+            }
+        }
+        this.particles = this.particles.filter(p => !deadParticles.includes(p));
+        
+        if (!this.active)
+            return;
+        
+        this.lastEmitTimer += dT;
+
+        if (this.lastEmitTimer > this.emitTime) {
+            this.lastEmitTimer = 0;
+            this.emit();
+        }
+    }
+
+    emit() {
+        let size = random(this.sizes[0], this.sizes[1]);
+        let rotation = random(this.rotations[0], this.rotations[1]);
+        let moveSpeed = random(this.moveSpeeds[0], this.moveSpeeds[1]);
+        let rotationSpeed = random(this.rotationSpeeds[0], this.rotationSpeeds[1]);
+        let lifeTime = random(this.lifeTimes[0], this.lifeTimes[1]);
+        let alpha = random(this.alphas[0], this.alphas[1]);
+        let angle = random(0, Math.PI * 2);
+        let vel = new utils.Vector(moveSpeed * Math.cos(angle), moveSpeed * Math.sin(angle));
+
+        this.particles.push(
+            new Particle(size, this.pos, rotation, vel, rotationSpeed, lifeTime, this.color, alpha, this.alphaDecay)
+        );
+    }
+}
+
+
+
+
 export class Text {
     
     constructor(text, pixelsize, rectangle, wrap) {
@@ -151,10 +253,27 @@ export class Player {
         this.col0 = 0;
         this.row0 = 0;
         this.col1 = 0;
-        this.row1 = 0;           
+        this.row1 = 0;
+        this.dashCooldownTimer = 0;
+        this.isDashingTimer = 0;
+        this.isDashAvailable = true;     
+        this.isDashing = false;
+        
+        this.dashParticleEmitter = new ParticleEmitter(
+            this.pos,
+            128,
+            [2, 6],
+            [0, 0],
+            [16, 32],
+            [-0.5, 0.5],
+            [0.5, 0.75],
+            "white",
+            [1.0, 1.0],
+            true
+        );
     }
 
-    updateMovement(level, dT) {
+    update(level, dT) {
         
         let speed = this.vel.length();
 
@@ -171,9 +290,10 @@ export class Player {
 
         let movementAcc = this.wish.normalize().multiply(this.acceleration * frictionAccFactor);
         let movementVel = movementAcc.multiply(dT);
+        movementVel = movementVel.max(Math.max(this.maxSpeed - speed, 0));
         
         this.vel = this.vel.add(movementVel.add(frictionVel));
-        this.vel = this.vel.max(this.maxSpeed);
+        // this.vel = this.vel.max(this.maxSpeed);
 
         this.displacement = this.vel.multiply(dT)
         this.pos = this.pos.add(this.displacement);
@@ -217,6 +337,37 @@ export class Player {
             }
         }
         this.friction = friction;
+
+        if (!this.isDashAvailable) {
+            this.dashCooldownTimer += dT;
+            if (this.dashCooldownTimer >= cfg.PLAYER_DASH_COOLDOWN) {
+                this.isDashAvailable = true;
+                this.dashCooldownTimer = 0;
+            }
+        }
+
+        if (this.isDashing) {
+            this.isDashingTimer += dT;
+            if (this.isDashingTimer >= cfg.PLAYER_DASH_TIME) {
+                this.isDashing = false;
+                this.isDashingTimer = 0;
+            }
+        }
+
+        this.dashParticleEmitter.active = this.isDashing;
+        this.dashParticleEmitter.pos = this.getRectangle().center();
+        this.dashParticleEmitter.update(dT);
+    }
+
+    dash() {
+        if (this.isDashAvailable) {
+            let dir = this.wish.normalize();    
+            if (dir.length() > 0) {
+                this.vel = this.vel.add(dir.multiply(256));
+                this.isDashAvailable = false;
+                this.isDashing = true;
+            }
+        }
     }
 
     respawn() {

@@ -1,4 +1,4 @@
-import {Player, DeathBallCircle, DeathBallLinear, Checkpoint, Goal, Level} from "./objects.js";
+import * as go from "./objects.js";
 import {Vector, Rectangle, solve, clamp, rectIntersect, rectCircleInterset} from "./utils.js";
 import * as cfg from "./config.js";
 import * as assets from "./assets.js";
@@ -25,7 +25,7 @@ window.onload = function() {
 }
 
 
-var player = new Player(new Vector(128, 128));
+var player = new go.Player(new Vector(128, 128));
 var level;
 var levelIndex = 0;
 
@@ -41,6 +41,7 @@ function click(e) {
     menu.click(e.offsetX, e.offsetY);
 }
 
+var spaceDown = false;
 
 function keyDown(e) {
     // Up arrow (38) or w (87)
@@ -58,6 +59,13 @@ function keyDown(e) {
     // Right arrow (39) or d (68)
     if (e.keyCode == 39 || e.keyCode == 68) {
         player.wish.x = 1;
+    }
+    // space key (32)
+    if (e.keyCode == 32) {
+        if (!spaceDown) {
+            player.dash();
+        }
+        spaceDown = true;
     }
 }
 
@@ -110,6 +118,10 @@ function keyUp(e) {
     if (e.keyCode == 86) {
         nextLevel();
     }
+    // space key (32)
+    if (e.keyCode == 32) {
+        spaceDown = false;
+    }
 }
 
 
@@ -155,7 +167,6 @@ function prevLevel() {
     menu.active = false;
 }
 
-
 function init() {
     drawing.init(document);
     menu = new inter.Menu();
@@ -182,8 +193,6 @@ function init() {
     // Set up to call the function "gameLoop" 60 times/second
     setInterval(gameLoop, 1000 / cfg.FPS);
 }
-
-var startTime, endTime;
 
 
 var lastLoopTime = new Date();
@@ -215,8 +224,8 @@ function loadLevel(lvl) {
 
 function update(dT) {
     
-    // Update player movement
-    player.updateMovement(level, dT);
+    // Update player
+    player.update(level, dT);
     
     // Check collisions
     for (let row = player.row0; row < player.row1; row++) {

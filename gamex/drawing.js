@@ -123,6 +123,25 @@ function strokeGrid(level) {
 }
 
 
+function drawParticles(particles) {
+    for (let i = 0; i < particles.length; i++) {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        let p = particles[i];
+        var rect = getScreenRect(p.getRectangle());
+        var center = rect.center();
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.translate(center.x, center.y);
+        ctx.rotate(p.rot);
+        ctx.translate(-center.x, -center.y);
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+    }
+    // Reset transformation matrix to the identity matrix
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1.0;
+}
+
+
 export function draw(dT, level, player, menu) {
 
     var playerPos = player.getRectangle().center();
@@ -167,8 +186,6 @@ export function draw(dT, level, player, menu) {
         cameraY = utils.clamp(cameraY, s2wS(canvas.height / 2), level.height - s2wS(canvas.height / 2));
     }
 
-
-    
     ctx.imageSmoothingEnabled = false;
     
     // (Clear) draw background color on the entire screen
@@ -239,6 +256,11 @@ export function draw(dT, level, player, menu) {
         ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
 
+    //Draw player
+    drawParticles(player.dashParticleEmitter.particles);
+    var rect = getScreenRect(player.getRectangle());
+    ctx.drawImage(assets.SPRITE_PLAYER, rect.x, rect.y, rect.w, rect.h);
+
     // Draw death ball circles outline
     for (let i = 0; i < level.deathBalls.length; i++) {
         let ball = level.deathBalls[i];
@@ -289,10 +311,6 @@ export function draw(dT, level, player, menu) {
         ctx.drawImage(assets.SPRITE_BALL, rect.x, rect.y, rect.w, rect.h);
     }
 
-    //Draw player
-    var rect = getScreenRect(player.getRectangle());
-    ctx.drawImage(assets.SPRITE_PLAYER, rect.x, rect.y, rect.w, rect.h);
-
     //Draw texts
     for (let i = 0; i < level.texts.length; i++) {
         let text = level.texts[i];
@@ -306,6 +324,28 @@ export function draw(dT, level, player, menu) {
     }
     
 
+    // Draw player dash cooldown
+    let t = player.isDashAvailable ? 1 : player.dashCooldownTimer / cfg.PLAYER_DASH_COOLDOWN;
+    ctx.fillStyle = "#555555";
+    ctx.fillRect(16, 16, 150, 20);
+    ctx.fillStyle = "#DAA520";
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(16, 16, t * 150, 20);
+    ctx.fillRect(16, 16, t * 150, 20);
+    ctx.strokeStyle = "#000000";
+    ctx.strokeRect(16, 16, 150, 20);
+    
+    // Draw menu
+    if (menu.active) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(menu.x, menu.y, menu.w, menu.h);
+        
+        for (let i = 0; i < menu.buttons.length; i++) {
+            drawButton(menu.x, menu.y, menu.buttons[i]);
+        }
+    }
+
     // Draw player position and other debug information
     if (drawDebug) {
         // Draw status text
@@ -318,7 +358,7 @@ export function draw(dT, level, player, menu) {
         ctx.strokeText(txt, 8, 20);
         ctx.fillText(txt, 8, 20);
         
-        txt = `player: ${player.pos.x.toFixed(2)} ${player.pos.y.toFixed(2)} ${player.vel.x.toFixed(2)} ${player.vel.y.toFixed(2)} ${player.vel.length().toFixed(2)} ${player.friction.toFixed(2)}`;
+        txt = `player: ${player.pos.x.toFixed(2)} ${player.pos.y.toFixed(2)} ${player.vel.x.toFixed(2)} ${player.vel.y.toFixed(2)} ${player.vel.length().toFixed(2)} ${player.friction.toFixed(2)} ${player.dashCooldownTimer.toFixed(2)} ${player.isDashing}`;
         ctx.strokeText(txt, 8, 40);
         ctx.fillText(txt, 8, 40);
 
@@ -346,17 +386,6 @@ export function draw(dT, level, player, menu) {
         ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
 
-
-    // Draw menu
-
-    if (menu.active) {
-        ctx.fillStyle = "black";
-        ctx.fillRect(menu.x, menu.y, menu.w, menu.h);
-        
-        for (let i = 0; i < menu.buttons.length; i++) {
-            drawButton(menu.x, menu.y, menu.buttons[i]);
-        }
-    }
 
     // Render the buffer canvas onto the document canvas
     documentCtx.drawImage(canvas, 0, 0);
