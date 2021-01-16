@@ -5,19 +5,9 @@ import * as assets from "./assets.js";
 import * as drawing from "./drawing.js";
 import * as inter from "./interface.js";
 
-var button = document.getElementById("play");
+
 var audio = document.getElementById("sounds");
 var canvas = document.getElementById("canvas")
-
-button.addEventListener("click", function(){
-    if(audio.paused){
-        audio.play();
-        button.innerHTML = "■";
-    } else {
-        audio.pause();
-        button.innerHTML = "►";
-    }
-});
 
 
 // Entry point of program
@@ -98,7 +88,11 @@ function keyUp(e) {
     }
     // x key (88)
     if (e.keyCode == 88) {
-        drawing.toggleDebug();
+        toggleDebug();
+    }
+    // m key (77)
+    if (e.keyCode == 77) {
+        toggleMusic();
     }
     // ESC key (27)
     if (e.keyCode == 27) {
@@ -117,10 +111,24 @@ function buttonRestart() {
     menu.active = false;
 }
 
-function buttonDebug() {
-    drawing.toggleDebug();
+var debugButton;
+var musicButton;
+
+function toggleDebug() {
+    let debug = drawing.toggleDebug();
+    debugButton.text = debug ? "x: Debug: ON" : "x: Debug: OFF";
 }
 
+
+function toggleMusic() {
+    if(audio.paused){
+        audio.play();
+        musicButton.text = "m: Music: ON";
+    } else {
+        audio.pause();
+        musicButton.text = "m: Music: OFF";
+    }
+}
 
 function init() {
     drawing.init(document);
@@ -128,10 +136,14 @@ function init() {
     menu.x = (canvas.width - menu.w) / 2;
     menu.y = (canvas.height - menu.h) / 2;
 
+    musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 200, 50);
+    debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 200, 50);
+
     let buttons = [
         new inter.Button("Resume", buttonResume, 0, 0, 200, 50),
-        new inter.Button("Restart", buttonRestart, 0, 150, 200, 50),
-        new inter.Button("Toggle Debug", buttonDebug, 0, 150, 200, 50)
+        new inter.Button("Restart", buttonRestart, 0, 0, 200, 50),
+        debugButton,
+        musicButton
     ];
 
     menu.init(buttons);

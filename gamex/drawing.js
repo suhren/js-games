@@ -25,9 +25,9 @@ export function init(document) {
 }
 
 
-var drawColliders = true;
-var drawDebug = true;
-var drawGrid = true;
+var drawColliders = false;
+var drawDebug = false;
+var drawGrid = false;
 
 
 var cameraX = 0;
@@ -39,6 +39,7 @@ export function toggleDebug() {
     drawDebug = !drawDebug;
     drawGrid = !drawGrid;
     drawColliders = !drawColliders;
+    return drawDebug;
 }
 
 function strokeLine(v1, v2) {
@@ -297,11 +298,10 @@ export function draw(dT, level, player, menu) {
         let text = level.texts[i];
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
-        ctx.font = `bold ${w2sS(text.pixelsize)}px Courier`;
+        ctx.font = `${w2sS(text.pixelsize)}px GameFont`;
 
         ctx.textAlign = "center";
         let center = getScreenVector(text.rectangle.center());
-        ctx.strokeText(text.text, center.x, center.y);
         ctx.fillText(text.text, center.x, center.y);
     }
     
@@ -309,7 +309,7 @@ export function draw(dT, level, player, menu) {
     // Draw player position and other debug information
     if (drawDebug) {
         // Draw status text
-        ctx.font = "bold 15px Courier";
+        ctx.font = "12px GameFont";
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
         ctx.textAlign = "left";
@@ -373,11 +373,12 @@ function drawButton(x0, y0, button) {
         ctx.lineWidth = 4;
         ctx.strokeRect(x, y, button.w, button.h);
     }
+    else {
+        ctx.lineWidth = 2;
+    }
 
-    ctx.font = "bold 15px Courier";
+    ctx.font = "bold 15px GameFont";
     ctx.fillStyle = "white";
-    ctx.strokeStyle = "black";
     ctx.textAlign = "center";
-    ctx.strokeText(button.text, x + button.w / 2, y + button.h / 2);
     ctx.fillText(button.text, x + button.w / 2, y + button.h / 2);
 }
