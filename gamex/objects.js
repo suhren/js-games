@@ -58,7 +58,8 @@ export class DeathBallLinear {
     }
 
     getOffset() {
-        return 0.5 * (Math.cos( (this.t - 0.5) * 2 * Math.PI) + 1);
+        // We want this to be a smooth transition from 0 to 1
+        return 0.5 * (Math.cos((this.t + 1) * Math.PI) + 1);
     }
 
     getRectangle() {

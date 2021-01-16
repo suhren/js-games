@@ -45,11 +45,11 @@
             }
         },
         "levels/test1.tmx": {
-            "scale": 1.718276515151515,
+            "scale": 5.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 255.48856434279418,
-                "y": 127.74428217139712
+                "x": 108.81818181818183,
+                "y": 79.63636363636364
             }
         },
         "levels/test2.tmx": {
@@ -60,8 +60,32 @@
                 "y": 120.17069701280228
             }
         },
+        "levels/test3.tmx": {
+            "scale": 1.8532196969696968,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 267.91211037301997,
+                "y": 127.88553909044455
+            }
+        },
+        "levels/test4.tmx": {
+            "scale": 4.472916666666666,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 88.19748486259897,
+                "y": 96.13414066138799
+            }
+        },
         "levels/tileset.tsx": {
             "scaleInDock": 1
+        },
+        "test3.json": {
+            "scale": 2.04658203125,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 256.28095624373714,
+                "y": 128.0183232332872
+            }
         },
         "tileset.tsx": {
             "dynamicWrapping": true,
@@ -71,12 +95,12 @@
     },
     "frame.defaultDuration": 40,
     "lastUsedTilesetExportFilter": "JSON tileset files (*.json)",
-    "map.height": 16,
+    "map.height": 12,
     "map.lastUsedExportFilter": "JSON map files (*.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 16,
+    "map.width": 12,
     "openFiles": [
         "levels/test1.tmx",
         "levels/test2.tmx",
@@ -85,6 +109,7 @@
     "project": "game.tiled-project",
     "property.type": "float",
     "recentFiles": [
+        "test3.json",
         "levels/test1.tmx",
         "tileset.tsx",
         "levels/test2.tmx",

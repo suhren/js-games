@@ -94,9 +94,21 @@ function keyUp(e) {
     if (e.keyCode == 77) {
         toggleMusic();
     }
+    // r key (82)
+    if (e.keyCode == 82) {
+        restart();
+    }
     // ESC key (27)
     if (e.keyCode == 27) {
         menu.active = !menu.active;
+    }
+    // c key (67)
+    if (e.keyCode == 67) {
+        prevLevel();
+    }
+    // v key (86)
+    if (e.keyCode == 86) {
+        nextLevel();
     }
 }
 
@@ -106,8 +118,8 @@ function buttonResume() {
 }
 
 
-function buttonRestart() {
-    player.respawn();
+function restart() {
+    loadLevel(assets.LEVELS[levelIndex]);
     menu.active = false;
 }
 
@@ -130,20 +142,36 @@ function toggleMusic() {
     }
 }
 
+
+function nextLevel() {
+    levelIndex = (levelIndex + 1) % assets.LEVELS.length;
+    loadLevel(assets.LEVELS[levelIndex]);
+    menu.active = false;
+}
+
+function prevLevel() {
+    levelIndex = (levelIndex > 0) ? levelIndex - 1 : assets.LEVELS.length - 1;
+    loadLevel(assets.LEVELS[levelIndex]);
+    menu.active = false;
+}
+
+
 function init() {
     drawing.init(document);
     menu = new inter.Menu();
     menu.x = (canvas.width - menu.w) / 2;
     menu.y = (canvas.height - menu.h) / 2;
 
-    musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 200, 50);
-    debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 200, 50);
+    musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 200, 32);
+    debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 200, 32);
 
     let buttons = [
-        new inter.Button("Resume", buttonResume, 0, 0, 200, 50),
-        new inter.Button("Restart", buttonRestart, 0, 0, 200, 50),
+        new inter.Button("Resume", buttonResume, 0, 0, 200, 32),
+        new inter.Button("r: Restart", restart, 0, 0, 200, 32),
         debugButton,
-        musicButton
+        musicButton,
+        new inter.Button("c: Prev level", nextLevel, 0, 0, 200, 32),
+        new inter.Button("v: Next level", prevLevel, 0, 0, 200, 32),
     ];
 
     menu.init(buttons);
@@ -168,12 +196,6 @@ function gameLoop() {
     lastLoopTime = new Date();
     drawing.draw(dT, level, player, menu);
 
-}
-
-
-function changeLevel() {
-    levelIndex = (levelIndex + 1) % assets.LEVELS.length;
-    loadLevel(assets.LEVELS[levelIndex])
 }
 
 
@@ -230,7 +252,7 @@ function update(dT) {
 
     if (!level.goal.activated && rectIntersect(player.getRectangle(), level.goal.getRectangle())) {
         level.goal.activated = true;
-        setTimeout(changeLevel, 1000);
+        setTimeout(nextLevel, 1000);
         
     }
     

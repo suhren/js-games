@@ -16,7 +16,9 @@ export const SPRITE_BALL = getSprite("assets/images/DeathBot.png");
 
 const LEVEL_FILES = [
     "./assets/levels/test1.json",
-    "./assets/levels/test2.json"
+    "./assets/levels/test2.json",
+    "./assets/levels/test3.json",
+    "./assets/levels/test4.json"
 ];
 
 var LEVEL_JSONS = new Map();
@@ -135,7 +137,9 @@ function levelFromJson(json, path) {
                         let p1 = p.add(tiledVector(lineObj["polyline"][0]));
                         let p2 = p.add(tiledVector(lineObj["polyline"][1]));
                         speed = speed / 100;
-                        // Relative to p1
+
+                        // Relative to p1: the length from p1 to the projection
+                        // should be proportional to t
                         let lineVector = p2.subtract(p1);
                         let proj =  pos.subtract(p1).project(lineVector);                    
                         let t = proj.length() / lineVector.length();

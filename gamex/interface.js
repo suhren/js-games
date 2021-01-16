@@ -34,8 +34,11 @@ export class Menu {
             this.buttons[i].y = y;
             y += this.buttons[i].h + this.padding;
         }
+
+        // One extra superflous padding from the last button
+        y -= this.padding;
         
-        let y0 = (this.h - y) / 2;
+        let y0 = (this.h - y ) / 2;
         for (let i = 0; i < this.buttons.length; i++) {
             this.buttons[i].y += y0;
         }

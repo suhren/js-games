@@ -86,8 +86,8 @@
                  "type":"ball",
                  "visible":true,
                  "width":16,
-                 "x":220,
-                 "y":56
+                 "x":224,
+                 "y":48
                 }, 
                 {
                  "height":0,
@@ -162,7 +162,7 @@
                 }, 
                 {
                  "height":19,
-                 "id":42,
+                 "id":43,
                  "name":"",
                  "rotation":0,
                  "text":
@@ -178,8 +178,8 @@
                  "type":"text",
                  "visible":true,
                  "width":148,
-                 "x":216,
-                 "y":112
+                 "x":184,
+                 "y":8
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -188,7 +188,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":43,
+ "nextobjectid":48,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

@@ -299,7 +299,7 @@ export function draw(dT, level, player, menu) {
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
         ctx.font = `${w2sS(text.pixelsize)}px GameFont`;
-
+        ctx.textBaseline = 'middle';
         ctx.textAlign = "center";
         let center = getScreenVector(text.rectangle.center());
         ctx.fillText(text.text, center.x, center.y);
