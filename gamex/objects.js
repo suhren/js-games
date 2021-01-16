@@ -1,4 +1,4 @@
-import {Vector, Rectangle, Circle, clamp} from './utils.js';
+import * as utils from './utils.js';
 import * as cfg from './config.js';
 
 
@@ -30,13 +30,13 @@ export class DeathBallCircle {
         y = y - this.size;
         let w = 2 * this.size;
         let h = 2 * this.size;
-        return new Rectangle(x, y, w, h);    
+        return new utils.Rectangle(x, y, w, h);    
     }
 
     getCircle() {
         let x = this.center.x + Math.cos(this.angle) * this.radius;  
         let y = this.center.y + Math.sin(this.angle) * this.radius;
-        return new Circle(new Vector(x, y), this.size);
+        return new utils.Circle(new utils.Vector(x, y), this.size);
     }
 
     update(dT) {
@@ -68,12 +68,12 @@ export class DeathBallLinear {
         let y = pos.y - this.size;
         let w = 2 * this.size;
         let h = 2 * this.size;
-        return new Rectangle(x, y, w, h);    
+        return new utils.Rectangle(x, y, w, h);    
     }
     
     getCircle() {
         let pos = this.p1.add(this.delta.multiply(this.getOffset()));
-        return new Circle(pos, this.size);
+        return new utils.Circle(pos, this.size);
     }
 
 
@@ -136,13 +136,13 @@ function coordToTile(x) {
 
 // Establish the Player, aka WHAT IS THE PLAYER!?
 export class Player {
-    constructor(start = new Vector()) {
+    constructor(start = new utils.Vector()) {
         this.start = start;
         this.pos = start;
         this.width = 16;
         this.height = 16;
-        this.vel = new Vector();
-        this.wish = new Vector();
+        this.vel = new utils.Vector();
+        this.wish = new utils.Vector();
         this.maxSpeed = cfg.PLAYER_MAX_SPEED;
         this.acceleration = cfg.PLAYER_ACCELERATION_DEFAULT;
         this.friction = cfg.FRICTION_DEFAULT;
@@ -160,7 +160,7 @@ export class Player {
         // The impact of friction on the player acceleration.
         // There is a minimum level of this impact so that the player
         // can still retain some control when on e.g. ice
-        let frictionAccFactor = Math.max(this.friction, 0.1);
+        let frictionAccFactor = utils.clamp(this.friction / cfg.FRICTION_DEFAULT, 0.1, 1.0);
         
         // The amount of acceleration (retardation) provided by the friction 
         // It is always pointed opposite to the current velocity
@@ -234,6 +234,6 @@ export class Player {
     }
 
     getRectangle() {
-        return new Rectangle(this.pos.x, this.pos.y, this.width, this.height);    
+        return new utils.Rectangle(this.pos.x, this.pos.y, this.width, this.height);    
     }
 }

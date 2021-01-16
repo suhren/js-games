@@ -5,10 +5,10 @@
     },
     "activeFile": "levels/test2.tmx",
     "expandedProjectPaths": [
+        "levels",
         "templates",
-        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
         ".",
-        "levels"
+        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled"
     ],
     "fileStates": {
         "C:/Users/Adam/Desktop/test.tsx": {
@@ -48,7 +48,7 @@
             "scale": 1.718276515151515,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 247.34086525213564,
+                "x": 246.75888674565996,
                 "y": 122.79746486635437
             }
         },
@@ -56,8 +56,8 @@
             "scale": 2.196875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 121.5362731152205,
-                "y": 121.53627311522048
+                "x": -46.42958748221906,
+                "y": 48.022759601706966
             }
         },
         "levels/tileset.tsx": {
@@ -66,7 +66,7 @@
         "tileset.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 5.5
         }
     },
     "frame.defaultDuration": 40,

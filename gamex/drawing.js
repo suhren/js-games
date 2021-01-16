@@ -4,12 +4,21 @@ import * as cfg from "./config.js";
 import * as assets from "./assets.js";
 
 
+// The actual canvas in the document
+var documentCanvas = null;
+var documentCtx = null;
+
+// The buffer canvas which will the copied to the document canvas
 var canvas = null;
 var ctx = null;
 
 
 export function init(document) {
-    canvas = document.getElementById("canvas");
+    documentCanvas = document.getElementById("canvas");
+    documentCtx = documentCanvas.getContext("2d");
+    documentCanvas.width = cfg.WINDOW_WIDTH;
+    documentCanvas.height = cfg.WINDOW_HEIGHT;
+    canvas = document.createElement("canvas");
     ctx = canvas.getContext("2d");
     canvas.width = cfg.WINDOW_WIDTH;
     canvas.height = cfg.WINDOW_HEIGHT;
@@ -317,7 +326,7 @@ export function draw(dT, level, player) {
         ctx.strokeText(txt, 8, 60);
         ctx.fillText(txt, 8, 60);
 
-        txt = "Press 'x' to turn off debug mode";
+        txt = "Press 'x' to toggle debug mode";
         ctx.strokeText(txt, 8, 80);
         ctx.fillText(txt, 8, 80);
 
@@ -336,4 +345,7 @@ export function draw(dT, level, player) {
         ctx.strokeStyle = "red";
         ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
+
+    // Render the buffer canvas onto the document canvas
+    documentCtx.drawImage(canvas, 0, 0);
 }
