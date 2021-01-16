@@ -104,6 +104,11 @@ export function rectCircleInterset(rect, circle) {
 }
 
 
+export function inBounds(px, py, x, y, w, h) {
+    return px > x && px < x + w && py > y && py < y + h; 
+}
+
+
 export function clamp(x, min, max) {
     return Math.min(Math.max(x, min), max);
 }

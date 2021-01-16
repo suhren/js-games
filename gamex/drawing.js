@@ -122,7 +122,7 @@ function strokeGrid(level) {
 }
 
 
-export function draw(dT, level, player) {
+export function draw(dT, level, player, menu) {
 
     var playerPos = player.getRectangle().center();
 
@@ -334,9 +334,9 @@ export function draw(dT, level, player) {
         var rect = getScreenRect(player.getRectangle());
         ctx.lineWidth = 3;
         ctx.strokeStyle = "red";
-        strokeVector(rect.center(), player.vel.max(128));
+        strokeVector(rect.center(), player.vel.max(w2sS(64)));
         ctx.strokeStyle = "blue";
-        strokeVector(rect.center(), player.wish.setLength(50));
+        strokeVector(rect.center(), player.wish.setLength(w2sS(32)));
     }
 
     //Draw bounding boxes
@@ -346,6 +346,38 @@ export function draw(dT, level, player) {
         ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
 
+
+    // Draw menu
+
+    if (menu.active) {
+        ctx.fillStyle = "black";
+        ctx.fillRect(menu.x, menu.y, menu.w, menu.h);
+        
+        for (let i = 0; i < menu.buttons.length; i++) {
+            drawButton(menu.x, menu.y, menu.buttons[i]);
+        }
+    }
+
     // Render the buffer canvas onto the document canvas
     documentCtx.drawImage(canvas, 0, 0);
+}
+
+function drawButton(x0, y0, button) {
+    ctx.fillStyle = "red";
+    let x = x0 + button.x;
+    let y = y0 + button.y;
+    ctx.fillRect(x, y, button.w, button.h);
+
+    if (button.hover) {
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(x, y, button.w, button.h);
+    }
+
+    ctx.font = "bold 15px Courier";
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.textAlign = "center";
+    ctx.strokeText(button.text, x + button.w / 2, y + button.h / 2);
+    ctx.fillText(button.text, x + button.w / 2, y + button.h / 2);
 }
