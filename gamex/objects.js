@@ -246,6 +246,7 @@ export class Player {
         this.height = 16;
         this.vel = new utils.Vector();
         this.wish = new utils.Vector();
+        this.lastWish  = new utils.Vector(0, 1);
         this.maxSpeed = cfg.PLAYER_MAX_SPEED;
         this.acceleration = cfg.PLAYER_ACCELERATION_DEFAULT;
         this.friction = cfg.FRICTION_DEFAULT;
@@ -258,6 +259,8 @@ export class Player {
         this.isDashingTimer = 0;
         this.isDashAvailable = true;     
         this.isDashing = false;
+        this.frameIndex = 0;
+        this.frameTimer = 0;
         
         this.dashParticleEmitter = new ParticleEmitter(
             this.pos,
@@ -280,7 +283,7 @@ export class Player {
         // The impact of friction on the player acceleration.
         // There is a minimum level of this impact so that the player
         // can still retain some control when on e.g. ice
-        let frictionAccFactor = utils.clamp(this.friction / cfg.FRICTION_DEFAULT, 0.1, 1.0);
+        let frictionAccFactor = utils.clamp(this.friction / cfg.FRICTION_DEFAULT, cfg.PLAYER_FRICTION_ACC_FACTOR_MIN, 1.0);
         
         // The amount of acceleration (retardation) provided by the friction 
         // It is always pointed opposite to the current velocity
@@ -326,6 +329,22 @@ export class Player {
         this.row0 = Math.max(this.row0, 0);
         this.col1 = Math.min(this.col1, level.ncols);
         this.row1 = Math.min(this.row1, level.nrows);
+        
+        if (this.wish.length() > 0) {
+
+            if (this.wish.x == this.lastWish.x && this.wish.y == this.lastWish.y) {
+                this.frameTimer += dT;
+                if (this.frameTimer >= cfg.PLAYER_FRAME_DURATION) {
+                    this.frameIndex = (this.frameIndex + 1) % 4;
+                    this.frameTimer = 0;
+                 }
+            }
+            this.lastWish = this.wish.copy();
+        }
+        else {
+            this.frameTimer = 0;
+            this.frameIndex = 0;
+        }
 
         // Check friciton: Always pick the highest friction
         let friction = 0.0;
@@ -363,7 +382,7 @@ export class Player {
         if (this.isDashAvailable) {
             let dir = this.wish.normalize();    
             if (dir.length() > 0) {
-                this.vel = this.vel.add(dir.multiply(256));
+                this.vel = this.vel.add(dir.multiply(cfg.PLAYER_DASH_SPEED));
                 this.isDashAvailable = false;
                 this.isDashing = true;
             }

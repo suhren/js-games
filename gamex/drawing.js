@@ -141,7 +141,6 @@ function drawParticles(particles) {
     ctx.globalAlpha = 1.0;
 }
 
-
 export function draw(dT, level, player, menu) {
 
     var playerPos = player.getRectangle().center();
@@ -260,6 +259,37 @@ export function draw(dT, level, player, menu) {
     drawParticles(player.dashParticleEmitter.particles);
     var rect = getScreenRect(player.getRectangle());
     ctx.drawImage(assets.SPRITE_PLAYER, rect.x, rect.y, rect.w, rect.h);
+
+    let dir = player.lastWish;
+    let dirIdx = 0;
+    
+    if (dir.x == 1) {
+        // Facing right takes precedent over up/down
+        dirIdx = 3;
+    }
+    else if (dir.x == -1) {
+        // Facing left  takes precedent over up/down
+        dirIdx = 2;
+    }
+    else if (dir.y == 1) {
+        // Facing down
+        dirIdx = 1;
+    }
+    else if (dir.y == -1) {
+        // Facing up
+        dirIdx = 0;
+    }
+
+    ctx.drawImage(assets.SPRITESHEET_PLAYER, 16 * player.frameIndex, dirIdx * 16, 16, 16, rect.x, rect.y, rect.w, rect.h);
+
+
+
+    if (player.isDashing) {
+        ctx.fillStyle = "#FFFFFF";
+        ctx.globalAlpha = 0.5;
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);    
+        ctx.globalAlpha = 1.0;
+    }
 
     // Draw death ball circles outline
     for (let i = 0; i < level.deathBalls.length; i++) {

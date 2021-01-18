@@ -12,6 +12,7 @@ function getSprite(path) {
 export var TILES = new Map();
 
 export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
+export const SPRITESHEET_PLAYER = getSprite("assets/images/player.png");
 export const SPRITE_BALL = getSprite("assets/images/DeathBot.png");
 
 const LEVEL_FILES = [
@@ -163,7 +164,6 @@ export class Tile {
         this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
     }
 }
-
 
 export function loadAllLevels() {
     
