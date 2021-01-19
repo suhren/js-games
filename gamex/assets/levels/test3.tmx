@@ -3,6 +3,10 @@
  <editorsettings>
   <export target="test3.json" format="json"/>
  </editorsettings>
+ <properties>
+  <property name="description" value="This is Level 3"/>
+  <property name="name" value="Level 3"/>
+ </properties>
  <tileset firstgid="1" source="../tileset.tsx"/>
  <layer id="1" name="Tile Layer 1" width="32" height="16">
   <data encoding="csv">

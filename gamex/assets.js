@@ -79,6 +79,9 @@ function levelFromJson(json, path) {
     let objectLayer = getProperty(json["layers"], "type", "objectgroup");
     let objects = objectLayer["objects"];
 
+    let name = getProperty(json["properties"], "name", "name")["value"];
+    let desciption = getProperty(json["properties"], "name", "description")["value"];
+
     let spawn = null;
     let checkpoints = [];
     let balls = [];
@@ -150,7 +153,7 @@ function levelFromJson(json, path) {
                 break;
         }
     }
-    let level = new go.Level(path, spawn, balls, checkpoints, goal, texts, tileMap);
+    let level = new go.Level(name, desciption, path, spawn, balls, checkpoints, goal, texts, tileMap);
     return level;
 }
 

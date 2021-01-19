@@ -384,21 +384,25 @@ export function draw(dT, level, player, menu) {
         ctx.strokeStyle = "black";
         ctx.textAlign = "left";
         
-        let txt = level.name;
+        let txt = level.path;
         ctx.strokeText(txt, 8, 20);
         ctx.fillText(txt, 8, 20);
-        
-        txt = `player: ${player.pos.x.toFixed(2)} ${player.pos.y.toFixed(2)} ${player.vel.x.toFixed(2)} ${player.vel.y.toFixed(2)} ${player.vel.length().toFixed(2)} ${player.friction.toFixed(2)} ${player.dashCooldownTimer.toFixed(2)} ${player.isDashing}`;
+
+        txt = level.name + ": " + level.desciption;
         ctx.strokeText(txt, 8, 40);
         ctx.fillText(txt, 8, 40);
-
-        txt = `FPS: ${(1/dT).toFixed(2)}`;
+        
+        txt = `player: ${player.pos.x.toFixed(2)} ${player.pos.y.toFixed(2)} ${player.vel.x.toFixed(2)} ${player.vel.y.toFixed(2)} ${player.vel.length().toFixed(2)} ${player.friction.toFixed(2)} ${player.dashCooldownTimer.toFixed(2)} ${player.isDashing}`;
         ctx.strokeText(txt, 8, 60);
         ctx.fillText(txt, 8, 60);
 
-        txt = "Press 'x' to toggle debug mode";
+        txt = `FPS: ${(1/dT).toFixed(2)}`;
         ctx.strokeText(txt, 8, 80);
         ctx.fillText(txt, 8, 80);
+
+        txt = "Press 'x' to toggle debug mode";
+        ctx.strokeText(txt, 8, 100);
+        ctx.fillText(txt, 8, 100);
 
         // Draw movement vectors
         var rect = getScreenRect(player.getRectangle());

@@ -118,6 +118,17 @@
  "nextlayerid":3,
  "nextobjectid":7,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"description",
+         "type":"string",
+         "value":"This is Level 2"
+        }, 
+        {
+         "name":"name",
+         "type":"string",
+         "value":"Level 2"
+        }],
  "renderorder":"right-down",
  "tiledversion":"1.4.3",
  "tileheight":16,

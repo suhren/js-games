@@ -217,8 +217,10 @@ export class Goal {
 }
 
 export class Level {
-    constructor(name, playerStart, deathBalls, checkpoints, goal, texts, tileMap) {
+    constructor(name, desciption, path, playerStart, deathBalls, checkpoints, goal, texts, tileMap) {
         this.name = name;
+        this.desciption = desciption;
+        this.path = path;
         this.playerStart = playerStart;
         this.deathBalls = deathBalls;
         this.checkpoints = checkpoints;
@@ -407,4 +409,10 @@ export class Player {
     getRectangle() {
         return new utils.Rectangle(this.pos.x, this.pos.y, this.width, this.height);    
     }
+
+    getCollisionRectangle() {
+        return new utils.Rectangle(this.pos.x + 1, this.pos.y + 1, this.width - 2, this.height - 2);    
+    }
+
+       
 }

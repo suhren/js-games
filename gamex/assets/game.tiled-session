@@ -3,11 +3,11 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "levels/test1.tmx",
+    "activeFile": "levels/test4.tmx",
     "expandedProjectPaths": [
-        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
-        "levels",
         "templates",
+        "levels",
+        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
         "."
     ],
     "fileStates": {
@@ -45,35 +45,35 @@
             }
         },
         "levels/test1.tmx": {
-            "scale": 5.5,
+            "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 226.2727272727273,
-                "y": 31.45454545454546
+                "x": 292.25,
+                "y": 108
             }
         },
         "levels/test2.tmx": {
             "scale": 2.196875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 127.68136557610242,
-                "y": 128.13655761024182
+                "x": 127.68136557610241,
+                "y": 128.3641536273115
             }
         },
         "levels/test3.tmx": {
             "scale": 1.8532196969696968,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 255.50127746550845,
-                "y": 128.15533980582524
+                "x": 255.5012774655084,
+                "y": 128.42514052120592
             }
         },
         "levels/test4.tmx": {
             "scale": 4.472916666666666,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 95.79878900791803,
-                "y": 95.79878900791803
+                "x": 88.19748486259897,
+                "y": 96.13414066138799
             }
         },
         "levels/tileset.tsx": {
@@ -109,13 +109,13 @@
         "levels/test4.tmx"
     ],
     "project": "game.tiled-project",
-    "property.type": "float",
+    "property.type": "string",
     "recentFiles": [
-        "levels/test4.tmx",
-        "levels/test3.tmx",
-        "tileset.tsx",
-        "levels/test2.tmx",
         "levels/test1.tmx",
+        "levels/test2.tmx",
+        "tileset.tsx",
+        "levels/test3.tmx",
+        "levels/test4.tmx",
         "test3.json",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/MyTileset.tsx",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test2.tmx",

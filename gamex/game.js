@@ -269,7 +269,7 @@ function update(dT) {
     for (let i = 0; i < level.deathBalls.length; i++) {
         let ball = level.deathBalls[i];
         ball.update(dT);
-        if (rectCircleInterset(player.getRectangle(), ball.getCircle())) {
+        if (rectCircleInterset(player.getCollisionRectangle(), ball.getCircle())) {
             player.respawn();
         }
     }
