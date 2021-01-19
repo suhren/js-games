@@ -131,7 +131,19 @@ function buttonResume() {
 
 
 function restart() {
-    loadLevel(assets.LEVELS[levelIndex]);
+    loadLevel(assets.loadLevelFromIndex(levelIndex));
+    menu.active = false;
+}
+
+function nextLevel() {
+    levelIndex = (levelIndex + 1) % assets.NUM_LEVELS;
+    loadLevel(assets.loadLevelFromIndex(levelIndex));
+    menu.active = false;
+}
+
+function prevLevel() {
+    levelIndex = (levelIndex > 0) ? levelIndex - 1 : assets.NUM_LEVELS - 1;
+    loadLevel(assets.loadLevelFromIndex(levelIndex));
     menu.active = false;
 }
 
@@ -155,18 +167,6 @@ function toggleMusic() {
 }
 
 
-function nextLevel() {
-    levelIndex = (levelIndex + 1) % assets.LEVELS.length;
-    loadLevel(assets.LEVELS[levelIndex]);
-    menu.active = false;
-}
-
-function prevLevel() {
-    levelIndex = (levelIndex > 0) ? levelIndex - 1 : assets.LEVELS.length - 1;
-    loadLevel(assets.LEVELS[levelIndex]);
-    menu.active = false;
-}
-
 function init() {
     drawing.init(document);
     menu = new inter.Menu();
@@ -187,9 +187,10 @@ function init() {
 
     menu.init(buttons);
 
-    assets.loadAllLevels();
+    assets.init();
+
     levelIndex = 0;
-    loadLevel(assets.LEVELS[levelIndex]);
+    loadLevel(assets.loadLevelFromIndex(levelIndex));
     // Set up to call the function "gameLoop" 60 times/second
     setInterval(gameLoop, 1000 / cfg.FPS);
 }
@@ -224,6 +225,8 @@ function loadLevel(lvl) {
 
 function update(dT) {
     
+    level.update(dT);
+
     // Update player
     player.update(level, dT);
     

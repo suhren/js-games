@@ -421,6 +421,16 @@ export function draw(dT, level, player, menu) {
     }
 
 
+    if (level.showCard) {
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.font = "32px GameFont";
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = "center";
+        ctx.fillText(level.name, canvas.width / 2, canvas.height / 2 - 16);
+        ctx.fillText(level.desciption, canvas.width / 2, canvas.height / 2 + 16);
+    }
+
     // Render the buffer canvas onto the document canvas
     documentCtx.drawImage(canvas, 0, 0);
 }

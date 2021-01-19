@@ -21,9 +21,10 @@ const LEVEL_FILES = [
     "./assets/levels/test3.json",
     "./assets/levels/test4.json"
 ];
-
+export const NUM_LEVELS = LEVEL_FILES.length;
 var LEVEL_JSONS = new Map();
 var TILESET_JSON = null;
+
 
 export var LEVELS = [];
 
@@ -168,7 +169,15 @@ export class Tile {
     }
 }
 
-export function loadAllLevels() {
+
+export function loadLevelFromIndex(index) {
+    let path = LEVEL_FILES[index];
+    let json = LEVEL_JSONS.get(path);
+    return levelFromJson(json, path);
+}
+
+
+export function init() {
     
     // Initialize the tileset object
     TILESET_JSON["tiles"].forEach(tile => {
@@ -182,6 +191,6 @@ export function loadAllLevels() {
     })
     
     // Sort level jsons by their name
-    LEVEL_JSONS = new Map([...LEVEL_JSONS.entries()].sort());
-    LEVEL_JSONS.forEach((json, path) => LEVELS.push(levelFromJson(json, path)));
+    // LEVEL_JSONS = new Map([...LEVEL_JSONS.entries()].sort());
+    //LEVEL_JSONS.forEach((json, path) => LEVELS.push(levelFromJson(json, path)));
 }

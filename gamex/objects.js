@@ -230,7 +230,17 @@ export class Level {
         this.nrows = this.tileMap.length;
         this.ncols = this.tileMap[0].length;        
         this.width = this.ncols * cfg.TILE_SIZE;
-        this.height = this.nrows * cfg.TILE_SIZE;            
+        this.height = this.nrows * cfg.TILE_SIZE;
+        this.levelTimer = 0;
+        this.showCard = true;
+        this.cardDuration = 2;            
+    }
+
+    update(dT) {
+        this.levelTimer += dT;
+        if (this.levelTimer >= this.cardDuration) {
+            this.showCard = false;
+        }
     }
 }
 
