@@ -250,15 +250,41 @@ export function draw(dT, level, player, menu) {
         ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
         ctx.globalAlpha = 1;
     }
-    else {
+    else if (level.goal.unlocked) {
         ctx.strokeStyle = "#228B22";
         ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
 
-    //Draw player
+    
+
+    // Draw coins
+    for (let i = 0; i < level.coins.length; i++) {
+        let coin = level.coins[i];
+        if (!coin.collected) {
+            let rect = getScreenRect(coin.rectangle);
+            ctx.drawImage(assets.SPRITESHEET_COIN,
+                          16 * coin.frameIndex,
+                          0,
+                          16,
+                          16,
+                          rect.x, rect.y, rect.w, rect.h);
+            
+            
+            if (drawColliders) {
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                let circle = getScreenCircle(coin.circle);
+                ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
+                ctx.strokeStyle = "red";
+                ctx.stroke();
+            }
+        }
+    }
+
+
+    // Draw player
     drawParticles(player.dashParticleEmitter.particles);
     var rect = getScreenRect(player.getRectangle());
-    ctx.drawImage(assets.SPRITE_PLAYER, rect.x, rect.y, rect.w, rect.h);
 
     let dir = player.lastWish;
     let dirIdx = 0;
@@ -353,7 +379,6 @@ export function draw(dT, level, player, menu) {
         ctx.fillText(text.text, center.x, center.y);
     }
     
-
     // Draw player dash cooldown
     let t = player.isDashAvailable ? 1 : player.dashCooldownTimer / cfg.PLAYER_DASH_COOLDOWN;
     ctx.fillStyle = "#555555";
@@ -420,15 +445,17 @@ export function draw(dT, level, player, menu) {
         ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
 
-
+    // Draw level name and description card
     if (level.showCard) {
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "black";
         ctx.font = "32px GameFont";
         ctx.textBaseline = 'middle';
         ctx.textAlign = "center";
+        ctx.fillStyle = "black";
         ctx.fillText(level.name, canvas.width / 2, canvas.height / 2 - 16);
         ctx.fillText(level.desciption, canvas.width / 2, canvas.height / 2 + 16);
+        ctx.fillStyle = "white";
+        ctx.fillText(level.name, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
+        ctx.fillText(level.desciption, canvas.width / 2 - 4, canvas.height / 2 + 16 - 4);
     }
 
     // Render the buffer canvas onto the document canvas

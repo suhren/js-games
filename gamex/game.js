@@ -247,11 +247,12 @@ function update(dT) {
         }
     }
     
+    let pRect = player.getRectangle();
 
     // Check checkpoints
     for (let i = 0; i < level.checkpoints.length; i++) {
         let cp = level.checkpoints[i];
-        if (rectIntersect(player.getRectangle(), cp.getRectangle())) {
+        if (rectIntersect(pRect, cp.getRectangle())) {
             if (!cp.active) {
                 cp.active = true;
                 player.activeCheckpoint = cp;
@@ -262,12 +263,26 @@ function update(dT) {
         }
     }
 
-    if (!level.goal.activated && rectIntersect(player.getRectangle(), level.goal.getRectangle())) {
+    if (level.goal.unlocked &&
+        !level.goal.activated &&
+        rectIntersect(pRect, level.goal.getRectangle())) {
+        
         level.goal.activated = true;
         setTimeout(nextLevel, 1000);
-        
     }
     
+    // Update coins
+    for (let i = 0; i < level.coins.length; i++) {
+        let coin = level.coins[i];
+        coin.update(dT);
+        if (!coin.collected && rectCircleInterset(pRect, coin.circle)) {
+            level.coins.splice(i, 1);
+            if (level.coins.length == 0) {
+                level.goal.unlocked = true;
+            } 
+        }
+    }
+
     // Check death ball collisions
     for (let i = 0; i < level.deathBalls.length; i++) {
         let ball = level.deathBalls[i];

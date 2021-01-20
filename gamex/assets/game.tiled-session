@@ -3,12 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "levels/test4.tmx",
+    "activeFile": "levels/test1.tmx",
     "expandedProjectPaths": [
-        "templates",
+        ".",
         "levels",
-        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
-        "."
+        "templates",
+        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled"
     ],
     "fileStates": {
         "C:/Users/Adam/Desktop/test.tsx": {
@@ -45,11 +45,11 @@
             }
         },
         "levels/test1.tmx": {
-            "scale": 2,
-            "selectedLayer": 1,
+            "scale": 3,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 292.25,
-                "y": 108
+                "x": 259.5,
+                "y": 125.66666666666664
             }
         },
         "levels/test2.tmx": {
@@ -57,12 +57,12 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 127.68136557610241,
-                "y": 128.3641536273115
+                "y": 127.90896159317212
             }
         },
         "levels/test3.tmx": {
             "scale": 1.8532196969696968,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
                 "x": 255.5012774655084,
                 "y": 128.42514052120592
@@ -72,8 +72,16 @@
             "scale": 4.472916666666666,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 88.19748486259897,
-                "y": 96.13414066138799
+                "x": 95.79878900791805,
+                "y": 95.91057289240803
+            }
+        },
+        "levels/test5.tmx": {
+            "scale": 1.67734375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 256.059618071728,
+                "y": 256.35770843036795
             }
         },
         "levels/tileset.tsx": {
@@ -86,6 +94,10 @@
                 "x": 256.28095624373714,
                 "y": 128.0183232332872
             }
+        },
+        "tileset.json": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "tileset.tsx": {
             "dynamicWrapping": true,
@@ -111,11 +123,12 @@
     "project": "game.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "levels/test1.tmx",
-        "levels/test2.tmx",
+        "tileset.json",
         "tileset.tsx",
-        "levels/test3.tmx",
         "levels/test4.tmx",
+        "levels/test3.tmx",
+        "levels/test2.tmx",
+        "levels/test1.tmx",
         "test3.json",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/MyTileset.tsx",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test2.tmx",

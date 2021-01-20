@@ -38,9 +38,11 @@ export class Particle {
     }
 }
 
+
 function random(min, max) {  
     return Math.random() * (max - min) + min; 
 }  
+
 
 export class ParticleEmitter {
     
@@ -100,8 +102,6 @@ export class ParticleEmitter {
         );
     }
 }
-
-
 
 
 export class Text {
@@ -192,6 +192,29 @@ export class DeathBallLinear {
 }
 
 
+export class Coin {
+
+    constructor(rectangle){
+        this.rectangle = rectangle;
+        this.circle = new utils.Circle(rectangle.center(), rectangle.w / 2);
+        this.collected = false;
+        this.frameIndex = 0;
+        this.frameTimer = 0;
+    }
+
+    update(dT) {
+        if (!this.collected) {
+            this.frameTimer += dT;
+            if (this.frameTimer >= cfg.COIN_FRAME_DURATION) {
+                this.frameIndex = (this.frameIndex + 1) % 4;
+                this.frameTimer = 0;
+            }
+        }
+    }
+}
+
+
+
 export class Checkpoint {
 
     constructor(rectangle){
@@ -209,6 +232,7 @@ export class Goal {
     constructor(rectangle) {
         this.rectangle = rectangle;
         this.activated = false;
+        this.unlocked = true;
     }
 
     getRectangle() {
@@ -217,14 +241,16 @@ export class Goal {
 }
 
 export class Level {
-    constructor(name, desciption, path, playerStart, deathBalls, checkpoints, goal, texts, tileMap) {
+    constructor(name, desciption, path, playerStart, deathBalls, checkpoints, coins, goal, texts, tileMap) {
         this.name = name;
         this.desciption = desciption;
         this.path = path;
         this.playerStart = playerStart;
         this.deathBalls = deathBalls;
         this.checkpoints = checkpoints;
+        this.coins = coins;
         this.goal = goal;
+        this.goal.unlocked = (this.coins.length == 0);
         this.texts = texts;
         this.tileMap = tileMap;
         this.nrows = this.tileMap.length;

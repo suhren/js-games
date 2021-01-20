@@ -13,13 +13,15 @@ export var TILES = new Map();
 
 export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
 export const SPRITESHEET_PLAYER = getSprite("assets/images/player.png");
+export const SPRITESHEET_COIN = getSprite("assets/images/coin.png");
 export const SPRITE_BALL = getSprite("assets/images/DeathBot.png");
 
 const LEVEL_FILES = [
     "./assets/levels/test1.json",
     "./assets/levels/test2.json",
     "./assets/levels/test3.json",
-    "./assets/levels/test4.json"
+    "./assets/levels/test4.json",
+    "./assets/levels/test5.json"
 ];
 export const NUM_LEVELS = LEVEL_FILES.length;
 var LEVEL_JSONS = new Map();
@@ -62,27 +64,57 @@ function tiledRectangle(obj) {
 function levelFromJson(json, path) {
 
     // Load the tile data
-    let tileLayer = getProperty(json["layers"], "type", "tilelayer");
-    let data = tileLayer['data'];
-    let ncols = tileLayer['width'];
-    let nrows = tileLayer['height'];
+    let tileLayer = getProperty(json["layers"], "name", "Tile Layer 1");
+    let data = tileLayer["data"];
+    let ncols = tileLayer["width"];
+    let nrows = tileLayer["height"];
 
-    let tileMap = Array(nrows).fill(null).map(()=>Array(ncols).fill(null))
+    let tileMap = Array(nrows).fill(null).map(()=>Array(ncols).fill(null));
     
 
     for (let i = 0; i < data.length; i++) {
         let row = Math.floor(i / ncols);
         let col = i % ncols;
-        tileMap[row][col] = TILES.get(data[i]);
+        let tile = TILES.get(data[i]);
+        tileMap[row][col] = tile;
     }
+
+    // Load the tile object data
+    let tileObjectLayer = getProperty(json["layers"], "name", "Tile Layer 2");
+    
+    let coins = [];
+
+    if (tileObjectLayer != null) {
+
+        data = tileObjectLayer["data"];
+        for (let i = 0; i < data.length; i++) {
+            
+            let row = Math.floor(i / ncols);
+            let col = i % ncols;
+
+            let tile = TILES.get(data[i]);
+            if (tile != null) {
+                if (tile.object == "coin") {
+                    var rect = new utils.Rectangle(col * cfg.TILE_SIZE, row * cfg.TILE_SIZE, cfg.TILE_SIZE, cfg.TILE_SIZE);
+                    coins.push(new go.Coin(rect));
+                }
+            }
+        }
+    } 
+
 
     // Load the object data
     let objectLayer = getProperty(json["layers"], "type", "objectgroup");
     let objects = objectLayer["objects"];
 
-    let name = getProperty(json["properties"], "name", "name")["value"];
-    let desciption = getProperty(json["properties"], "name", "description")["value"];
+    let name = null;
+    let desciption = null;
 
+    if (json["properties"] != null) {
+        name = getProperty(json["properties"], "name", "name")["value"];
+        desciption = getProperty(json["properties"], "name", "description")["value"];
+    }
+    
     let spawn = null;
     let checkpoints = [];
     let balls = [];
@@ -154,18 +186,20 @@ function levelFromJson(json, path) {
                 break;
         }
     }
-    let level = new go.Level(name, desciption, path, spawn, balls, checkpoints, goal, texts, tileMap);
+
+    let level = new go.Level(name, desciption, path, spawn, balls, checkpoints, coins, goal, texts, tileMap);
     return level;
 }
 
 
 export class Tile {
-    constructor(image, imagePath, id, collision=false, friction=null){
+    constructor(image, imagePath, id, collision=false, friction=null, object=null){
         this.image = image;
         this.imagePath = imagePath;
         this.id = id;
         this.collision = collision;
         this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
+        this.object = object;
     }
 }
 
@@ -187,7 +221,8 @@ export function init() {
         let properties = tile["properties"];
         let collision = getProperty(properties, "name", "collision")["value"];
         let friction = getProperty(properties, "name", "friction")["value"];
-        TILES.set(id + 1, new Tile(image, imagePath, id, collision, friction));
+        let object = getProperty(properties, "name", "object")["value"];
+        TILES.set(id + 1, new Tile(image, imagePath, id, collision, friction, object));
     })
     
     // Sort level jsons by their name

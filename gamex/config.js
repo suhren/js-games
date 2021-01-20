@@ -10,6 +10,8 @@ export const PLAYER_DASH_SPEED = 512;
 export const PLAYER_FRICTION_ACC_FACTOR_MIN = 0.05;
 export const PLAYER_FRAME_RATE = 8;
 export const PLAYER_FRAME_DURATION = 1 / PLAYER_FRAME_RATE;
+export const COIN_FRAME_RATE = 8;
+export const COIN_FRAME_DURATION = 1 / COIN_FRAME_RATE;
 
 export const WINDOW_TILE_SIZE = 48;
 export const TILE_SIZE = 16;

@@ -8,7 +8,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":6,
+ "tilecount":8,
  "tiledversion":"1.4.3",
  "tileheight":16,
  "tiles":[
@@ -27,6 +27,11 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":""
                 }]
         }, 
         {
@@ -44,6 +49,11 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":""
                 }]
         }, 
         {
@@ -61,6 +71,11 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":""
                 }]
         }, 
         {
@@ -78,6 +93,11 @@
                  "name":"friction",
                  "type":"float",
                  "value":2
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":""
                 }]
         }, 
         {
@@ -95,6 +115,11 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":""
                 }]
         }, 
         {
@@ -112,6 +137,55 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":""
+                }]
+        }, 
+        {
+         "id":6,
+         "image":"images\/coin_single.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "properties":[
+                {
+                 "name":"collision",
+                 "type":"bool",
+                 "value":false
+                }, 
+                {
+                 "name":"friction",
+                 "type":"float",
+                 "value":-1
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":"coin"
+                }]
+        }, 
+        {
+         "id":7,
+         "image":"images\/Stone_brick.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "properties":[
+                {
+                 "name":"collision",
+                 "type":"bool",
+                 "value":true
+                }, 
+                {
+                 "name":"friction",
+                 "type":"float",
+                 "value":-1
+                }, 
+                {
+                 "name":"object",
+                 "type":"string",
+                 "value":""
                 }]
         }],
  "tilewidth":16,
