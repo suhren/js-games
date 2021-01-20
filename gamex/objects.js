@@ -251,6 +251,7 @@ export class Level {
         this.coins = coins;
         this.goal = goal;
         this.goal.unlocked = (this.coins.length == 0);
+        this.num_coins = this.coins.length;
         this.texts = texts;
         this.tileMap = tileMap;
         this.nrows = this.tileMap.length;

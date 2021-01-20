@@ -141,6 +141,21 @@ function drawParticles(particles) {
     ctx.globalAlpha = 1.0;
 }
 
+
+function drawText(text, x, y, size, textBaseline="middle", textAlign="center", dropShadow=true) {
+    ctx.font = `${size}px GameFont`;
+    ctx.textBaseline = textBaseline;
+    ctx.textAlign = textAlign;
+    
+    if (dropShadow) {
+        ctx.fillStyle = "black";
+        ctx.fillText(text, x + 4, y + 4);
+    }
+    ctx.fillStyle = "white";
+    ctx.fillText(text, x, y);
+}
+
+
 export function draw(dT, level, player, menu) {
 
     var playerPos = player.getRectangle().center();
@@ -281,7 +296,6 @@ export function draw(dT, level, player, menu) {
         }
     }
 
-
     // Draw player
     drawParticles(player.dashParticleEmitter.particles);
     var rect = getScreenRect(player.getRectangle());
@@ -307,7 +321,6 @@ export function draw(dT, level, player, menu) {
     }
 
     ctx.drawImage(assets.SPRITESHEET_PLAYER, 16 * player.frameIndex, dirIdx * 16, 16, 16, rect.x, rect.y, rect.w, rect.h);
-
 
 
     if (player.isDashing) {
@@ -370,13 +383,8 @@ export function draw(dT, level, player, menu) {
     //Draw texts
     for (let i = 0; i < level.texts.length; i++) {
         let text = level.texts[i];
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "black";
-        ctx.font = `${w2sS(text.pixelsize)}px GameFont`;
-        ctx.textBaseline = 'middle';
-        ctx.textAlign = "center";
         let center = getScreenVector(text.rectangle.center());
-        ctx.fillText(text.text, center.x, center.y);
+        drawText(text.text, center.x, center.y, w2sS(text.pixelsize), "middle", "center", true);
     }
     
     // Draw player dash cooldown
@@ -391,6 +399,11 @@ export function draw(dT, level, player, menu) {
     ctx.strokeStyle = "#000000";
     ctx.strokeRect(16, 16, 150, 20);
     
+    // Draw coins
+    if (level.num_coins > 0) {
+        drawText(`Coins: ${level.num_coins - level.coins.length}/${level.num_coins}`, 16, 60, 20, "middle", "left", true);
+    }
+
     // Draw menu
     if (menu.active) {
         ctx.fillStyle = "black";
@@ -450,12 +463,18 @@ export function draw(dT, level, player, menu) {
         ctx.font = "32px GameFont";
         ctx.textBaseline = 'middle';
         ctx.textAlign = "center";
-        ctx.fillStyle = "black";
-        ctx.fillText(level.name, canvas.width / 2, canvas.height / 2 - 16);
-        ctx.fillText(level.desciption, canvas.width / 2, canvas.height / 2 + 16);
-        ctx.fillStyle = "white";
-        ctx.fillText(level.name, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
-        ctx.fillText(level.desciption, canvas.width / 2 - 4, canvas.height / 2 + 16 - 4);
+        if (level.name != null) {
+            ctx.fillStyle = "black";
+            ctx.fillText(level.name, canvas.width / 2, canvas.height / 2 - 16);
+            ctx.fillStyle = "white";
+            ctx.fillText(level.name, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
+        }
+        if (level.desciption != null) {
+            ctx.fillStyle = "black";
+            ctx.fillText(level.desciption, canvas.width / 2, canvas.height / 2 + 16);
+            ctx.fillStyle = "white";
+            ctx.fillText(level.desciption, canvas.width / 2 - 4, canvas.height / 2 + 16 - 4);
+        }
     }
 
     // Render the buffer canvas onto the document canvas
