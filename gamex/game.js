@@ -186,10 +186,14 @@ function init() {
     ];
 
     menu.init(buttons);
+    // Wait for level JSONs to load (avoid null references)
+    setTimeout(start, 100);
+}
 
-    assets.init();
 
+function start() {
     levelIndex = 0;
+    assets.init();
     loadLevel(assets.loadLevelFromIndex(levelIndex));
     // Set up to call the function "gameLoop" 60 times/second
     setInterval(gameLoop, 1000 / cfg.FPS);

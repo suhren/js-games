@@ -212,7 +212,6 @@ export function loadLevelFromIndex(index) {
 
 
 export function init() {
-    
     // Initialize the tileset object
     TILESET_JSON["tiles"].forEach(tile => {
         let id = tile["id"];
