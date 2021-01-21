@@ -192,6 +192,29 @@ export class DeathBallLinear {
 }
 
 
+export class Key {
+
+    constructor(rectangle, color, image) {
+        this.rectangle = rectangle;
+        this.color = color;
+        this.image = image;
+        this.collected = false;
+    }
+}
+
+
+export class Door {
+
+    constructor(rectangle, color, image) {
+        this.rectangle = rectangle;
+        this.color = color;
+        this.image = image;
+        this.open = false;
+    }
+}
+
+
+
 export class Coin {
 
     constructor(rectangle) {
@@ -241,7 +264,7 @@ export class Goal {
 }
 
 export class Level {
-    constructor(name, desciption, path, playerStart, deathBalls, checkpoints, coins, goal, texts, tileMap) {
+    constructor(name, desciption, path, playerStart, deathBalls, checkpoints, coins, keys, doors, goal, texts, tileMap) {
         this.name = name;
         this.desciption = desciption;
         this.path = path;
@@ -249,6 +272,8 @@ export class Level {
         this.deathBalls = deathBalls;
         this.checkpoints = checkpoints;
         this.coins = coins;
+        this.keys = keys;
+        this.doors = doors;
         this.goal = goal;
         this.goal.unlocked = (this.coins.length == 0);
         this.num_coins = this.coins.length;
@@ -281,13 +306,15 @@ export class Player {
     constructor(start = new utils.Vector()) {
         this.start = start;
         this.pos = start;
-        this.width = 16;
-        this.height = 16;
+        this.width = 15;
+        this.height = 15;
         this.vel = new utils.Vector();
         this.wish = new utils.Vector();
         this.lastWish  = new utils.Vector(0, 1);
         this.maxSpeed = cfg.PLAYER_MAX_SPEED;
+        this.maxSpeedSlow = cfg.PLAYER_MAX_SPEED_SLOW;
         this.acceleration = cfg.PLAYER_ACCELERATION_DEFAULT;
+        this.accelerationSlow = cfg.PLAYER_ACCELERATION_SLOW;
         this.friction = cfg.FRICTION_DEFAULT;
         this.activeCheckpoint = null;    
         this.col0 = 0;
@@ -300,6 +327,8 @@ export class Player {
         this.isDashing = false;
         this.frameIndex = 0;
         this.frameTimer = 0;
+        this.keys = [];
+        this.sneaking = false;
         
         this.dashParticleEmitter = new ParticleEmitter(
             this.pos,
@@ -330,9 +359,12 @@ export class Player {
         // The friction can not reduce the velocity below zero
         let frictionVel = frictionAcc.multiply(dT).max(speed);
 
-        let movementAcc = this.wish.normalize().multiply(this.acceleration * frictionAccFactor);
+        let acc = this.sneaking ? this.accelerationSlow : this.acceleration;
+        let movementAcc = this.wish.normalize().multiply(acc * frictionAccFactor);
         let movementVel = movementAcc.multiply(dT);
-        movementVel = movementVel.max(Math.max(this.maxSpeed - speed, 0));
+
+        let maxv = this.sneaking ? this.maxSpeedSlow : this.maxSpeed;
+        movementVel = movementVel.max(Math.max(maxv - speed, 0));
         
         this.vel = this.vel.add(movementVel.add(frictionVel));
         // this.vel = this.vel.max(this.maxSpeed);

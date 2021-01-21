@@ -8,7 +8,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":14,
+ "tilecount":20,
  "tiledversion":"1.4.3",
  "tileheight":16,
  "tiles":[
@@ -266,6 +266,42 @@
         {
          "id":15,
          "image":"images\/door_yellow.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":16,
+         "image":"images\/key_blue.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":17,
+         "image":"images\/key_green.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":18,
+         "image":"images\/key_red.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":19,
+         "image":"images\/door_blue.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":20,
+         "image":"images\/door_green.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":21,
+         "image":"images\/door_red.png",
          "imageheight":16,
          "imagewidth":16
         }],

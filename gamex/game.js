@@ -67,6 +67,10 @@ function keyDown(e) {
         }
         spaceDown = true;
     }
+    // shift key (16)
+    if (e.keyCode == 16) {
+        player.sneaking = true;
+    }
 }
 
 function keyUp(e) {
@@ -121,6 +125,10 @@ function keyUp(e) {
     // space key (32)
     if (e.keyCode == 32) {
         spaceDown = false;
+    }
+    // shift key (16)
+    if (e.keyCode == 16) {
+        player.sneaking = false;
     }
 }
 
@@ -224,6 +232,7 @@ function loadLevel(lvl) {
     player.pos.x -= player.width / 2;
     player.pos.y -= player.height / 2;
     player.start = level.playerStart.copy();
+    player.keys = [];
 }
 
 
@@ -242,14 +251,32 @@ function update(dT) {
                                              row * cfg.TILE_SIZE,
                                              cfg.TILE_SIZE,
                                              cfg.TILE_SIZE);
-
-                let collide = rectIntersect(player.getRectangle(), tileRect);
-                if (collide) {
+                if (rectIntersect(player.getRectangle(), tileRect)) {
                     solve(player, tileRect);
                 }
             }
         }
     }
+
+    
+    // Check door collisions
+    for (let i = 0; i < level.doors.length; i++) {
+        let door = level.doors[i];
+
+        if (door.open)
+            continue;
+        
+        if (rectIntersect(player.getRectangle(), door.rectangle)) {
+            for (let j = 0; j < player.keys.length; j++) {
+                if (player.keys[j].color === door.color) {
+                    level.doors[i].open = true;
+                    break;
+                }
+            }
+            solve(player, door.rectangle);
+        }
+    }
+
     
     let pRect = player.getRectangle();
 
@@ -287,12 +314,27 @@ function update(dT) {
         }
     }
 
+    // Update keys
+    for (let i = 0; i < level.keys.length; i++) {
+        let key = level.keys[i];
+        if (!key.collected && rectIntersect(pRect, key.rectangle)) {
+            level.keys[i].collected = true;
+            player.keys.push(key);
+        }
+    }
+
     // Check death ball collisions
     for (let i = 0; i < level.deathBalls.length; i++) {
         let ball = level.deathBalls[i];
         ball.update(dT);
         if (rectCircleInterset(player.getCollisionRectangle(), ball.getCircle())) {
-            player.respawn();
+            if (player.activeCheckpoint != null) {
+                player.respawn();
+            }
+            else {
+                restart();
+                level.showCard = false;
+            }
         }
     }
 }

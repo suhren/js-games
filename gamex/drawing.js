@@ -271,7 +271,6 @@ export function draw(dT, level, player, menu) {
     }
 
     
-
     // Draw coins
     for (let i = 0; i < level.coins.length; i++) {
         let coin = level.coins[i];
@@ -294,6 +293,25 @@ export function draw(dT, level, player, menu) {
             }
         }
     }
+
+    // Draw keys
+    for (let i = 0; i < level.keys.length; i++) {
+        let key = level.keys[i];
+        if (!key.collected) {
+            let rect = getScreenRect(key.rectangle);
+            ctx.drawImage(key.image, rect.x, rect.y, rect.w, rect.h);
+        }
+    }
+
+    // Draw doors
+    for (let i = 0; i < level.doors.length; i++) {
+        let door = level.doors[i];
+        if (!door.open) {
+            let rect = getScreenRect(door.rectangle);
+            ctx.drawImage(door.image, rect.x, rect.y, rect.w, rect.h);
+        }
+    }
+
 
     // Draw player
     drawParticles(player.dashParticleEmitter.particles);
@@ -397,6 +415,11 @@ export function draw(dT, level, player, menu) {
     ctx.fillRect(16, 16, t * 150, 20);
     ctx.strokeStyle = "#000000";
     ctx.strokeRect(16, 16, 150, 20);
+    
+    // Draw keys
+    for (let i = 0; i < player.keys.length; i++) {
+        ctx.drawImage(player.keys[i].image, 180 + i * 45, 16, 32, 32);
+    }
     
     // Draw coins
     if (level.num_coins > 0) {

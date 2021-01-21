@@ -5,10 +5,10 @@
     },
     "activeFile": "levels/test5.tmx",
     "expandedProjectPaths": [
-        "levels",
         ".",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
-        "templates"
+        "templates",
+        "levels"
     ],
     "fileStates": {
         "C:/Users/Adam/Desktop/test.tsx": {
@@ -72,8 +72,8 @@
             "scale": 4.472916666666666,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 175.94783418723802,
-                "y": 130.78714485328368
+                "x": 176.05961807172798,
+                "y": 131.0107126222636
             }
         },
         "levels/test5.tmx": {
@@ -85,11 +85,11 @@
             }
         },
         "levels/test6.tmx": {
-            "scale": 4,
+            "scale": 4.472916666666666,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 89.25,
-                "y": 163.5
+                "x": 88.085700978109,
+                "y": 96.13414066138799
             }
         },
         "levels/tileset.tsx": {
@@ -125,25 +125,23 @@
     "openFiles": [
         "tileset.tsx",
         "levels/test1.tmx",
-        "levels/test5.tmx",
-        "levels/test6.tmx",
-        "levels/test4.tmx"
+        "levels/test5.tmx"
     ],
     "project": "game.tiled-project",
     "property.type": "string",
     "recentFiles": [
         "tileset.tsx",
         "levels/test1.tmx",
-        "levels/test4.tmx",
-        "levels/test6.tmx",
         "levels/test5.tmx",
         "levels/test3.tmx",
+        "levels/test4.tmx",
         "levels/test2.tmx",
         "tileset.json",
         "test3.json",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/MyTileset.tsx",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test2.tmx",
-        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test.tmx"
+        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test.tmx",
+        "C:/Users/Adam/Desktop/untitled.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

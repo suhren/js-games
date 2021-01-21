@@ -115,7 +115,7 @@ export function clamp(x, min, max) {
 
 
 export function solve(player, box, epsilon=0) {
-    
+
     // Moving to the right
     if (player.displacement.x > 0) {
         // Moving down to the right

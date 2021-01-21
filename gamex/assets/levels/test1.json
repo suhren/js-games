@@ -231,13 +231,157 @@
                         {
                          "name":"color",
                          "type":"string",
-                         "value":""
+                         "value":"yellow"
                         }],
                  "rotation":0,
                  "type":"key",
                  "visible":true,
                  "width":16,
                  "x":176,
+                 "y":80
+                }, 
+                {
+                 "gid":17,
+                 "height":16,
+                 "id":78,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"blue"
+                        }],
+                 "rotation":0,
+                 "type":"key",
+                 "visible":true,
+                 "width":16,
+                 "x":156,
+                 "y":52
+                }, 
+                {
+                 "gid":18,
+                 "height":16,
+                 "id":79,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"green"
+                        }],
+                 "rotation":0,
+                 "type":"key",
+                 "visible":true,
+                 "width":16,
+                 "x":168,
+                 "y":108
+                }, 
+                {
+                 "gid":19,
+                 "height":16,
+                 "id":80,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"red"
+                        }],
+                 "rotation":0,
+                 "type":"key",
+                 "visible":true,
+                 "width":16,
+                 "x":132,
+                 "y":120
+                }, 
+                {
+                 "gid":16,
+                 "height":16,
+                 "id":81,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"yellow"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":64
+                }, 
+                {
+                 "gid":22,
+                 "height":16,
+                 "id":83,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"red"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":104
+                }, 
+                {
+                 "gid":21,
+                 "height":16,
+                 "id":84,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"green"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":16,
+                 "x":216,
+                 "y":128
+                }, 
+                {
+                 "gid":20,
+                 "height":16,
+                 "id":85,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"blue"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":16,
+                 "x":188,
+                 "y":144
+                }, 
+                {
+                 "gid":16,
+                 "height":16,
+                 "id":86,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"yellow"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
                  "y":80
                 }],
          "opacity":1,
@@ -247,7 +391,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":76,
+ "nextobjectid":87,
  "orientation":"orthogonal",
  "properties":[
         {

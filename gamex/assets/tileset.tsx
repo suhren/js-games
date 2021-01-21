@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.4" tiledversion="1.4.3" name="tileset" tilewidth="16" tileheight="16" tilecount="14" columns="0">
+<tileset version="1.4" tiledversion="1.4.3" name="tileset" tilewidth="16" tileheight="16" tilecount="20" columns="0">
  <editorsettings>
   <export target="tileset.json" format="json"/>
  </editorsettings>
@@ -96,6 +96,24 @@
  </tile>
  <tile id="15">
   <image width="16" height="16" source="images/door_yellow.png"/>
+ </tile>
+ <tile id="16">
+  <image width="16" height="16" source="images/key_blue.png"/>
+ </tile>
+ <tile id="17">
+  <image width="16" height="16" source="images/key_green.png"/>
+ </tile>
+ <tile id="18">
+  <image width="16" height="16" source="images/key_red.png"/>
+ </tile>
+ <tile id="19">
+  <image width="16" height="16" source="images/door_blue.png"/>
+ </tile>
+ <tile id="20">
+  <image width="16" height="16" source="images/door_green.png"/>
+ </tile>
+ <tile id="21">
+  <image width="16" height="16" source="images/door_red.png"/>
  </tile>
  <wangsets>
   <wangset name="New Wang Set" tile="-1"/>

@@ -3,12 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "levels/test5.tmx",
+    "activeFile": "levels/test1.tmx",
     "expandedProjectPaths": [
-        "levels",
-        ".",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
-        "templates"
+        "templates",
+        "levels",
+        "."
     ],
     "fileStates": {
         "C:/Users/Adam/Desktop/test.tsx": {
@@ -48,8 +48,8 @@
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 256,
-                "y": 127.66666666666666
+                "x": 338.83333333333337,
+                "y": 211
             }
         },
         "levels/test2.tmx": {
@@ -72,24 +72,16 @@
             "scale": 4.472916666666666,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 175.94783418723802,
-                "y": 130.78714485328368
+                "x": 176.05961807172798,
+                "y": 131.0107126222636
             }
         },
         "levels/test5.tmx": {
-            "scale": 2,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 225.5,
-                "y": 95
-            }
-        },
-        "levels/test6.tmx": {
-            "scale": 4,
-            "selectedLayer": 0,
-            "viewCenter": {
-                "x": 89.25,
-                "y": 163.5
+                "x": 255.66666666666663,
+                "y": 256
             }
         },
         "levels/tileset.tsx": {
@@ -124,26 +116,23 @@
     "map.width": 12,
     "openFiles": [
         "tileset.tsx",
-        "levels/test1.tmx",
-        "levels/test5.tmx",
-        "levels/test6.tmx",
-        "levels/test4.tmx"
+        "levels/test1.tmx"
     ],
     "project": "game.tiled-project",
     "property.type": "string",
     "recentFiles": [
         "tileset.tsx",
         "levels/test1.tmx",
-        "levels/test4.tmx",
-        "levels/test6.tmx",
         "levels/test5.tmx",
         "levels/test3.tmx",
+        "levels/test4.tmx",
         "levels/test2.tmx",
         "tileset.json",
         "test3.json",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/MyTileset.tsx",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test2.tmx",
-        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test.tmx"
+        "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled/test.tmx",
+        "C:/Users/Adam/Desktop/untitled.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

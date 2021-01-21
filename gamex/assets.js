@@ -21,7 +21,8 @@ const LEVEL_FILES = [
     "./assets/levels/test2.json",
     "./assets/levels/test3.json",
     "./assets/levels/test4.json",
-    "./assets/levels/test5.json"
+    "./assets/levels/test5.json",
+    "./assets/levels/test6.json"
 ];
 export const NUM_LEVELS = LEVEL_FILES.length;
 var LEVEL_JSONS = new Map();
@@ -101,6 +102,8 @@ function levelFromJson(json, path) {
     let texts = [];
     let goal = null;
     let coins = [];
+    let keys = [];
+    let doors = [];
 
     for (let i = 0; i < objects.length; i++) {
         
@@ -133,6 +136,18 @@ function levelFromJson(json, path) {
             
             case "coin":
                 coins.push(new go.Coin(tiledRectangle(obj, true)));
+                break;
+
+            case "key":
+                var color = getProperty(properties, "name", "color")["value"];
+                var gid = objects[i]["gid"];
+                keys.push(new go.Key(tiledRectangle(obj, true), color, TILES.get(gid).image));
+                break;
+
+            case "door":
+                var color = getProperty(properties, "name", "color")["value"];
+                var gid = objects[i]["gid"];
+                doors.push(new go.Door(tiledRectangle(obj, true), color, TILES.get(gid).image));
                 break;
 
             case "ball":
@@ -172,7 +187,7 @@ function levelFromJson(json, path) {
         }
     }
 
-    let level = new go.Level(name, desciption, path, spawn, balls, checkpoints, coins, goal, texts, tileMap);
+    let level = new go.Level(name, desciption, path, spawn, balls, checkpoints, coins, keys, doors, goal, texts, tileMap);
     return level;
 }
 
