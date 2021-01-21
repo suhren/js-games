@@ -194,7 +194,7 @@ export class DeathBallLinear {
 
 export class Coin {
 
-    constructor(rectangle){
+    constructor(rectangle) {
         this.rectangle = rectangle;
         this.circle = new utils.Circle(rectangle.center(), rectangle.w / 2);
         this.collected = false;

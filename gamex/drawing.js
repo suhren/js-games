@@ -284,7 +284,6 @@ export function draw(dT, level, player, menu) {
                           16,
                           rect.x, rect.y, rect.w, rect.h);
             
-            
             if (drawColliders) {
                 ctx.lineWidth = 2;
                 ctx.beginPath();

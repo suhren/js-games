@@ -8,7 +8,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":8,
+ "tilecount":14,
  "tiledversion":"1.4.3",
  "tileheight":16,
  "tiles":[
@@ -145,28 +145,6 @@
                 }]
         }, 
         {
-         "id":6,
-         "image":"images\/coin_single.png",
-         "imageheight":16,
-         "imagewidth":16,
-         "properties":[
-                {
-                 "name":"collision",
-                 "type":"bool",
-                 "value":false
-                }, 
-                {
-                 "name":"friction",
-                 "type":"float",
-                 "value":-1
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":"coin"
-                }]
-        }, 
-        {
          "id":7,
          "image":"images\/Stone_brick.png",
          "imageheight":16,
@@ -187,6 +165,109 @@
                  "type":"string",
                  "value":""
                 }]
+        }, 
+        {
+         "id":8,
+         "image":"images\/DeathBot.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "id":3,
+             "name":"",
+             "objects":[
+                    {
+                     "ellipse":true,
+                     "height":16,
+                     "id":2,
+                     "name":"",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":16,
+                     "x":0,
+                     "y":0
+                    }],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            },
+         "properties":[
+                {
+                 "name":"center",
+                 "type":"object",
+                 "value":0
+                }, 
+                {
+                 "name":"line",
+                 "type":"object",
+                 "value":0
+                }, 
+                {
+                 "name":"speed",
+                 "type":"float",
+                 "value":50
+                }],
+         "type":"ball"
+        }, 
+        {
+         "animation":[
+                {
+                 "duration":150,
+                 "tileid":10
+                }, 
+                {
+                 "duration":150,
+                 "tileid":11
+                }, 
+                {
+                 "duration":150,
+                 "tileid":12
+                }, 
+                {
+                 "duration":150,
+                 "tileid":13
+                }],
+         "id":10,
+         "image":"images\/coin_0.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":11,
+         "image":"images\/coin_1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"coin"
+        }, 
+        {
+         "id":12,
+         "image":"images\/coin_2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"coin"
+        }, 
+        {
+         "id":13,
+         "image":"images\/coin_3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"coin"
+        }, 
+        {
+         "id":14,
+         "image":"images\/key_yellow.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":15,
+         "image":"images\/door_yellow.png",
+         "imageheight":16,
+         "imagewidth":16
         }],
  "tilewidth":16,
  "type":"tileset",

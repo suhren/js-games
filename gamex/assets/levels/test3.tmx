@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="36">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="51">
  <editorsettings>
   <export target="test3.json" format="json"/>
  </editorsettings>
@@ -42,52 +42,52 @@
   <object id="5" template="../templates/line.tx" x="254.757" y="54.994">
    <polyline points="17.2427,17.0056 17.2427,-30.994"/>
   </object>
-  <object id="6" template="../templates/ball.tx" x="120" y="64">
+  <object id="6" template="../templates/ball.tx" x="120" y="80">
    <properties>
     <property name="line" type="object" value="2"/>
     <property name="speed" type="float" value="100"/>
    </properties>
   </object>
-  <object id="8" template="../templates/ball.tx" x="168" y="16">
+  <object id="8" template="../templates/ball.tx" x="168" y="32">
    <properties>
     <property name="line" type="object" value="3"/>
     <property name="speed" type="float" value="100"/>
    </properties>
   </object>
-  <object id="9" template="../templates/ball.tx" x="216" y="64">
+  <object id="9" template="../templates/ball.tx" x="216" y="80">
    <properties>
     <property name="line" type="object" value="4"/>
     <property name="speed" type="float" value="100"/>
    </properties>
   </object>
-  <object id="10" template="../templates/ball.tx" x="264" y="16">
+  <object id="10" template="../templates/ball.tx" x="264" y="32">
    <properties>
     <property name="line" type="object" value="5"/>
     <property name="speed" type="float" value="100"/>
    </properties>
   </object>
-  <object id="11" template="../templates/ball.tx" x="472" y="72">
+  <object id="11" template="../templates/ball.tx" x="472" y="88">
    <properties>
     <property name="center" type="object" value="1"/>
     <property name="line" type="object" value="0"/>
     <property name="speed" type="float" value="90"/>
    </properties>
   </object>
-  <object id="12" template="../templates/ball.tx" x="440" y="104">
+  <object id="12" template="../templates/ball.tx" x="440" y="120">
    <properties>
     <property name="center" type="object" value="1"/>
     <property name="line" type="object" value="0"/>
     <property name="speed" type="float" value="90"/>
    </properties>
   </object>
-  <object id="13" template="../templates/ball.tx" x="408" y="72">
+  <object id="13" template="../templates/ball.tx" x="408" y="88">
    <properties>
     <property name="center" type="object" value="1"/>
     <property name="line" type="object" value="0"/>
     <property name="speed" type="float" value="90"/>
    </properties>
   </object>
-  <object id="14" template="../templates/ball.tx" x="440" y="40">
+  <object id="14" template="../templates/ball.tx" x="440" y="56">
    <properties>
     <property name="center" type="object" value="1"/>
     <property name="line" type="object" value="0"/>
@@ -95,28 +95,28 @@
    </properties>
   </object>
   <object id="15" template="../templates/position.tx" x="448" y="176"/>
-  <object id="16" template="../templates/ball.tx" x="472" y="168">
+  <object id="16" template="../templates/ball.tx" x="472" y="184">
    <properties>
     <property name="center" type="object" value="15"/>
     <property name="line" type="object" value="0"/>
     <property name="speed" type="float" value="-90"/>
    </properties>
   </object>
-  <object id="17" template="../templates/ball.tx" x="440" y="200">
+  <object id="17" template="../templates/ball.tx" x="440" y="216">
    <properties>
     <property name="center" type="object" value="15"/>
     <property name="line" type="object" value="0"/>
     <property name="speed" type="float" value="-90"/>
    </properties>
   </object>
-  <object id="18" template="../templates/ball.tx" x="408" y="168">
+  <object id="18" template="../templates/ball.tx" x="408" y="184">
    <properties>
     <property name="center" type="object" value="15"/>
     <property name="line" type="object" value="0"/>
     <property name="speed" type="float" value="-90"/>
    </properties>
   </object>
-  <object id="19" template="../templates/ball.tx" x="440" y="136">
+  <object id="19" template="../templates/ball.tx" x="440" y="152">
    <properties>
     <property name="center" type="object" value="15"/>
     <property name="line" type="object" value="0"/>
@@ -126,7 +126,7 @@
   <object id="20" template="../templates/line.tx" x="58.8166" y="184.544">
    <polyline points="5.18344,23.4563 229.183,23.4563"/>
   </object>
-  <object id="21" template="../templates/ball.tx" x="48" y="192" width="32" height="32">
+  <object id="21" template="../templates/ball.tx" x="48" y="224" width="32" height="32">
    <properties>
     <property name="line" type="object" value="20"/>
     <property name="speed" type="float" value="75"/>
@@ -145,44 +145,39 @@
   <object id="28" template="../templates/line.tx" x="76" y="128">
    <polyline points="5.18344,23.4563 196,24"/>
   </object>
-  <object id="29" template="../templates/ball.tx" x="72" y="96">
+  <object id="29" template="../templates/ball.tx" x="72" y="112">
    <properties>
     <property name="line" type="object" value="26"/>
     <property name="speed" type="float" value="75"/>
    </properties>
   </object>
-  <object id="32" template="../templates/ball.tx" x="264" y="120">
+  <object id="32" template="../templates/ball.tx" x="264" y="136">
    <properties>
     <property name="line" type="object" value="27"/>
     <property name="speed" type="float" value="-75"/>
    </properties>
   </object>
-  <object id="33" template="../templates/ball.tx" x="72" y="144">
+  <object id="33" template="../templates/ball.tx" x="72" y="160">
    <properties>
     <property name="line" type="object" value="28"/>
     <property name="speed" type="float" value="75"/>
    </properties>
   </object>
   <object id="35" template="../templates/checkpoint.tx" x="16" y="96" width="32" height="16"/>
+  <object id="36" template="../templates/coin.tx" x="120" y="56"/>
+  <object id="37" template="../templates/coin.tx" x="168" y="56"/>
+  <object id="38" template="../templates/coin.tx" x="216" y="56"/>
+  <object id="39" template="../templates/coin.tx" x="264" y="56"/>
+  <object id="40" template="../templates/coin.tx" x="472" y="40"/>
+  <object id="41" template="../templates/coin.tx" x="408" y="40"/>
+  <object id="42" template="../templates/coin.tx" x="408" y="136"/>
+  <object id="43" template="../templates/coin.tx" x="472" y="136"/>
+  <object id="44" template="../templates/coin.tx" x="472" y="232"/>
+  <object id="45" template="../templates/coin.tx" x="408" y="232"/>
+  <object id="46" template="../templates/coin.tx" x="120" y="120"/>
+  <object id="47" template="../templates/coin.tx" x="216" y="120"/>
+  <object id="48" template="../templates/coin.tx" x="168" y="136"/>
+  <object id="49" template="../templates/coin.tx" x="120" y="152"/>
+  <object id="50" template="../templates/coin.tx" x="216" y="152"/>
  </objectgroup>
- <layer id="3" name="Tile Layer 2" width="32" height="16">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,7,0,
-0,0,0,0,0,0,0,0,7,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,
-0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,
-0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,7,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-</data>
- </layer>
 </map>

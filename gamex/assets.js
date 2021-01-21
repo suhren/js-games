@@ -57,8 +57,12 @@ function tiledVector(obj) {
     return new utils.Vector(obj["x"], obj["y"]);
 }
 
-function tiledRectangle(obj) {
-    return new utils.Rectangle(obj["x"], obj["y"], obj["width"], obj["height"]);
+function tiledRectangle(obj, yFlip=false) {
+    let x = obj["x"];
+    let w = obj["width"];
+    let h = obj["height"];
+    let y = yFlip ? obj["y"] - h : obj["y"];
+    return new utils.Rectangle(x, y, w, h);
 }
 
 function levelFromJson(json, path) {
@@ -78,31 +82,7 @@ function levelFromJson(json, path) {
         let tile = TILES.get(data[i]);
         tileMap[row][col] = tile;
     }
-
-    // Load the tile object data
-    let tileObjectLayer = getProperty(json["layers"], "name", "Tile Layer 2");
     
-    let coins = [];
-
-    if (tileObjectLayer != null) {
-
-        data = tileObjectLayer["data"];
-        for (let i = 0; i < data.length; i++) {
-            
-            let row = Math.floor(i / ncols);
-            let col = i % ncols;
-
-            let tile = TILES.get(data[i]);
-            if (tile != null) {
-                if (tile.object == "coin") {
-                    var rect = new utils.Rectangle(col * cfg.TILE_SIZE, row * cfg.TILE_SIZE, cfg.TILE_SIZE, cfg.TILE_SIZE);
-                    coins.push(new go.Coin(rect));
-                }
-            }
-        }
-    } 
-
-
     // Load the object data
     let objectLayer = getProperty(json["layers"], "type", "objectgroup");
     let objects = objectLayer["objects"];
@@ -120,6 +100,7 @@ function levelFromJson(json, path) {
     let balls = [];
     let texts = [];
     let goal = null;
+    let coins = [];
 
     for (let i = 0; i < objects.length; i++) {
         
@@ -149,9 +130,13 @@ function levelFromJson(json, path) {
                 let wrap = obj["text"]["wrap"];
                 texts.push(new go.Text(text, pixelsize, rect, wrap));
                 break;
-    
+            
+            case "coin":
+                coins.push(new go.Coin(tiledRectangle(obj, true)));
+                break;
+
             case "ball":
-                var rect = new tiledRectangle(obj);
+                var rect = new tiledRectangle(obj, true);
                 var pos = rect.center();
                 let size = rect.w / 2;
 
@@ -197,7 +182,7 @@ export class Tile {
         this.image = image;
         this.imagePath = imagePath;
         this.id = id;
-        this.collision = collision;
+        this.collision = (collision == null) ? false : collision;
         this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
         this.object = object;
     }
@@ -218,9 +203,20 @@ export function init() {
         let imagePath = cfg.ASSET_DIR + tile["image"];
         let image = getSprite(imagePath);
         let properties = tile["properties"];
-        let collision = getProperty(properties, "name", "collision")["value"];
-        let friction = getProperty(properties, "name", "friction")["value"];
-        let object = getProperty(properties, "name", "object")["value"];
+
+        let collision = null;
+        let friction = null;
+        let object = null;
+    
+        if (properties != null) {
+            let pCollision = getProperty(properties, "name", "collision");
+            let pFriction = getProperty(properties, "name", "friction");
+            let pObject = getProperty(properties, "name", "object");
+            collision = pCollision == null ? null : pCollision["value"];
+            friction = pFriction == null ? null : pFriction["value"];
+            object = pObject == null ? null : pObject["value"];
+        }
+        
         TILES.set(id + 1, new Tile(image, imagePath, id, collision, friction, object));
     })
     

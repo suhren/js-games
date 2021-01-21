@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
- <object type="ball" width="16" height="16">
+ <tileset firstgid="1" source="../tileset.tsx"/>
+ <object gid="9" width="16" height="16">
   <properties>
-   <property name="center" type="object" value="0"/>
    <property name="line" type="object" value="0"/>
-   <property name="speed" type="float" value="50"/>
   </properties>
-  <ellipse/>
  </object>
 </template>
