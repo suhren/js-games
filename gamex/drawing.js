@@ -13,6 +13,9 @@ var canvas = null;
 var ctx = null;
 
 
+var playerAnimations = null;
+var ballAnimations = null;
+
 export function init(document) {
     documentCanvas = document.getElementById("gameCanvas");
     documentCtx = documentCanvas.getContext("2d");
@@ -23,14 +26,19 @@ export function init(document) {
     ctx = canvas.getContext("2d");
     canvas.width = cfg.WINDOW_WIDTH;
     canvas.height = cfg.WINDOW_HEIGHT;
+    playerAnimations = new PlayerAnimations(
+        new Animation(assets.SPRITESHEET_PLAYER_RUN_LEFT, 16, 6),
+        new Animation(assets.SPRITESHEET_PLAYER_RUN_RIGHT, 16, 6),
+        new Animation(assets.SPRITESHEET_PLAYER_IDLE_LEFT, 16, 1),
+        new Animation(assets.SPRITESHEET_PLAYER_IDLE_RIGHT, 16, 1),
+    );
+    ballAnimations = new Animation(assets.SPRITE_BALL, 16, 4);
 }
 
 
 var drawColliders = false;
 var drawDebug = false;
 var drawGrid = false;
-
-
 var cameraX = 0;
 var cameraY = 0;
 var cameraLagX = 0.25;
@@ -167,6 +175,108 @@ function drawText(text, x, y, size, textBaseline="middle", textAlign="center", d
     ctx.fillText(text, x, y);
 }
 
+function drawDropShadow(rect, color="#222222", alpha=0.3, xScale=1.0, yScale=0.2) {
+
+    let radiusX = (rect.w * xScale) / 2;
+    let radiusY = (rect.h * yScale) / 2;
+
+    let x = rect.x + rect.w / 2;
+    let y = rect.y + rect.h;
+
+    let oldAlpha = ctx.globalAlpha;
+    ctx.fillStyle = color;
+    ctx.globalAlpha = alpha;
+    ctx.beginPath();
+    ctx.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = oldAlpha;
+}
+
+
+class Animation {
+    constructor(image, frameWidth, fps) {
+        this.image = image;
+        this.timer = 0;
+        this.duration = 1 / fps;
+        this.frameWidth = frameWidth;
+        this.height = image.height;
+        this.numFrames = Math.floor(image.width / this.frameWidth);
+        this.index = 0;
+    }
+
+    update(dT) {
+        this.timer += dT;
+        if (this.timer >= this.duration) {
+            this.index = (this.index + 1) % this.numFrames;
+            this.timer = 0;
+        }
+    }
+
+    drawImage(c, x, y, w, h) {
+        c.drawImage(this.image, this.index * this.frameWidth, 0, this.frameWidth, this.height, x, y, w, h);
+    }
+}
+
+
+class PlayerAnimations {
+    constructor(animRunLeft, animRunRight, animIdleLeft, animIdleRight) {
+        this.animRunLeft = animRunLeft;
+        this.animRunRight = animRunRight;
+        this.animIdleLeft = animIdleLeft;
+        this.animIdleRight = animIdleRight;
+        this.animCurrent = this.animIdleLeft;
+        this.animLast = this.animCurrent;
+        this.lastWish  = new utils.Vector(0, 1);
+        this.lastWishHorizontal  = 1
+        this.lastWishVertical  = 1
+    }
+
+    update(dT, player) {
+        
+        this.animRunLeft.update(dT);
+        this.animRunRight.update(dT);
+        this.animIdleLeft.update(dT);
+        this.animIdleRight.update(dT);
+
+        if (player.wish.length() > 0) {
+            // The player is trying to move   
+            if (player.wish.x != 0) {
+                this.lastWishHorizontal = player.wish.x
+            }
+            if (player.wish.y != 0) {
+                this.lastWishVertical = player.wish.y
+            }
+            if (this.lastWishHorizontal == 1) {
+                this.animCurrent = this.animRunRight;
+            }
+            else if (this.lastWishHorizontal == -1) {
+                this.animCurrent = this.animRunLeft;
+            }
+            this.lastWish = player.wish.copy();
+        }
+        else {
+            // The player is not trying to move
+            // Idle in the last direciton the player tried to move
+            if (this.lastWishHorizontal == 1) {
+                this.animCurrent = this.animIdleRight;
+            }
+            else if (this.lastWishHorizontal == -1) {
+                this.animCurrent = this.animIdleLeft;
+            }
+        }
+
+        if (this.animLast != this.animCurrent) {
+            this.animCurrent.timer = 0;
+            this.animCurrent.índex = 0;
+
+        }
+        this.animLast = this.animCurrent;
+    }
+
+    drawImage(c, x, y, w, h) {
+        return this.animCurrent.drawImage(c, x, y, w, h)
+    }
+}
 
 export function draw(dT, level, player, menu) {
 
@@ -215,17 +325,19 @@ export function draw(dT, level, player, menu) {
     ctx.imageSmoothingEnabled = false;
     
     // (Clear) draw background color on the entire screen
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = level.backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw Tile Map
-    ctx.fillStyle = "black";
     for (let row = 0; row < level.nrows; row++) {
         for (let col = 0; col < level.ncols; col++) {
-            let x = w2sX(col * cfg.TILE_SIZE);
-            let y = w2sY(row * cfg.TILE_SIZE);
-            let s = w2sS(cfg.TILE_SIZE);
-            ctx.drawImage(level.tileMap[row][col].image, x, y, s, s);
+            let tile = level.tileMap[row][col];
+            if (tile != null) {
+                let x = w2sX(col * cfg.TILE_SIZE);
+                let y = w2sY(row * cfg.TILE_SIZE);
+                let s = w2sS(cfg.TILE_SIZE);
+                ctx.drawImage(level.tileMap[row][col].image, x, y, s, s);
+            }
         }
     }
 
@@ -327,37 +439,23 @@ export function draw(dT, level, player, menu) {
 
     // Draw player
     drawParticles(player.dashParticleEmitter.particles);
-    var rect = getScreenRect(player.rect);
+    var rect = player.rect.copy();
+    rect.y -= (20 - rect.h);
+    rect.h = 20;
+    rect = getScreenRect(rect);
 
-    let dir = player.lastWish;
-    let dirIdx = 0;
+    playerAnimations.update(dT, player);
+    drawDropShadow(rect);
+    playerAnimations.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
     
-    if (dir.x == 1) {
-        // Facing right takes precedent over up/down
-        dirIdx = 3;
-    }
-    else if (dir.x == -1) {
-        // Facing left  takes precedent over up/down
-        dirIdx = 2;
-    }
-    else if (dir.y == 1) {
-        // Facing down
-        dirIdx = 1;
-    }
-    else if (dir.y == -1) {
-        // Facing up
-        dirIdx = 0;
-    }
-
-    ctx.drawImage(assets.SPRITESHEET_PLAYER, 16 * player.frameIndex, dirIdx * 16, 16, 16, rect.x, rect.y, rect.w, rect.h);
-
-
     if (player.isDashing) {
         ctx.fillStyle = "#FFFFFF";
         ctx.globalAlpha = 0.5;
         ctx.fillRect(rect.x, rect.y, rect.w, rect.h);    
         ctx.globalAlpha = 1.0;
     }
+
+    ballAnimations.update(dT);
 
     // Draw death ball circles outline
     for (let i = 0; i < level.deathBalls.length; i++) {
@@ -406,7 +504,8 @@ export function draw(dT, level, player, menu) {
         }
 
         var rect = getScreenRect(ball.rect);
-        ctx.drawImage(assets.SPRITE_BALL, rect.x, rect.y, rect.w, rect.h);
+        drawDropShadow(rect);
+        ballAnimations.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
     }
 
     //Draw texts
@@ -441,7 +540,8 @@ export function draw(dT, level, player, menu) {
     // Draw spikes
     for (let i = 0; i < level.spikes.length; i++) {
         let spike = level.spikes[i];
-        drawRotatedImage(spike.image, spike.rect, spike.rot);
+        let rect = getScreenRect(spike.rect);
+        ctx.drawImage(spike.image, rect.x, rect.y, rect.w, rect.h);
     }
 
     // Draw menu
@@ -493,9 +593,14 @@ export function draw(dT, level, player, menu) {
 
     //Draw bounding boxes
     if (drawColliders) {
+        let rect = getScreenRect(player.getCollisionRectangle());
+        let circ = getScreenCircle(player.getCollisionCircle());
         ctx.lineWidth = 2;
         ctx.strokeStyle = "red";
         ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+        ctx.beginPath();
+        ctx.arc(circ.c.x, circ.c.y, circ.r, 0, Math.PI * 2, false);
+        ctx.stroke();
     }
 
     // Draw level name and description card

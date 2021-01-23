@@ -22,8 +22,13 @@ export var TILES = new Map();
 export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
 export const SPRITESHEET_PLAYER = getSprite("assets/images/player.png");
 export const SPRITESHEET_COIN = getSprite("assets/images/coin.png");
-export const SPRITE_BALL = getSprite("assets/images/DeathBot.png");
+export const SPRITE_BALL = getSprite("assets/images/enemies/floaty_animation.png");
 
+
+export const SPRITESHEET_PLAYER_IDLE_LEFT = getSprite("assets/images/player/playerIdleLeft.png");
+export const SPRITESHEET_PLAYER_IDLE_RIGHT = getSprite("assets/images/player/playerIdleRight.png");
+export const SPRITESHEET_PLAYER_RUN_LEFT = getSprite("assets/images/player/playerRunLeft.png");
+export const SPRITESHEET_PLAYER_RUN_RIGHT = getSprite("assets/images/player/playerRunRight.png");
 
 // Level files
 export var LEVELS = [];
@@ -34,7 +39,8 @@ const LEVEL_FILES = [
     "./assets/levels/test3.json",
     "./assets/levels/test4.json",
     "./assets/levels/test5.json",
-    "./assets/levels/test6.json"
+    "./assets/levels/test6.json",
+    "./assets/levels/test7.json"
 ];
 export const NUM_LEVELS = LEVEL_FILES.length;
 var LEVEL_JSONS = new Map();
@@ -45,7 +51,8 @@ LEVEL_FILES.forEach(path => loadJson(path, json => LEVEL_JSONS.set(path, json)))
 const ASSET_DIR = './assets/'
 const TILESET_FILES = [
     "./assets/tileset_common.json",
-    "./assets/tileset_forest.json"
+    "./assets/tileset_forest.json",
+    "./assets/tileset_dungeon.json"
 ];
 var TILESETS = new Map();
 var TILESET_JSONS = new Map();
@@ -118,6 +125,7 @@ function levelFromJson(json, path) {
     let ncols = tileLayer["width"];
     let nrows = tileLayer["height"];
     let tilesetSpecifications = json["tilesets"];
+    let backgroundcolor = json["backgroundcolor"];
 
     let tileLookup = new Map();
 
@@ -256,7 +264,7 @@ function levelFromJson(json, path) {
     }
 
     
-    let level = new go.Level(name, desciption, path, spawn, balls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap);
+    let level = new go.Level(name, desciption, path, spawn, balls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundcolor);
     return level;
 }
 

@@ -8,6 +8,9 @@ export class Rectangle {
     center() {
         return new Vector(this.x + this.w / 2, this.y + this.h / 2);
     }
+    copy() {
+        return new Rectangle(this.x, this.y, this.w, this.h);
+    }
 }
 
 
@@ -89,7 +92,7 @@ export function rectIntersect(r1, r2) {
 
 //Check how two rectangles (Player & Deathball for example) collide with each other
 export function circleIntersect(c1, c2) {
-    return c1.center.subtract(c2.center).length() < c1.r + c2.r;
+    return c1.c.subtract(c2.c).length() < c1.r + c2.r;
 }
 
 export function rectCircleInterset(rect, circle) {

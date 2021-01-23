@@ -172,7 +172,6 @@ function toggleMusic() {
 
 
 function init() {
-    drawing.init(document);
     menu = new inter.Menu();
     menu.x = (canvas.width - menu.w) / 2;
     menu.y = (canvas.height - menu.h) / 2;
@@ -192,7 +191,8 @@ function init() {
     menu.init(buttons);
     // Wait for level JSONs to load (avoid null references)
     setTimeout(assets.init, 200);
-    setTimeout(start, 500);
+    setTimeout(drawing.init, 1000, document);
+    setTimeout(start, 1000);
 }
 
 

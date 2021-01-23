@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="3" nextobjectid="21">
+ <editorsettings>
+  <export target="test7.json" format="json"/>
+ </editorsettings>
+ <properties>
+  <property name="description" value="The depths"/>
+  <property name="name" value="Dungeon 0"/>
+ </properties>
+ <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../tileset_common.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="32" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,12,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,11,0,
+0,9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,8,0,
+0,9,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,8,0,
+0,9,14,69,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,8,0,
+0,9,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,5,6,6,6,6,2,14,14,14,14,14,8,0,
+0,9,14,14,14,5,6,6,6,6,6,6,2,14,14,14,14,14,14,4,7,7,11,0,10,2,14,14,14,14,8,0,
+0,9,14,14,14,8,0,0,0,12,7,7,3,14,14,14,14,14,14,1,1,1,4,7,11,10,2,14,14,14,8,0,
+0,9,14,14,14,8,0,0,0,9,1,1,1,14,14,14,14,14,14,14,14,14,1,1,4,7,3,14,14,14,8,0,
+0,9,14,14,14,4,7,7,7,3,14,14,14,14,14,14,14,14,14,14,14,14,14,14,1,1,1,14,14,14,8,0,
+0,9,14,14,14,1,1,1,1,1,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,8,0,
+0,9,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,67,14,8,0,
+0,9,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,8,0,
+0,10,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,13,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" template="../templates/spawn.tx" x="56" y="72"/>
+  <object id="2" template="../templates/goal.tx" x="448" y="176" width="16" height="16"/>
+  <object id="3" template="../templates/coin.tx" x="240" y="144"/>
+  <object id="4" template="../templates/coin.tx" x="256" y="176"/>
+  <object id="5" template="../templates/coin.tx" x="304" y="176"/>
+  <object id="11" template="../templates/spike.tx" x="160" y="160"/>
+  <object id="13" template="../templates/spike.tx" x="176" y="160"/>
+  <object id="14" template="../templates/spike.tx" x="192" y="160"/>
+  <object id="15" template="../templates/spike.tx" x="336" y="144"/>
+  <object id="16" template="../templates/spike.tx" x="320" y="144"/>
+  <object id="17" template="../templates/spike.tx" x="304" y="144"/>
+  <object id="18" template="../templates/spike.tx" x="368" y="160"/>
+  <object id="19" template="../templates/spike.tx" x="352" y="160"/>
+  <object id="20" template="../templates/spike.tx" x="160" y="176"/>
+ </objectgroup>
+</map>

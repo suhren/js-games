@@ -262,7 +262,7 @@ export class Spawn extends GameOject {
 
 
 export class Level {
-    constructor(name, desciption, path, playerStart, deathBalls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap) {
+    constructor(name, desciption, path, playerStart, deathBalls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundColor) {
         this.name = name;
         this.desciption = desciption;
         this.path = path;
@@ -298,6 +298,7 @@ export class Level {
         if (this.goal) {
             this.objects.push(goal);
         }
+        this.backgroundColor = (backgroundColor != null) ? backgroundColor : "#000000";
     }
 
     update(dT) {
@@ -321,11 +322,13 @@ function coordToTile(x) {
 // Establish the Player, aka WHAT IS THE PLAYER!?
 export class Player extends GameOject {
     constructor(start = new utils.Vector()) {
-        super(start, 15, 15);
+        super(start, 14, 14);
         this.start = start;
         this.vel = new utils.Vector();
         this.wish = new utils.Vector();
         this.lastWish  = new utils.Vector(0, 1);
+        this.lastWishHorizontal  = 1
+        this.lastWishVertical  = 1
         this.maxSpeed = cfg.PLAYER_MAX_SPEED;
         this.maxSpeedSlow = cfg.PLAYER_MAX_SPEED_SLOW;
         this.acceleration = cfg.PLAYER_ACCELERATION_DEFAULT;
@@ -340,12 +343,10 @@ export class Player extends GameOject {
         this.isDashingTimer = 0;
         this.isDashAvailable = true;     
         this.isDashing = false;
-        this.frameIndex = 0;
-        this.frameTimer = 0;
         this.keys = [];
         this.sneaking = false;
         this.alive = true;
-        
+
         this.dashParticleEmitter = new ParticleEmitter(
             this.pos,
             128,
@@ -416,22 +417,6 @@ export class Player extends GameOject {
         this.col1 = Math.min(this.col1, level.ncols);
         this.row1 = Math.min(this.row1, level.nrows);
         
-        if (this.wish.length() > 0) {
-
-            if (this.wish.x == this.lastWish.x && this.wish.y == this.lastWish.y) {
-                this.frameTimer += dT;
-                if (this.frameTimer >= cfg.PLAYER_FRAME_DURATION) {
-                    this.frameIndex = (this.frameIndex + 1) % 4;
-                    this.frameTimer = 0;
-                 }
-            }
-            this.lastWish = this.wish.copy();
-        }
-        else {
-            this.frameTimer = 0;
-            this.frameIndex = 0;
-        }
-
         // Check friciton: Always pick the highest friction
         let friction = 0.0;
         for (let row = this.row0; row < this.row1; row++) {
@@ -549,7 +534,7 @@ export class Player extends GameOject {
         // Check death ball collisions
         for (let i = 0; i < level.deathBalls.length; i++) {
             let ball = level.deathBalls[i];
-            if (utils.rectCircleInterset(this.getCollisionRectangle(), ball.circ)) {
+            if (utils.circleIntersect(this.getCollisionCircle(), ball.circ)) {
                 if (this.activeCheckpoint != null) {
                     this.respawn();
                 }
@@ -601,6 +586,11 @@ export class Player extends GameOject {
     }
 
     getCollisionRectangle() {
-        return new utils.Rectangle(this.pos.x + 1, this.pos.y + 1, this.w - 2, this.h - 2);    
-    }   
+        return new utils.Rectangle(this.pos.x + 3, this.pos.y + 3, this.w - 6, this.h - 6);    
+    }
+
+    getCollisionCircle() {
+        let rect = this.getCollisionRectangle();
+        return new utils.Circle(rect.center(), rect.w / 2);    
+    }
 }
