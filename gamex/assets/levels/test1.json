@@ -383,6 +383,54 @@
                  "width":16,
                  "x":96,
                  "y":80
+                }, 
+                {
+                 "gid":27,
+                 "height":16,
+                 "id":103,
+                 "name":"",
+                 "rotation":0,
+                 "type":"spike",
+                 "visible":true,
+                 "width":16,
+                 "x":288,
+                 "y":208
+                }, 
+                {
+                 "gid":27,
+                 "height":16,
+                 "id":104,
+                 "name":"",
+                 "rotation":0,
+                 "type":"spike",
+                 "visible":true,
+                 "width":16,
+                 "x":304,
+                 "y":208
+                }, 
+                {
+                 "gid":27,
+                 "height":16,
+                 "id":105,
+                 "name":"",
+                 "rotation":270,
+                 "type":"spike",
+                 "visible":true,
+                 "width":16,
+                 "x":384,
+                 "y":112
+                }, 
+                {
+                 "gid":27,
+                 "height":16,
+                 "id":106,
+                 "name":"",
+                 "rotation":270,
+                 "type":"spike",
+                 "visible":true,
+                 "width":16,
+                 "x":384,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -391,7 +439,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":87,
+ "nextobjectid":107,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -410,7 +458,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/tileset.tsx"
+         "source":"..\/tileset_common.tsx"
         }],
  "tilewidth":16,
  "type":"map",

@@ -7,7 +7,7 @@
   <property name="description" value="This is Level 4"/>
   <property name="name" value="Level 4"/>
  </properties>
- <tileset firstgid="1" source="../tileset.tsx"/>
+ <tileset firstgid="1" source="../tileset_common.tsx"/>
  <layer id="1" name="Tile Layer 1" width="12" height="12">
   <data encoding="csv">
 6,6,6,6,6,6,6,6,6,6,6,6,

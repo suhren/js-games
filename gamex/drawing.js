@@ -14,11 +14,12 @@ var ctx = null;
 
 
 export function init(document) {
-    documentCanvas = document.getElementById("canvas");
+    documentCanvas = document.getElementById("gameCanvas");
     documentCtx = documentCanvas.getContext("2d");
     documentCanvas.width = cfg.WINDOW_WIDTH;
     documentCanvas.height = cfg.WINDOW_HEIGHT;
     canvas = document.createElement("canvas");
+    canvas.id = "bufferCanvas"
     ctx = canvas.getContext("2d");
     canvas.width = cfg.WINDOW_WIDTH;
     canvas.height = cfg.WINDOW_HEIGHT;
@@ -122,12 +123,23 @@ function strokeGrid(level) {
     }
 }
 
+function drawRotatedImage(image, rect, rot) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    var rect = getScreenRect(rect);
+    var center = rect.center();
+    ctx.translate(center.x, center.y);
+    ctx.rotate(rot);
+    ctx.translate(-center.x, -center.y);
+    ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
 
 function drawParticles(particles) {
     for (let i = 0; i < particles.length; i++) {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         let p = particles[i];
-        var rect = getScreenRect(p.getRectangle());
+        var rect = getScreenRect(p.rect);
         var center = rect.center();
         ctx.fillStyle = p.color;
         ctx.globalAlpha = p.alpha;
@@ -158,7 +170,7 @@ function drawText(text, x, y, size, textBaseline="middle", textAlign="center", d
 
 export function draw(dT, level, player, menu) {
 
-    var playerPos = player.getRectangle().center();
+    var playerPos = player.rect.center();
 
     // The camera should only follow the player if the screen-space distance
     // between the current camera distance and the player is greater than
@@ -236,7 +248,7 @@ export function draw(dT, level, player, menu) {
     for (let i = 0; i < level.checkpoints.length; i++) {
         let checkpoint = level.checkpoints[i];
         
-        let rect = getScreenRect(checkpoint.getRectangle());
+        let rect = getScreenRect(checkpoint.rect);
         ctx.lineWidth = 3;
 
         if (checkpoint.active) {
@@ -255,7 +267,7 @@ export function draw(dT, level, player, menu) {
     }
 
     // Draw goal
-    var rect = getScreenRect(level.goal.getRectangle());
+    var rect = getScreenRect(level.goal.rect);
     ctx.lineWidth = 3;
     if (level.goal.activated) {
         ctx.strokeStyle = "#7FFF00";
@@ -275,7 +287,7 @@ export function draw(dT, level, player, menu) {
     for (let i = 0; i < level.coins.length; i++) {
         let coin = level.coins[i];
         if (!coin.collected) {
-            let rect = getScreenRect(coin.rectangle);
+            let rect = getScreenRect(coin.rect);
             ctx.drawImage(assets.SPRITESHEET_COIN,
                           16 * coin.frameIndex,
                           0,
@@ -286,7 +298,7 @@ export function draw(dT, level, player, menu) {
             if (drawColliders) {
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                let circle = getScreenCircle(coin.circle);
+                let circle = getScreenCircle(coin.circ);
                 ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
                 ctx.strokeStyle = "red";
                 ctx.stroke();
@@ -298,7 +310,7 @@ export function draw(dT, level, player, menu) {
     for (let i = 0; i < level.keys.length; i++) {
         let key = level.keys[i];
         if (!key.collected) {
-            let rect = getScreenRect(key.rectangle);
+            let rect = getScreenRect(key.rect);
             ctx.drawImage(key.image, rect.x, rect.y, rect.w, rect.h);
         }
     }
@@ -307,7 +319,7 @@ export function draw(dT, level, player, menu) {
     for (let i = 0; i < level.doors.length; i++) {
         let door = level.doors[i];
         if (!door.open) {
-            let rect = getScreenRect(door.rectangle);
+            let rect = getScreenRect(door.rect);
             ctx.drawImage(door.image, rect.x, rect.y, rect.w, rect.h);
         }
     }
@@ -315,7 +327,7 @@ export function draw(dT, level, player, menu) {
 
     // Draw player
     drawParticles(player.dashParticleEmitter.particles);
-    var rect = getScreenRect(player.getRectangle());
+    var rect = getScreenRect(player.rect);
 
     let dir = player.lastWish;
     let dirIdx = 0;
@@ -387,20 +399,20 @@ export function draw(dT, level, player, menu) {
         if (drawColliders) {
             ctx.lineWidth = 2;
             ctx.beginPath();
-            let circle = getScreenCircle(ball.getCircle());
+            let circle = getScreenCircle(ball.circ);
             ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
             ctx.strokeStyle = "red";
             ctx.stroke();
         }
 
-        var rect = getScreenRect(ball.getRectangle());
+        var rect = getScreenRect(ball.rect);
         ctx.drawImage(assets.SPRITE_BALL, rect.x, rect.y, rect.w, rect.h);
     }
 
     //Draw texts
     for (let i = 0; i < level.texts.length; i++) {
         let text = level.texts[i];
-        let center = getScreenVector(text.rectangle.center());
+        let center = getScreenVector(text.rect.center());
         drawText(text.text, center.x, center.y, w2sS(text.pixelsize), "middle", "center", true);
     }
     
@@ -424,6 +436,12 @@ export function draw(dT, level, player, menu) {
     // Draw coins
     if (level.num_coins > 0) {
         drawText(`Coins: ${level.num_coins - level.coins.length}/${level.num_coins}`, 16, 60, 20, "middle", "left", true);
+    }
+
+    // Draw spikes
+    for (let i = 0; i < level.spikes.length; i++) {
+        let spike = level.spikes[i];
+        drawRotatedImage(spike.image, spike.rect, spike.rot);
     }
 
     // Draw menu
@@ -465,7 +483,7 @@ export function draw(dT, level, player, menu) {
         ctx.fillText(txt, 8, 100);
 
         // Draw movement vectors
-        var rect = getScreenRect(player.getRectangle());
+        var rect = getScreenRect(player.rect);
         ctx.lineWidth = 3;
         ctx.strokeStyle = "red";
         strokeVector(rect.center(), player.vel.max(w2sS(64)));

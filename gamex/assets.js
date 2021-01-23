@@ -3,35 +3,6 @@ import * as go from "./objects.js";
 import * as cfg from "./config.js";
 
 
-function getSprite(path) {
-    let image = new Image();
-    image.src = path;
-    return image
-}
-
-export var TILES = new Map();
-
-export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
-export const SPRITESHEET_PLAYER = getSprite("assets/images/player.png");
-export const SPRITESHEET_COIN = getSprite("assets/images/coin.png");
-export const SPRITE_BALL = getSprite("assets/images/DeathBot.png");
-
-const LEVEL_FILES = [
-    "./assets/levels/test1.json",
-    "./assets/levels/test2.json",
-    "./assets/levels/test3.json",
-    "./assets/levels/test4.json",
-    "./assets/levels/test5.json",
-    "./assets/levels/test6.json"
-];
-export const NUM_LEVELS = LEVEL_FILES.length;
-var LEVEL_JSONS = new Map();
-var TILESET_JSON = null;
-
-
-export var LEVELS = [];
-
-
 function loadJson(path, callback) {   
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
@@ -45,10 +16,48 @@ function loadJson(path, callback) {
     xobj.send(null);
 }
 
+
+
+export var TILES = new Map();
+export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
+export const SPRITESHEET_PLAYER = getSprite("assets/images/player.png");
+export const SPRITESHEET_COIN = getSprite("assets/images/coin.png");
+export const SPRITE_BALL = getSprite("assets/images/DeathBot.png");
+
+
+// Level files
+export var LEVELS = [];
+const LEVEL_FILES = [
+    "./assets/levels/test0.json",
+    "./assets/levels/test1.json",
+    "./assets/levels/test2.json",
+    "./assets/levels/test3.json",
+    "./assets/levels/test4.json",
+    "./assets/levels/test5.json",
+    "./assets/levels/test6.json"
+];
+export const NUM_LEVELS = LEVEL_FILES.length;
+var LEVEL_JSONS = new Map();
 LEVEL_FILES.forEach(path => loadJson(path, json => LEVEL_JSONS.set(path, json)));
 
-loadJson(cfg.TILESET_JSON_FILE, json => TILESET_JSON = json);
 
+// Tileset files
+const ASSET_DIR = './assets/'
+const TILESET_FILES = [
+    "./assets/tileset_common.json",
+    "./assets/tileset_forest.json"
+];
+var TILESETS = new Map();
+var TILESET_JSONS = new Map();
+TILESET_FILES.forEach(path => loadJson(path, json => TILESET_JSONS.set(path, json)));
+
+
+
+function getSprite(path) {
+    let image = new Image();
+    image.src = path;
+    return image
+}
 
 function getProperty(objs, property, value) {
     return objs.find(x => { return x[property]  == value; });
@@ -58,13 +67,48 @@ function tiledVector(obj) {
     return new utils.Vector(obj["x"], obj["y"]);
 }
 
-function tiledRectangle(obj, yFlip=false) {
+function tiledRectangle(obj, flipY=false) {
     let x = obj["x"];
+    let y = obj["y"];
     let w = obj["width"];
     let h = obj["height"];
-    let y = yFlip ? obj["y"] - h : obj["y"];
+    let rot = obj["rotation"];
+
+    // Tiled has a few weird quirks for object tiles:
+    // https://discourse.mapeditor.org/t/rotating-things-on-object-layer-changes-xy-coordinates/166
+    // 1. The origin is by default in the lower left (not top left)
+    // 2. If rotation is applied, the origin (xy) is also rotated
+    
+    // We first need to undo the rotation of the origin
+    // The rotation matrix for xy (relative to the center) is
+    // [x'] = [cos v, -sin v] [x]
+    // [y'] = [sin v,  cos v] [y]
+
+    if (rot) {
+        let centerX = w / 2;
+        let centerY = flipY ? -h / 2 : h / 2;
+
+        let cosRot = Math.cos(rot * Math.PI / 180);
+        let sinRot = Math.sin(rot * Math.PI / 180);
+        let rotCenterX = centerX * cosRot - centerY * sinRot;
+        let rotCenterY = centerX * sinRot + centerY * cosRot;
+        
+        // We now have the tiled center 
+        x += rotCenterX;
+        y += rotCenterY;
+
+        // Get the actual corner
+        x = Math.round(x - centerX);
+        y = Math.round(y - centerY);
+    }
+
+    if (flipY) {
+        y -= h;
+    }
+
     return new utils.Rectangle(x, y, w, h);
 }
+
 
 function levelFromJson(json, path) {
 
@@ -73,17 +117,29 @@ function levelFromJson(json, path) {
     let data = tileLayer["data"];
     let ncols = tileLayer["width"];
     let nrows = tileLayer["height"];
+    let tilesetSpecifications = json["tilesets"];
+
+    let tileLookup = new Map();
+
+    for (let i = 0; i < tilesetSpecifications.length; i++) {
+        let spec = tilesetSpecifications[i];
+        let name = spec["source"].replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, "");
+        let firstGid = spec["firstgid"];
+        let tileset = TILESETS.get(name);
+        for (const [id, tile] of tileset.tiles.entries()) {
+            tileLookup.set(firstGid + id, tile);
+        }
+    }
 
     let tileMap = Array(nrows).fill(null).map(()=>Array(ncols).fill(null));
     
-
     for (let i = 0; i < data.length; i++) {
         let row = Math.floor(i / ncols);
         let col = i % ncols;
-        let tile = TILES.get(data[i]);
+        let tile = tileLookup.get(data[i]);
         tileMap[row][col] = tile;
     }
-    
+
     // Load the object data
     let objectLayer = getProperty(json["layers"], "type", "objectgroup");
     let objects = objectLayer["objects"];
@@ -104,6 +160,7 @@ function levelFromJson(json, path) {
     let coins = [];
     let keys = [];
     let doors = [];
+    let spikes = [];
 
     for (let i = 0; i < objects.length; i++) {
         
@@ -118,7 +175,6 @@ function levelFromJson(json, path) {
                 break;
 
             case "checkpoint":
-                
                 checkpoints.push(new go.Checkpoint(tiledRectangle(obj)));
                 break;
 
@@ -141,15 +197,27 @@ function levelFromJson(json, path) {
             case "key":
                 var color = getProperty(properties, "name", "color")["value"];
                 var gid = objects[i]["gid"];
-                keys.push(new go.Key(tiledRectangle(obj, true), color, TILES.get(gid).image));
+                keys.push(new go.Key(tiledRectangle(obj, true), color, tileLookup.get(gid).image));
                 break;
 
             case "door":
                 var color = getProperty(properties, "name", "color")["value"];
                 var gid = objects[i]["gid"];
-                doors.push(new go.Door(tiledRectangle(obj, true), color, TILES.get(gid).image));
+                doors.push(new go.Door(tiledRectangle(obj, true), color, tileLookup.get(gid).image));
                 break;
 
+            case "spike":
+                // Rotation: 0 degrees -> up, 90 degrees -> right, ...
+                var imageRot = obj["rotation"] * Math.PI / 180;
+                // Convert to javascript canvas radians (0 right, pi/2 down, etc.)
+                // NOTE: Not radians where pi/2 is up (canvas has positive y down)
+                // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate
+                var spikeRot = (obj["rotation"] - 90) * Math.PI / 180;
+                var gid = objects[i]["gid"];
+                spikes.push(new go.Spike(tiledRectangle(obj, true), imageRot, spikeRot, tileLookup.get(gid).image));
+                break;
+
+                    
             case "ball":
                 var rect = new tiledRectangle(obj, true);
                 var pos = rect.center();
@@ -187,19 +255,114 @@ function levelFromJson(json, path) {
         }
     }
 
-    let level = new go.Level(name, desciption, path, spawn, balls, checkpoints, coins, keys, doors, goal, texts, tileMap);
+    
+    let level = new go.Level(name, desciption, path, spawn, balls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap);
     return level;
 }
 
 
+function dataToImage(data) {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = data.width;
+    canvas.height = data.height;
+    ctx.putImageData(data, 0, 0);
+    var image = new Image();
+    image.src = canvas.toDataURL();
+    return image;
+}
+
+
 export class Tile {
-    constructor(image, imagePath, id, collision=false, friction=null, object=null){
+    constructor(image, imagePath, id, collision=false, friction=null){
         this.image = image;
         this.imagePath = imagePath;
         this.id = id;
         this.collision = (collision == null) ? false : collision;
         this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
-        this.object = object;
+    }
+}
+
+
+export class Tileset {
+    constructor(name){
+        this.name = name;
+        this.tiles = new Map();
+    }
+}
+
+export class TilemapTileset extends Tileset {
+    constructor(name, path, image, tileWidth=16, tileHeight=16, tilesSpecs) {
+        super(name);
+        this.image = image;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+
+        this.ncols = Math.round(image.width / tileWidth);
+        this.nrows = Math.round(image.height / tileHeight);
+
+        let tempCanvas = document.createElement("canvas");
+        let tempCtx = tempCanvas.getContext("2d");
+        tempCtx.drawImage(image, 0, 0, image.width, image.height);
+
+        
+        for (let row = 0; row < this.nrows; row++) {
+            for (let col = 0; col < this.ncols; col++) {
+                let id = row * this.ncols + col;
+                let x = col * this.tileWidth;
+                let y = row * this.tileHeight;
+                let data = tempCtx.getImageData(x, y, tileHeight, tileWidth, tileHeight);
+                let tileImage = dataToImage(data);
+
+                // Check if there are furhter tile properties
+                let collision = null;
+                let friction = null;
+                
+                let spec = getProperty(tilesSpecs, "id", id);
+
+                if (spec != null) {
+                    let pCollision = getProperty(spec["properties"], "name", "collision");
+                    let pFriction = getProperty(spec["properties"], "name", "friction");
+                    collision = pCollision == null ? null : pCollision["value"];
+                    friction = pFriction == null ? null : pFriction["value"];
+                }
+                
+                let tile = new Tile(tileImage, path, id, collision, friction);
+                
+                this.tiles.set(id, tile);
+            }
+        }
+    }
+}
+
+
+export class ImageTileset extends Tileset {
+    constructor(name, tilesSpecs){
+        super(name);
+
+        tilesSpecs.forEach(spec => {
+            let id = spec["id"];
+            let imagePath = ASSET_DIR + spec["image"];
+            let image = getSprite(imagePath);
+            let properties = spec["properties"];
+            let collision = null;
+            let friction = null;
+            let object = null;
+            
+            if (properties != null) {
+                let pCollision = getProperty(properties, "name", "collision");
+                let pFriction = getProperty(properties, "name", "friction");
+                let pObject = getProperty(properties, "name", "object");
+                collision = pCollision == null ? null : pCollision["value"];
+                friction = pFriction == null ? null : pFriction["value"];
+                object = pObject == null ? null : pObject["value"];
+            }
+            
+            let tile = new Tile(image, imagePath, id, collision, friction);
+
+            this.tiles.set(id, tile);
+        });
+
     }
 }
 
@@ -211,30 +374,33 @@ export function loadLevelFromIndex(index) {
 }
 
 
-export function init() {
+export async function init() {
     // Initialize the tileset object
-    TILESET_JSON["tiles"].forEach(tile => {
-        let id = tile["id"];
-        let imagePath = cfg.ASSET_DIR + tile["image"];
-        let image = getSprite(imagePath);
-        let properties = tile["properties"];
 
-        let collision = null;
-        let friction = null;
-        let object = null;
-    
-        if (properties != null) {
-            let pCollision = getProperty(properties, "name", "collision");
-            let pFriction = getProperty(properties, "name", "friction");
-            let pObject = getProperty(properties, "name", "object");
-            collision = pCollision == null ? null : pCollision["value"];
-            friction = pFriction == null ? null : pFriction["value"];
-            object = pObject == null ? null : pObject["value"];
-        }
+    for (const [path, json] of TILESET_JSONS.entries()) {
         
-        TILES.set(id + 1, new Tile(image, imagePath, id, collision, friction, object));
-    })
-    
+        // Check if the tileset is a collection of images or a single image
+        let imagePath = json["image"];
+        let tileSpecs = json["tiles"];
+        let name = json["name"];
+
+
+        if (imagePath) {
+            // If there is an image, we have a single tilemap tileset
+            imagePath = "assets/" + imagePath;
+            let image = getSprite(imagePath);
+            await image.decode();
+            let tileWidth = json["tilewidth"];
+            let tileHeight = json["tileheight"];
+            let tileset = new TilemapTileset(name, imagePath, image, tileWidth, tileHeight, tileSpecs);
+            TILESETS.set(name, tileset);
+        }
+        else {
+            // Otherwise, the tileset is a collection of separate image files
+            let tileset = new ImageTileset(name, tileSpecs);
+            TILESETS.set(name, tileset);
+        }
+    }
     // Sort level jsons by their name
     // LEVEL_JSONS = new Map([...LEVEL_JSONS.entries()].sort());
     //LEVEL_JSONS.forEach((json, path) => LEVELS.push(levelFromJson(json, path)));

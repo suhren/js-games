@@ -7,28 +7,23 @@ import * as inter from "./interface.js";
 
 
 var audio = document.getElementById("sounds");
-var canvas = document.getElementById("canvas")
+var canvas = document.getElementById("gameCanvas")
 
 
 // Entry point of program
 window.onload = function() {
-    // Set up a listener to call the function "keyDown" when a key is pressed down
     document.addEventListener("keydown", keyDown);
-    // Set up a listener to call the function "keyUp" when a key is let go
     document.addEventListener("keyup", keyUp);
-    // Mouse click event for the canvas element
     canvas.addEventListener("click", click);
-    // Mouse move event for the canvas element
     canvas.addEventListener("mousemove", mousemove);
-    // Call the init function before the loop
     init();
 }
 
 
-var player = new go.Player(new Vector(128, 128));
+var player = new go.Player();
 var level;
 var levelIndex = 0;
-
+var changingLevel = false;
 var menu = null;
 
 
@@ -147,6 +142,7 @@ function nextLevel() {
     levelIndex = (levelIndex + 1) % assets.NUM_LEVELS;
     loadLevel(assets.loadLevelFromIndex(levelIndex));
     menu.active = false;
+    changingLevel = false;
 }
 
 function prevLevel() {
@@ -195,13 +191,13 @@ function init() {
 
     menu.init(buttons);
     // Wait for level JSONs to load (avoid null references)
-    setTimeout(start, 100);
+    setTimeout(assets.init, 200);
+    setTimeout(start, 500);
 }
 
 
 function start() {
     levelIndex = 0;
-    assets.init();
     loadLevel(assets.loadLevelFromIndex(levelIndex));
     // Set up to call the function "gameLoop" 60 times/second
     setInterval(gameLoop, 1000 / cfg.FPS);
@@ -222,15 +218,17 @@ function gameLoop() {
 
 
 function loadLevel(lvl) {
-    lvl.goal.activated = false;
+    if (lvl.goal != null) {
+        lvl.goal.activated = false;
+    }
     if (player.activeCheckpoint != null) {
         player.activeCheckpoint.active = false;
         player.activeCheckpoint = null;   
     }
     level = lvl;
     player.pos = level.playerStart.copy();
-    player.pos.x -= player.width / 2;
-    player.pos.y -= player.height / 2;
+    player.pos.x -= player.w / 2;
+    player.pos.y -= player.h / 2;
     player.start = level.playerStart.copy();
     player.keys = [];
 }
@@ -243,98 +241,14 @@ function update(dT) {
     // Update player
     player.update(level, dT);
     
-    // Check collisions
-    for (let row = player.row0; row < player.row1; row++) {
-        for (let col = player.col0; col < player.col1; col++) {
-            if (level.tileMap[row][col].collision) {
-                let tileRect = new Rectangle(col * cfg.TILE_SIZE,
-                                             row * cfg.TILE_SIZE,
-                                             cfg.TILE_SIZE,
-                                             cfg.TILE_SIZE);
-                if (rectIntersect(player.getRectangle(), tileRect)) {
-                    solve(player, tileRect);
-                }
-            }
-        }
-    }
-
-    
-    // Check door collisions
-    for (let i = 0; i < level.doors.length; i++) {
-        let door = level.doors[i];
-
-        if (door.open)
-            continue;
-        
-        if (rectIntersect(player.getRectangle(), door.rectangle)) {
-            for (let j = 0; j < player.keys.length; j++) {
-                if (player.keys[j].color === door.color) {
-                    level.doors[i].open = true;
-                    break;
-                }
-            }
-            solve(player, door.rectangle);
-        }
-    }
-
-    
-    let pRect = player.getRectangle();
-
-    // Check checkpoints
-    for (let i = 0; i < level.checkpoints.length; i++) {
-        let cp = level.checkpoints[i];
-        if (rectIntersect(pRect, cp.getRectangle())) {
-            if (!cp.active) {
-                cp.active = true;
-                player.activeCheckpoint = cp;
-                for (let j = 0; j < level.checkpoints.length; j++) {
-                    level.checkpoints[j].active = (i == j);
-                }
-            }
-        }
-    }
-
-    if (level.goal.unlocked &&
-        !level.goal.activated &&
-        rectIntersect(pRect, level.goal.getRectangle())) {
-        
-        level.goal.activated = true;
+    if (!changingLevel && level.goal.activated) {
+        changingLevel = true;
         setTimeout(nextLevel, 1000);
     }
-    
-    // Update coins
-    for (let i = 0; i < level.coins.length; i++) {
-        let coin = level.coins[i];
-        coin.update(dT);
-        if (!coin.collected && rectCircleInterset(pRect, coin.circle)) {
-            level.coins.splice(i, 1);
-            if (level.coins.length == 0) {
-                level.goal.unlocked = true;
-            } 
-        }
-    }
 
-    // Update keys
-    for (let i = 0; i < level.keys.length; i++) {
-        let key = level.keys[i];
-        if (!key.collected && rectIntersect(pRect, key.rectangle)) {
-            level.keys[i].collected = true;
-            player.keys.push(key);
-        }
-    }
-
-    // Check death ball collisions
-    for (let i = 0; i < level.deathBalls.length; i++) {
-        let ball = level.deathBalls[i];
-        ball.update(dT);
-        if (rectCircleInterset(player.getCollisionRectangle(), ball.getCircle())) {
-            if (player.activeCheckpoint != null) {
-                player.respawn();
-            }
-            else {
-                restart();
-                level.showCard = false;
-            }
-        }
+    if (!player.alive) {
+        restart();
+        level.showCard = false;
+        player.alive = true;
     }
 }

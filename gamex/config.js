@@ -1,6 +1,4 @@
 export const FPS = 120;
-export const ASSET_DIR = './assets/'
-export const TILESET_JSON_FILE = ASSET_DIR + 'tileset.json'
 export const FRICTION_DEFAULT = 1536;
 export const PLAYER_ACCELERATION_DEFAULT = 4096;
 export const PLAYER_ACCELERATION_SLOW = 1700;

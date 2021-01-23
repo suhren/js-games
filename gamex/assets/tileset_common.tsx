@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.4" tiledversion="1.4.3" name="tileset" tilewidth="16" tileheight="16" tilecount="20" columns="0">
+<tileset version="1.4" tiledversion="1.4.3" name="tileset_common" tilewidth="16" tileheight="16" tilecount="21" columns="0">
  <editorsettings>
-  <export target="tileset.json" format="json"/>
+  <export target="tileset_common.json" format="json"/>
  </editorsettings>
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
    <property name="collision" type="bool" value="false"/>
    <property name="friction" type="float" value="-1"/>
-   <property name="object" value=""/>
   </properties>
   <image width="16" height="16" source="images/Checkpoint.png"/>
  </tile>
@@ -16,7 +15,6 @@
   <properties>
    <property name="collision" type="bool" value="false"/>
    <property name="friction" type="float" value="-1"/>
-   <property name="object" value=""/>
   </properties>
   <image width="16" height="16" source="images/Floor1.png"/>
  </tile>
@@ -24,7 +22,6 @@
   <properties>
    <property name="collision" type="bool" value="false"/>
    <property name="friction" type="float" value="-1"/>
-   <property name="object" value=""/>
   </properties>
   <image width="16" height="16" source="images/Goal.png"/>
  </tile>
@@ -32,7 +29,6 @@
   <properties>
    <property name="collision" type="bool" value="false"/>
    <property name="friction" type="float" value="2"/>
-   <property name="object" value=""/>
   </properties>
   <image width="16" height="16" source="images/ice.png"/>
  </tile>
@@ -40,7 +36,6 @@
   <properties>
    <property name="collision" type="bool" value="false"/>
    <property name="friction" type="float" value="-1"/>
-   <property name="object" value=""/>
   </properties>
   <image width="16" height="16" source="images/Start.png"/>
  </tile>
@@ -48,7 +43,6 @@
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
-   <property name="object" value=""/>
   </properties>
   <image width="16" height="16" source="images/Wall2.png"/>
  </tile>
@@ -56,7 +50,6 @@
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
-   <property name="object" value=""/>
   </properties>
   <image width="16" height="16" source="images/Stone_brick.png"/>
  </tile>
@@ -114,6 +107,9 @@
  </tile>
  <tile id="21">
   <image width="16" height="16" source="images/door_red.png"/>
+ </tile>
+ <tile id="26">
+  <image width="16" height="16" source="images/spike.png"/>
  </tile>
  <wangsets>
   <wangset name="New Wang Set" tile="-1"/>

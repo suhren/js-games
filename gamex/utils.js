@@ -75,6 +75,11 @@ export class Vector {
 }
 
 
+export function random(min, max) {  
+    return Math.random() * (max - min) + min; 
+}  
+
+
 //Check how two rectangles (Player & Deathball for example) collide with each other
 export function rectIntersect(r1, r2) {
     return  (r1.x + r1.w > r2.x && r1.x < r2.x + r2.w &&
@@ -122,31 +127,31 @@ export function solve(player, box, epsilon=0) {
         if (player.displacement.y > 0) {
             let ox = player.pos.x - player.displacement.x 
             let oy = player.pos.y - player.displacement.y
-            let tx = Math.abs((box.x - (ox + player.width)) / player.displacement.x);
-            let ty = Math.abs((box.y - (oy + player.height)) / player.displacement.y);
+            let tx = Math.abs((box.x - (ox + player.w)) / player.displacement.x);
+            let ty = Math.abs((box.y - (oy + player.h)) / player.displacement.y);
             
             // Horizontal collision
             if (tx < ty) {
                 player.vel.x = 0;
-                player.pos.x = box.x - player.width - epsilon;
+                player.pos.x = box.x - player.w - epsilon;
             }
             // Vertical collision
             else {
                 player.vel.y = 0;
-                player.pos.y = box.y - player.height - epsilon;
+                player.pos.y = box.y - player.h - epsilon;
             }
         }
         // Moving up to the right
         else if (player.displacement.y < 0) {
             let ox = player.pos.x - player.displacement.x 
             let oy = player.pos.y - player.displacement.y
-            let tx = Math.abs((box.x - (ox + player.width)) / player.displacement.x);
+            let tx = Math.abs((box.x - (ox + player.w)) / player.displacement.x);
             let ty = Math.abs((box.y + box.h - oy) / player.displacement.y);
             
             // Horizontal collision
             if (tx < ty) {
                 player.vel.x = 0;
-                player.pos.x = box.x - player.width - epsilon;
+                player.pos.x = box.x - player.w - epsilon;
             }
             // Vertical collision
             else {
@@ -156,7 +161,7 @@ export function solve(player, box, epsilon=0) {
         }
         else {
             player.vel.x = 0;
-            player.pos.x = box.x - player.width + epsilon;
+            player.pos.x = box.x - player.w + epsilon;
         }
     }
 
@@ -168,7 +173,7 @@ export function solve(player, box, epsilon=0) {
             let ox = player.pos.x - player.displacement.x 
             let oy = player.pos.y - player.displacement.y
             let tx = Math.abs((box.x + box.w - ox) / player.displacement.x);
-            let ty = Math.abs((box.y - (oy + player.height)) / player.displacement.y);
+            let ty = Math.abs((box.y - (oy + player.h)) / player.displacement.y);
             
             // Horizontal collision
             if (tx < ty) {
@@ -178,7 +183,7 @@ export function solve(player, box, epsilon=0) {
             // Vertical collision
             else {
                 player.vel.y = 0;
-                player.pos.y = box.y - player.height - epsilon;
+                player.pos.y = box.y - player.h - epsilon;
             }
         }
         // Moving up to the left
@@ -210,7 +215,7 @@ export function solve(player, box, epsilon=0) {
         // Moving down
         if (player.displacement.y > 0) {
             player.vel.y = 0;
-            player.pos.y = box.y - player.height - epsilon;
+            player.pos.y = box.y - player.h - epsilon;
         }
         // Moving up
         else if(player.displacement.y < 0) {

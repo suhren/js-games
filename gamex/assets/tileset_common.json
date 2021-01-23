@@ -6,9 +6,9 @@
      "width":1
     },
  "margin":0,
- "name":"tileset",
+ "name":"tileset_common",
  "spacing":0,
- "tilecount":20,
+ "tilecount":21,
  "tiledversion":"1.4.3",
  "tileheight":16,
  "tiles":[
@@ -27,11 +27,6 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":""
                 }]
         }, 
         {
@@ -49,11 +44,6 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":""
                 }]
         }, 
         {
@@ -71,11 +61,6 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":""
                 }]
         }, 
         {
@@ -93,11 +78,6 @@
                  "name":"friction",
                  "type":"float",
                  "value":2
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":""
                 }]
         }, 
         {
@@ -115,11 +95,6 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":""
                 }]
         }, 
         {
@@ -137,11 +112,6 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":""
                 }]
         }, 
         {
@@ -159,11 +129,6 @@
                  "name":"friction",
                  "type":"float",
                  "value":-1
-                }, 
-                {
-                 "name":"object",
-                 "type":"string",
-                 "value":""
                 }]
         }, 
         {
@@ -302,6 +267,12 @@
         {
          "id":21,
          "image":"images\/door_red.png",
+         "imageheight":16,
+         "imagewidth":16
+        }, 
+        {
+         "id":26,
+         "image":"images\/spike.png",
          "imageheight":16,
          "imagewidth":16
         }],
