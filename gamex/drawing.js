@@ -31,6 +31,8 @@ export function init(document) {
         new Animation(assets.SPRITESHEET_PLAYER_RUN_RIGHT, 16, 6),
         new Animation(assets.SPRITESHEET_PLAYER_IDLE_LEFT, 16, 1),
         new Animation(assets.SPRITESHEET_PLAYER_IDLE_RIGHT, 16, 1),
+        new Animation(assets.SPRITESHEET_PLAYER_DASH_LEFT, 16, 1),
+        new Animation(assets.SPRITESHEET_PLAYER_DASH_RIGHT, 16, 1),
     );
     ballAnimations = new Animation(assets.SPRITE_BALL, 16, 4);
 }
@@ -219,11 +221,13 @@ class Animation {
 
 
 class PlayerAnimations {
-    constructor(animRunLeft, animRunRight, animIdleLeft, animIdleRight) {
+    constructor(animRunLeft, animRunRight, animIdleLeft, animIdleRight, animDashLeft, animDashRight) {
         this.animRunLeft = animRunLeft;
         this.animRunRight = animRunRight;
         this.animIdleLeft = animIdleLeft;
         this.animIdleRight = animIdleRight;
+        this.animDashLeft = animDashLeft;
+        this.animDashRight = animDashRight;
         this.animCurrent = this.animIdleLeft;
         this.animLast = this.animCurrent;
         this.lastWish  = new utils.Vector(0, 1);
@@ -237,6 +241,8 @@ class PlayerAnimations {
         this.animRunRight.update(dT);
         this.animIdleLeft.update(dT);
         this.animIdleRight.update(dT);
+        this.animDashLeft.update(dT);
+        this.animDashRight.update(dT);
 
         if (player.wish.length() > 0) {
             // The player is trying to move   
@@ -247,10 +253,20 @@ class PlayerAnimations {
                 this.lastWishVertical = player.wish.y
             }
             if (this.lastWishHorizontal == 1) {
-                this.animCurrent = this.animRunRight;
+                if (player.isDashing) {
+                    this.animCurrent = this.animDashRight;
+                }
+                else {
+                    this.animCurrent = this.animRunRight;
+                }
             }
             else if (this.lastWishHorizontal == -1) {
-                this.animCurrent = this.animRunLeft;
+                if (player.isDashing) {
+                    this.animCurrent = this.animDashLeft;
+                }
+                else {
+                    this.animCurrent = this.animRunLeft;
+                }
             }
             this.lastWish = player.wish.copy();
         }
@@ -448,13 +464,6 @@ export function draw(dT, level, player, menu) {
     drawDropShadow(rect);
     playerAnimations.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
     
-    if (player.isDashing) {
-        ctx.fillStyle = "#FFFFFF";
-        ctx.globalAlpha = 0.5;
-        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);    
-        ctx.globalAlpha = 1.0;
-    }
-
     ballAnimations.update(dT);
 
     // Draw death ball circles outline

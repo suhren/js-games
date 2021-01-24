@@ -29,6 +29,8 @@ export const SPRITESHEET_PLAYER_IDLE_LEFT = getSprite("assets/images/player/play
 export const SPRITESHEET_PLAYER_IDLE_RIGHT = getSprite("assets/images/player/playerIdleRight.png");
 export const SPRITESHEET_PLAYER_RUN_LEFT = getSprite("assets/images/player/playerRunLeft.png");
 export const SPRITESHEET_PLAYER_RUN_RIGHT = getSprite("assets/images/player/playerRunRight.png");
+export const SPRITESHEET_PLAYER_DASH_LEFT = getSprite("assets/images/player/playerDashLeft.png");
+export const SPRITESHEET_PLAYER_DASH_RIGHT = getSprite("assets/images/player/playerDashRight.png");
 
 // Level files
 export var LEVELS = [];
