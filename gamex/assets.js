@@ -633,6 +633,9 @@ export class ImageTileset extends Tileset {
 
         let specs = root.getElementsByTagName("tile");
 
+        // We must handle the animations after ALL tile images have been loaded
+        let animationCandidates = new Map();
+
         for (let i = 0; i < specs.length; i++) {
             let spec = specs[i];
             let id = parseInt(spec.getAttribute("id"));
@@ -648,8 +651,44 @@ export class ImageTileset extends Tileset {
             if (friction != null) {
                 friction = friction.getAttribute("value");
             }
+            
+            let animation = spec.getElementsByTagName("animation")[0];
+            if (animation != null) {
+                animationCandidates.set(id, spec);
+            }
+
             let tile = new Tile(image, imagePath, id, collision, friction);
             this.tiles.set(id, tile);
+        }
+        
+        let animationTiles = new Map();
+
+        for (const [id, spec] of animationCandidates) {
+            let tile = this.tiles.get(id);
+            let animation = spec.getElementsByTagName("animation")[0];
+            let images = [];
+            let durations = [];
+            let imagePaths = [];
+
+            let frames = animation.getElementsByTagName("frame");
+
+            for (let i = 0; i < frames.length; i++) {
+                let frame = frames[i];
+                let refId = parseInt(frame.getAttribute("tileid"));
+                // Tiled uses milliseconds, we use seconds
+                let duration = parseFloat(frame.getAttribute("duration")) / 1000;
+
+                let refTile = this.tiles.get(refId);
+                images.push(refTile.image);
+                durations.push(duration);
+                imagePaths.push(refTile.path)
+            }
+
+            animationTiles.set(id, new AnimatedTile(images, imagePaths, durations, id, tile.collision, tile.friction));
+        }
+
+        for (const [id, animatedTile] of animationTiles) {
+            this.tiles.set(id, animatedTile);
         }
     }
 }
