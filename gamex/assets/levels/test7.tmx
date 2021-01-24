@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="3" nextobjectid="21">
- <editorsettings>
-  <export target="test7.json" format="json"/>
- </editorsettings>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="3" nextobjectid="25">
  <properties>
   <property name="description" value="The depths"/>
   <property name="name" value="Dungeon 0"/>
@@ -35,14 +32,6 @@
   <object id="3" template="../templates/coin.tx" x="240" y="144"/>
   <object id="4" template="../templates/coin.tx" x="256" y="176"/>
   <object id="5" template="../templates/coin.tx" x="304" y="176"/>
-  <object id="11" template="../templates/spike.tx" x="160" y="160"/>
-  <object id="13" template="../templates/spike.tx" x="176" y="160"/>
-  <object id="14" template="../templates/spike.tx" x="192" y="160"/>
-  <object id="15" template="../templates/spike.tx" x="336" y="144"/>
-  <object id="16" template="../templates/spike.tx" x="320" y="144"/>
-  <object id="17" template="../templates/spike.tx" x="304" y="144"/>
-  <object id="18" template="../templates/spike.tx" x="368" y="160"/>
-  <object id="19" template="../templates/spike.tx" x="352" y="160"/>
-  <object id="20" template="../templates/spike.tx" x="160" y="176"/>
+  <object id="24" template="../templates/spike.tx" x="192" y="160"/>
  </objectgroup>
 </map>

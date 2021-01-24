@@ -16,7 +16,24 @@ function loadJson(path, callback) {
     xobj.send(null);
 }
 
+function loadXml(path, callback) {   
+    var xobj = new XMLHttpRequest();
+    xobj.overrideMimeType("application/xml");
+    xobj.open("GET", path, true);
+    xobj.onreadystatechange = () => {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+            // Callback as .open returns undefined in asynchronous mode
+            let parser = new DOMParser();
+            callback(parser.parseFromString(xobj.responseText, "text/xml"));
+        }
+    };
+    xobj.send(null);
+}
 
+
+function getFileName(path) {
+    return path.replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, "");
+}
 
 export var TILES = new Map();
 export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
@@ -32,34 +49,60 @@ export const SPRITESHEET_PLAYER_RUN_RIGHT = getSprite("assets/images/player/play
 export const SPRITESHEET_PLAYER_DASH_LEFT = getSprite("assets/images/player/playerDashLeft.png");
 export const SPRITESHEET_PLAYER_DASH_RIGHT = getSprite("assets/images/player/playerDashRight.png");
 
-// Level files
+// Template XML (Tiled .tx) files
+export var TEMPLATES = [];
+const TEMPLATE_FILES = [
+    "./assets/templates/ball.tx",
+    "./assets/templates/checkpoint.tx",
+    "./assets/templates/coin.tx",
+    "./assets/templates/doorBlue.tx",
+    "./assets/templates/doorGreen.tx",
+    "./assets/templates/doorRed.tx",
+    "./assets/templates/doorYellow.tx",
+    "./assets/templates/goal.tx",
+    "./assets/templates/keyBlue.tx",
+    "./assets/templates/keyGreen.tx",
+    "./assets/templates/keyRed.tx",
+    "./assets/templates/keyYellow.tx",
+    "./assets/templates/line.tx",
+    "./assets/templates/position.tx",
+    "./assets/templates/spawn.tx",
+    "./assets/templates/spike.tx",
+    "./assets/templates/text.tx"
+];
+var TEMPLATE_XMLS = new Map();
+TEMPLATE_FILES.forEach(path => loadXml(path,
+    xml => TEMPLATE_XMLS.set(getFileName(path), xml))
+);
+
+
+// Level XML (Tiled .tmx) files
 export var LEVELS = [];
 const LEVEL_FILES = [
-    "./assets/levels/test0.json",
-    "./assets/levels/test1.json",
-    "./assets/levels/test2.json",
-    "./assets/levels/test3.json",
-    "./assets/levels/test4.json",
-    "./assets/levels/test5.json",
-    "./assets/levels/test6.json",
-    "./assets/levels/test7.json"
+    "./assets/levels/test0.tmx",
+    "./assets/levels/test1.tmx",
+    "./assets/levels/test2.tmx",
+    "./assets/levels/test3.tmx",
+    "./assets/levels/test4.tmx",
+    "./assets/levels/test5.tmx",
+    "./assets/levels/test6.tmx",
+    "./assets/levels/test7.tmx"
 ];
 export const NUM_LEVELS = LEVEL_FILES.length;
-var LEVEL_JSONS = new Map();
-LEVEL_FILES.forEach(path => loadJson(path, json => LEVEL_JSONS.set(path, json)));
+var LEVEL_XMLS = new Map();
+LEVEL_FILES.forEach(path => loadXml(path, xml => LEVEL_XMLS.set(path, xml)));
 
 
-// Tileset files
+// Tileset XML (Tiled .tsx) files
 const ASSET_DIR = './assets/'
 const TILESET_FILES = [
-    "./assets/tileset_common.json",
-    "./assets/tileset_forest.json",
-    "./assets/tileset_dungeon.json"
+    "./assets/tileset_common.tsx",
+    "./assets/tileset_forest.tsx",
+    "./assets/tileset_dungeon.tsx"
 ];
 var TILESETS = new Map();
-var TILESET_JSONS = new Map();
-TILESET_FILES.forEach(path => loadJson(path, json => TILESET_JSONS.set(path, json)));
-
+var TILESET_XMLS = new Map();
+TILESET_FILES.forEach(path => loadXml(path, xml => TILESET_XMLS.set(path, xml)));
 
 
 function getSprite(path) {
@@ -68,21 +111,12 @@ function getSprite(path) {
     return image
 }
 
-function getProperty(objs, property, value) {
-    return objs.find(x => { return x[property]  == value; });
-}
-
 function tiledVector(obj) {
-    return new utils.Vector(obj["x"], obj["y"]);
+    return new utils.Vector(parseInt(obj.getAttribute("x")),
+                            parseInt(obj.getAttribute("y")));
 }
 
-function tiledRectangle(obj, flipY=false) {
-    let x = obj["x"];
-    let y = obj["y"];
-    let w = obj["width"];
-    let h = obj["height"];
-    let rot = obj["rotation"];
-
+function tiledRectangle(x, y, w, h, rot=0, flipY=false) {
     // Tiled has a few weird quirks for object tiles:
     // https://discourse.mapeditor.org/t/rotating-things-on-object-layer-changes-xy-coordinates/166
     // 1. The origin is by default in the lower left (not top left)
@@ -93,7 +127,7 @@ function tiledRectangle(obj, flipY=false) {
     // [x'] = [cos v, -sin v] [x]
     // [y'] = [sin v,  cos v] [y]
 
-    if (rot) {
+    if (rot != null && !isNaN(rot) && rot > 0) {
         let centerX = w / 2;
         let centerY = flipY ? -h / 2 : h / 2;
 
@@ -119,25 +153,87 @@ function tiledRectangle(obj, flipY=false) {
 }
 
 
-function levelFromJson(json, path) {
 
-    // Load the tile data
-    let tileLayer = getProperty(json["layers"], "name", "Tile Layer 1");
-    let data = tileLayer["data"];
-    let ncols = tileLayer["width"];
-    let nrows = tileLayer["height"];
-    let tilesetSpecifications = json["tilesets"];
-    let backgroundcolor = json["backgroundcolor"];
+function getAttribute(name, object, template) {
+    var x = object.getAttribute(name);
+    if (x == null) {
+        x = template.getAttribute(name);
+    }
+    return x;
+}
 
-    let tileLookup = new Map();
 
-    for (let i = 0; i < tilesetSpecifications.length; i++) {
-        let spec = tilesetSpecifications[i];
-        let name = spec["source"].replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, "");
-        let firstGid = spec["firstgid"];
+function getProperty(name, object, template) {
+    var x = object.querySelectorAll(`property[name='${name}']`)[0];
+    if (x == null) {
+        x = template.querySelectorAll(`property[name='${name}']`)[0];
+    }
+    return x.getAttribute("value");
+}
+
+
+function getTile(object, template) {
+    var x = object.querySelectorAll(`property[name='${name}']`)[0];
+    if (x == null) {
+        x = template.querySelectorAll(`property[name='${name}']`)[0];
+    }
+    return x.getAttribute("value");
+}
+
+
+
+function levelFromXml(xml, path) {
+
+    let root = xml.getElementsByTagName("map")[0];
+    let backgroundcolor = root.getAttribute("backgroundcolor");
+
+    let name = root.querySelectorAll("property[name='name']")[0];
+    if (name != null) {
+        name = name.getAttribute("value");
+    }
+    let description = root.querySelectorAll("property[name='description']")[0];
+    if (description != null) {
+        description = description.getAttribute("value");
+    }
+
+    // Naively select the first tile layer. Change if more layers are neeed.
+    let tileLayer = root.getElementsByTagName("layer")[0];
+    let ncols = parseInt(tileLayer.getAttribute("width"));
+    let nrows = parseInt(tileLayer.getAttribute("height"))
+    let dataString = tileLayer.getElementsByTagName("data")[0].firstChild.data;
+    let data = dataString.split(",").map(x => parseInt(x));;
+    
+    // Setup level-specific tileset lookups
+    let levelTileLookup = new Map();
+    let tilesetSpecs = root.getElementsByTagName("tileset");
+    for (let i = 0; i < tilesetSpecs.length; i++) {
+        let spec = tilesetSpecs[i];
+        let name = getFileName(spec.getAttribute("source"))
+        let firstGid = parseInt(spec.getAttribute("firstgid"));
         let tileset = TILESETS.get(name);
         for (const [id, tile] of tileset.tiles.entries()) {
-            tileLookup.set(firstGid + id, tile);
+            levelTileLookup.set(firstGid + id, tile);
+        }
+    }
+
+    // Setup template-specific tileset lookups
+    let templateTileLookups = new Map();
+
+    for (const [templateName, xml] of TEMPLATE_XMLS) {
+        let template = xml.getElementsByTagName("template")[0];
+        let specs = template.getElementsByTagName("tileset");
+        if (specs != null && specs.length > 0) {
+            var lookup = new Map();
+            for (let i = 0; i < specs.length; i++) {
+                var spec = specs[i];
+                var tilesetName =  getFileName(spec.getAttribute("source"));
+                var firstGid = parseInt(spec.getAttribute("firstgid"));
+                var tileset = TILESETS.get(tilesetName);
+                for (const [id, tile] of tileset.tiles.entries()) {
+                    lookup.set(firstGid + id, tile);
+                }
+            }
+            templateTileLookups.set(templateName, lookup);
         }
     }
 
@@ -146,22 +242,14 @@ function levelFromJson(json, path) {
     for (let i = 0; i < data.length; i++) {
         let row = Math.floor(i / ncols);
         let col = i % ncols;
-        let tile = tileLookup.get(data[i]);
+        let tile = levelTileLookup.get(data[i]);
         tileMap[row][col] = tile;
     }
 
-    // Load the object data
-    let objectLayer = getProperty(json["layers"], "type", "objectgroup");
-    let objects = objectLayer["objects"];
+    // Naively select the first object layer. Change if more layers are neeed.
+    let objectLayer = root.getElementsByTagName("objectgroup")[0];
+    let objects = objectLayer.getElementsByTagName("object");
 
-    let name = null;
-    let desciption = null;
-
-    if (json["properties"] != null) {
-        name = getProperty(json["properties"], "name", "name")["value"];
-        desciption = getProperty(json["properties"], "name", "description")["value"];
-    }
-    
     let spawn = null;
     let checkpoints = [];
     let balls = [];
@@ -175,69 +263,169 @@ function levelFromJson(json, path) {
     for (let i = 0; i < objects.length; i++) {
         
         let obj = objects[i];
-        let type = objects[i]["type"];
-        let properties = objects[i]["properties"];
+        
+        let template = null;
+        let templateName = null;
+        let templateObject = null;
+        let type = null;
+        let templatePath = obj.getAttribute("template");
+
+        if (templatePath == null) {
+            type = obj.getAttribute("type");
+            if (type == null) {
+                continue;
+            }
+        }
+        else {
+            templateName = getFileName(templatePath);
+            template = TEMPLATE_XMLS.get(templateName);
+            template = template.getElementsByTagName("template")[0];
+            templateObject = template.getElementsByTagName("object")[0];
+            type = templateObject.getAttribute("type");
+        }
 
         switch (type) {
 
             case "spawn":
-                spawn = tiledVector(obj);
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                spawn = new utils.Vector(x, y);
                 break;
 
             case "checkpoint":
-                checkpoints.push(new go.Checkpoint(tiledRectangle(obj)));
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                checkpoints.push(new go.Checkpoint(tiledRectangle(x, y, w, h)));
                 break;
 
             case "goal":
-                goal = new go.Goal(tiledRectangle(obj));
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                goal = new go.Goal(tiledRectangle(x, y, w, h));
                 break;
 
             case "text":
-                var rect = tiledRectangle(obj);
-                let text = obj["text"]["text"];
-                let pixelsize = obj["text"]["pixelsize"];
-                let wrap = obj["text"]["wrap"];
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                var rect = tiledRectangle(x, y, w, h);
+
+                var textObj = obj.getElementsByTagName("text")[0];
+
+                if (textObj == null) {
+                    textObj = templateObject.getElementsByTagName("text")[0];
+                }
+                var text = textObj.firstChild.data;
+                let pixelsize = parseInt(textObj.getAttribute("pixelsize"));
+                let wrap = parseInt(textObj.getAttribute("wrap"));
                 texts.push(new go.Text(text, pixelsize, rect, wrap));
                 break;
             
             case "coin":
-                coins.push(new go.Coin(tiledRectangle(obj, true)));
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                var rect = tiledRectangle(x, y, w, h, 0, true);
+                coins.push(new go.Coin(rect));
                 break;
 
             case "key":
-                var color = getProperty(properties, "name", "color")["value"];
-                var gid = objects[i]["gid"];
-                keys.push(new go.Key(tiledRectangle(obj, true), color, tileLookup.get(gid).image));
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                var rect = tiledRectangle(x, y, w, h, 0, true);
+                var color = getProperty("color", obj, templateObject);
+                var gid = parseInt(getAttribute("gid", obj, templateObject));
+                var templateTileLookup = templateTileLookups.get(templateName);
+                var image = null;
+                if (templateTileLookup != null) {
+                    image = templateTileLookup.get(gid).image;
+                }
+                else {
+                    image = levelTileLookup.get(gid).image;
+                }
+                keys.push(new go.Key(rect, color, image));
                 break;
 
             case "door":
-                var color = getProperty(properties, "name", "color")["value"];
-                var gid = objects[i]["gid"];
-                doors.push(new go.Door(tiledRectangle(obj, true), color, tileLookup.get(gid).image));
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                var rect = tiledRectangle(x, y, w, h, 0, true);
+                var color = getProperty("color", obj, templateObject);
+                var gid = parseInt(getAttribute("gid", obj, templateObject));
+                
+                var templateTileLookup = templateTileLookups.get(templateName);
+                var image = null;
+                if (templateTileLookup != null) {
+                    image = templateTileLookup.get(gid).image;
+                }
+                else {
+                    image = levelTileLookup.get(gid).image;
+                }
+
+                doors.push(new go.Door(rect, color, image));
                 break;
 
             case "spike":
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                var rot = parseFloat(getAttribute("rotation", obj, templateObject));
+                if (rot == null || isNaN(rot)) {
+                    rot = 0;
+                }
+                var rect = tiledRectangle(x, y, w, h, rot, true);
                 // Rotation: 0 degrees -> up, 90 degrees -> right, ...
-                var imageRot = obj["rotation"] * Math.PI / 180;
+                var imageRot = rot * Math.PI / 180;
                 // Convert to javascript canvas radians (0 right, pi/2 down, etc.)
                 // NOTE: Not radians where pi/2 is up (canvas has positive y down)
                 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate
-                var spikeRot = (obj["rotation"] - 90) * Math.PI / 180;
-                var gid = objects[i]["gid"];
-                spikes.push(new go.Spike(tiledRectangle(obj, true), imageRot, spikeRot, tileLookup.get(gid).image));
+                var spikeRot = (rot - 90) * Math.PI / 180;
+                var gid = parseInt(getAttribute("gid", obj, templateObject));
+                
+                var templateTileLookup = templateTileLookups.get(templateName);
+                var image = null;
+                if (templateTileLookup != null) {
+                    image = templateTileLookup.get(gid).image;
+                }
+                else {
+                    image = levelTileLookup.get(gid).image;
+                }
+                spikes.push(new go.Spike(rect, imageRot, spikeRot, image));
                 break;
 
                     
             case "ball":
-                var rect = new tiledRectangle(obj, true);
+                var x = parseInt(getAttribute("x", obj, templateObject));
+                var y = parseInt(getAttribute("y", obj, templateObject));
+                var w = parseInt(getAttribute("width", obj, templateObject));
+                var h = parseInt(getAttribute("height", obj, templateObject));
+                var rect = tiledRectangle(x, y, w, h, 0, true);
+
                 var pos = rect.center();
                 let size = rect.w / 2;
 
-                var speed = getProperty(properties, "name", "speed")["value"];
-                var centerIdx = getProperty(properties, "name", "center")["value"];
-                
-                if (centerIdx != 0) {
-                    var centerObj = getProperty(objects, "id", centerIdx);
+                var speed = getProperty("speed", obj, templateObject);
+                var centerIdx = getProperty("center", obj, templateObject);
+                var lineIdx = getProperty("line", obj, templateObject);
+
+                if (centerIdx != null && centerIdx != 0) {
+                    // Ball rotating around some center
+                    var centerObj = root.querySelectorAll(`object[id='${centerIdx}']`)[0]
+
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    
                     var center = tiledVector(centerObj);
                     let radius = pos.subtract(center).length();
                     let angle = Math.atan2(pos.y - center.y, pos.x - center.x);
@@ -245,12 +433,22 @@ function levelFromJson(json, path) {
                     balls.push(new go.DeathBallCircle(center, radius, speed, size, angle));
                 }
                 else {
-                    var lineIdx = getProperty(properties, "name", "line")["value"];
+                    // Ball moving along some line
                     if (lineIdx != 0) {
-                        var lineObj = getProperty(objects, "id", lineIdx);
+                        var lineObj = root.querySelectorAll(`object[id='${lineIdx}']`)[0]
+                        var polyline = lineObj.getElementsByTagName("polyline")[0];
+                        var pointsString = polyline.getAttribute("points");
+                        var pairs = pointsString.split(" ");
+                        var points = pairs.map(
+                            str => str.split(",").map(s => parseFloat(s))
+                        );
+                        
                         let p = tiledVector(lineObj);
-                        let p1 = p.add(tiledVector(lineObj["polyline"][0]));
-                        let p2 = p.add(tiledVector(lineObj["polyline"][1]));
+                        let p1 = new utils.Vector(points[0][0], points[0][1]);
+                        let p2 = new utils.Vector(points[1][0], points[1][1]);
+                        
+                        p1 = p.add(p1);
+                        p2 = p.add(p2);
                         speed = speed / 100;
 
                         // Relative to p1: the length from p1 to the projection
@@ -266,7 +464,7 @@ function levelFromJson(json, path) {
     }
 
     
-    let level = new go.Level(name, desciption, path, spawn, balls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundcolor);
+    let level = new go.Level(name, description, path, spawn, balls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundcolor);
     return level;
 }
 
@@ -302,12 +500,11 @@ export class Tileset {
 }
 
 export class TilemapTileset extends Tileset {
-    constructor(name, path, image, tileWidth=16, tileHeight=16, tilesSpecs) {
+    constructor(name, path, image, tileWidth=16, tileHeight=16, root) {
         super(name);
         this.image = image;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-
         this.ncols = Math.round(image.width / tileWidth);
         this.nrows = Math.round(image.height / tileHeight);
 
@@ -315,7 +512,6 @@ export class TilemapTileset extends Tileset {
         let tempCtx = tempCanvas.getContext("2d");
         tempCtx.drawImage(image, 0, 0, image.width, image.height);
 
-        
         for (let row = 0; row < this.nrows; row++) {
             for (let col = 0; col < this.ncols; col++) {
                 let id = row * this.ncols + col;
@@ -324,19 +520,19 @@ export class TilemapTileset extends Tileset {
                 let data = tempCtx.getImageData(x, y, tileHeight, tileWidth, tileHeight);
                 let tileImage = dataToImage(data);
 
-                // Check if there are furhter tile properties
-                let collision = null;
-                let friction = null;
-                
-                let spec = getProperty(tilesSpecs, "id", id);
-
-                if (spec != null) {
-                    let pCollision = getProperty(spec["properties"], "name", "collision");
-                    let pFriction = getProperty(spec["properties"], "name", "friction");
-                    collision = pCollision == null ? null : pCollision["value"];
-                    friction = pFriction == null ? null : pFriction["value"];
+                let spec = root.querySelectorAll(`tile[id='${id}']`)[0];
+                if (spec == null) {
+                    continue;
                 }
-                
+
+                let collision = spec.querySelectorAll("property[name='collision']")[0];
+                if (collision != null) {
+                    collision = (collision.getAttribute("value") == "true");
+                }
+                let friction = spec.querySelectorAll("property[name='friction']")[0];
+                if (friction != null) {
+                    friction = friction.getAttribute("value");
+                }
                 let tile = new Tile(tileImage, path, id, collision, friction);
                 
                 this.tiles.set(id, tile);
@@ -347,71 +543,66 @@ export class TilemapTileset extends Tileset {
 
 
 export class ImageTileset extends Tileset {
-    constructor(name, tilesSpecs){
+    constructor(name, root){
         super(name);
 
-        tilesSpecs.forEach(spec => {
-            let id = spec["id"];
-            let imagePath = ASSET_DIR + spec["image"];
+        let specs = root.getElementsByTagName("tile");
+
+        for (let i = 0; i < specs.length; i++) {
+            let spec = specs[i];
+            let id = parseInt(spec.getAttribute("id"));
+            let imageSpec = spec.getElementsByTagName("image")[0]
+            let imagePath = ASSET_DIR + imageSpec.getAttribute("source");
             let image = getSprite(imagePath);
-            let properties = spec["properties"];
-            let collision = null;
-            let friction = null;
-            let object = null;
-            
-            if (properties != null) {
-                let pCollision = getProperty(properties, "name", "collision");
-                let pFriction = getProperty(properties, "name", "friction");
-                let pObject = getProperty(properties, "name", "object");
-                collision = pCollision == null ? null : pCollision["value"];
-                friction = pFriction == null ? null : pFriction["value"];
-                object = pObject == null ? null : pObject["value"];
+
+            let collision = spec.querySelectorAll("property[name='collision']")[0];
+            if (collision != null) {
+                collision = (collision.getAttribute("value") == "true");
             }
-            
+            let friction = spec.querySelectorAll("property[name='friction']")[0];
+            if (friction != null) {
+                friction = friction.getAttribute("value");
+            }
             let tile = new Tile(image, imagePath, id, collision, friction);
-
             this.tiles.set(id, tile);
-        });
-
+        }
     }
 }
 
 
 export function loadLevelFromIndex(index) {
     let path = LEVEL_FILES[index];
-    let json = LEVEL_JSONS.get(path);
-    return levelFromJson(json, path);
+    let xml = LEVEL_XMLS.get(path);
+    return levelFromXml(xml, path);
 }
 
 
 export async function init() {
     // Initialize the tileset object
 
-    for (const [path, json] of TILESET_JSONS.entries()) {
-        
-        // Check if the tileset is a collection of images or a single image
-        let imagePath = json["image"];
-        let tileSpecs = json["tiles"];
-        let name = json["name"];
+    for (const [path, xml] of TILESET_XMLS.entries()) {
+        // https://www.w3schools.com/jsref/met_document_queryselector.asp
+        let root = xml.getElementsByTagName("tileset")[0];
 
+        let name = root.getAttribute("name");
+        // Check if the tileset is a collection of images or a single image
+        let image = root.querySelectorAll("tileset > image")[0];
+        let imagePath = (image != null) ? image.getAttribute("source") : null;
 
         if (imagePath) {
             // If there is an image, we have a single tilemap tileset
-            imagePath = "assets/" + imagePath;
+            imagePath = ASSET_DIR + imagePath;
             let image = getSprite(imagePath);
             await image.decode();
-            let tileWidth = json["tilewidth"];
-            let tileHeight = json["tileheight"];
-            let tileset = new TilemapTileset(name, imagePath, image, tileWidth, tileHeight, tileSpecs);
+            let tileWidth = root.getAttribute("tilewidth");
+            let tileHeight = root.getAttribute("tileheight");
+            let tileset = new TilemapTileset(name, imagePath, image, tileWidth, tileHeight, root);
             TILESETS.set(name, tileset);
         }
         else {
             // Otherwise, the tileset is a collection of separate image files
-            let tileset = new ImageTileset(name, tileSpecs);
+            let tileset = new ImageTileset(name, root);
             TILESETS.set(name, tileset);
         }
     }
-    // Sort level jsons by their name
-    // LEVEL_JSONS = new Map([...LEVEL_JSONS.entries()].sort());
-    //LEVEL_JSONS.forEach((json, path) => LEVELS.push(levelFromJson(json, path)));
 }

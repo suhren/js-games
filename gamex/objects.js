@@ -421,8 +421,9 @@ export class Player extends GameOject {
         let friction = 0.0;
         for (let row = this.row0; row < this.row1; row++) {
             for (let col = this.col0; col < this.col1; col++) {
-                if (!level.tileMap[row][col].collision) {
-                    friction = Math.max(friction, level.tileMap[row][col].friction);
+                let tile = level.tileMap[row][col];
+                if (tile != null && !tile.collision) {
+                    friction = Math.max(friction, tile.friction);
                 }
             }
         }
@@ -459,11 +460,12 @@ export class Player extends GameOject {
         // Check collisions
         for (let row = this.row0; row < this.row1; row++) {
             for (let col = this.col0; col < this.col1; col++) {
-                if (level.tileMap[row][col].collision) {
+                let tile = level.tileMap[row][col];
+                if (tile != null && tile.collision) {
                     let tileRect = new utils.Rectangle(col * cfg.TILE_SIZE,
-                                                 row * cfg.TILE_SIZE,
-                                                 cfg.TILE_SIZE,
-                                                 cfg.TILE_SIZE);
+                                                       row * cfg.TILE_SIZE,
+                                                       cfg.TILE_SIZE,
+                                                       cfg.TILE_SIZE);
                     if (utils.rectIntersect(this.rect, tileRect)) {
                         utils.solve(this, tileRect);
                     }

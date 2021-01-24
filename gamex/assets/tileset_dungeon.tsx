@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.4" tiledversion="1.4.3" name="tileset_dungeon" tilewidth="16" tileheight="16" tilecount="64" columns="8">
- <editorsettings>
-  <export target="tileset_dungeon.json" format="json"/>
- </editorsettings>
  <image source="images/dungeon/dungeon.png" width="128" height="128"/>
  <tile id="0">
   <properties>
@@ -111,5 +108,11 @@
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
+ </tile>
+ <tile id="18">
+  <animation>
+   <frame tileid="18" duration="400"/>
+   <frame tileid="19" duration="400"/>
+  </animation>
  </tile>
 </tileset>

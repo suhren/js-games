@@ -34,7 +34,7 @@ export function init(document) {
         new Animation(assets.SPRITESHEET_PLAYER_DASH_LEFT, 16, 1),
         new Animation(assets.SPRITESHEET_PLAYER_DASH_RIGHT, 16, 1),
     );
-    ballAnimations = new Animation(assets.SPRITE_BALL, 16, 4);
+    ballAnimations = new Animation(assets.SPRITE_BALL, 16, 6);
 }
 
 
@@ -221,15 +221,15 @@ class Animation {
 
 
 class PlayerAnimations {
-    constructor(animRunLeft, animRunRight, animIdleLeft, animIdleRight, animDashLeft, animDashRight) {
-        this.animRunLeft = animRunLeft;
-        this.animRunRight = animRunRight;
-        this.animIdleLeft = animIdleLeft;
-        this.animIdleRight = animIdleRight;
-        this.animDashLeft = animDashLeft;
-        this.animDashRight = animDashRight;
-        this.animCurrent = this.animIdleLeft;
-        this.animLast = this.animCurrent;
+    constructor(aRunLeft, aRunRight, aIdleLeft, aIdleRight, aDashLeft, aDashRight) {
+        this.aRunLeft = aRunLeft;
+        this.aRunRight = aRunRight;
+        this.aIdleLeft = aIdleLeft;
+        this.aIdleRight = aIdleRight;
+        this.aDashLeft = aDashLeft;
+        this.aDashRight = aDashRight;
+        this.aCurrent = this.aIdleLeft;
+        this.aLast = this.aCurrent;
         this.lastWish  = new utils.Vector(0, 1);
         this.lastWishHorizontal  = 1
         this.lastWishVertical  = 1
@@ -237,12 +237,7 @@ class PlayerAnimations {
 
     update(dT, player) {
         
-        this.animRunLeft.update(dT);
-        this.animRunRight.update(dT);
-        this.animIdleLeft.update(dT);
-        this.animIdleRight.update(dT);
-        this.animDashLeft.update(dT);
-        this.animDashRight.update(dT);
+        this.aCurrent.update(dT);
 
         if (player.wish.length() > 0) {
             // The player is trying to move   
@@ -254,18 +249,18 @@ class PlayerAnimations {
             }
             if (this.lastWishHorizontal == 1) {
                 if (player.isDashing) {
-                    this.animCurrent = this.animDashRight;
+                    this.aCurrent = this.aDashRight;
                 }
                 else {
-                    this.animCurrent = this.animRunRight;
+                    this.aCurrent = this.aRunRight;
                 }
             }
             else if (this.lastWishHorizontal == -1) {
                 if (player.isDashing) {
-                    this.animCurrent = this.animDashLeft;
+                    this.aCurrent = this.aDashLeft;
                 }
                 else {
-                    this.animCurrent = this.animRunLeft;
+                    this.aCurrent = this.aRunLeft;
                 }
             }
             this.lastWish = player.wish.copy();
@@ -274,23 +269,21 @@ class PlayerAnimations {
             // The player is not trying to move
             // Idle in the last direciton the player tried to move
             if (this.lastWishHorizontal == 1) {
-                this.animCurrent = this.animIdleRight;
+                this.aCurrent = this.aIdleRight;
             }
             else if (this.lastWishHorizontal == -1) {
-                this.animCurrent = this.animIdleLeft;
+                this.aCurrent = this.aIdleLeft;
             }
         }
-
-        if (this.animLast != this.animCurrent) {
-            this.animCurrent.timer = 0;
-            this.animCurrent.índex = 0;
-
+        if (this.aLast != this.aCurrent) {
+            this.aCurrent.timer = 0;
+            this.aCurrent.índex = 0;
         }
-        this.animLast = this.animCurrent;
+        this.aLast = this.aCurrent;
     }
 
     drawImage(c, x, y, w, h) {
-        return this.animCurrent.drawImage(c, x, y, w, h)
+        return this.aCurrent.drawImage(c, x, y, w, h)
     }
 }
 
@@ -352,7 +345,12 @@ export function draw(dT, level, player, menu) {
                 let x = w2sX(col * cfg.TILE_SIZE);
                 let y = w2sY(row * cfg.TILE_SIZE);
                 let s = w2sS(cfg.TILE_SIZE);
-                ctx.drawImage(level.tileMap[row][col].image, x, y, s, s);
+                try {
+                    ctx.drawImage(level.tileMap[row][col].image, x, y, s, s);
+                }
+                catch {
+                    console.log(level.tileMap[row][col]);
+                }
             }
         }
     }
