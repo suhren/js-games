@@ -187,7 +187,6 @@ function drawDropShadow(rect, color="#222222", alpha=0.3, xScale=1.0, yScale=0.2
 }
 
 
-
 export class Renderer {
     constructor(obj) {
         this.obj = obj;
@@ -614,7 +613,7 @@ export function draw(dT, level, menu) {
                 let x = w2sX(col * cfg.TILE_SIZE);
                 let y = w2sY(row * cfg.TILE_SIZE);
                 let s = w2sS(cfg.TILE_SIZE);
-                ctx.drawImage(level.tileMap[row][col].image, x, y, s, s);
+                ctx.drawImage(level.tileMap[row][col].getImage(), x, y, s, s);
             }
         }
     }

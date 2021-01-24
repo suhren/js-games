@@ -80,14 +80,14 @@ TEMPLATE_FILES.forEach(path => loadXml(path,
 // Level XML (Tiled .tmx) files
 export var LEVELS = [];
 const LEVEL_FILES = [
+    "./assets/levels/test7.tmx",
     "./assets/levels/test0.tmx",
     "./assets/levels/test1.tmx",
     "./assets/levels/test2.tmx",
     "./assets/levels/test3.tmx",
     "./assets/levels/test4.tmx",
     "./assets/levels/test5.tmx",
-    "./assets/levels/test6.tmx",
-    "./assets/levels/test7.tmx"
+    "./assets/levels/test6.tmx"
 ];
 export const NUM_LEVELS = LEVEL_FILES.length;
 var LEVEL_XMLS = new Map();
@@ -244,7 +244,12 @@ function levelFromXml(xml, path) {
         let row = Math.floor(i / ncols);
         let col = i % ncols;
         let tile = levelTileLookup.get(data[i]);
-        tileMap[row][col] = tile;
+        if (tile != null && tile.animated) {
+            tileMap[row][col] = tile.copy();
+        }
+        else {
+            tileMap[row][col] = tile;
+        }
     }
 
     // Naively select the first object layer. Change if more layers are neeed.
@@ -489,6 +494,47 @@ export class Tile {
         this.id = id;
         this.collision = (collision == null) ? false : collision;
         this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
+        this.animated = false;
+    }
+
+    getImage() {
+        return this.image;
+    }
+}
+
+
+export class AnimatedTile {
+    constructor(images, imagePaths, durations, id, collision=false, friction=null, randomize=true){
+        this.images = images;
+        this.durations = durations;
+        this.imagePaths = imagePaths;
+        this.id = id;
+        this.collision = (collision == null) ? false : collision;
+        this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
+        this.numFrames = this.images.length;
+        this.index = randomize ? utils.randomInt(0, this.numFrames) : 0;
+        this.currentDuration = this.durations[this.index];
+        this.currentImage = this.images[this.index];
+        this.timer = randomize ? utils.random(0, this.currentDuration) : 0;
+        this.animated = true;
+    }
+
+    update(dT) {
+        this.timer += dT;
+        if (this.timer >= this.currentDuration) {
+            this.index = (this.index + 1) % this.numFrames;
+            this.timer = this.timer % this.currentDuration;
+            this.currentDuration = this.durations[this.index];
+            this.currentImage = this.images[this.index];
+        }
+    }
+
+    getImage() {
+        return this.currentImage;
+    }
+
+    copy() {
+        return new AnimatedTile(this.images, this.imagePaths, this.durations, this.id, this.collision, this.friction, true);
     }
 }
 
@@ -513,6 +559,9 @@ export class TilemapTileset extends Tileset {
         let tempCtx = tempCanvas.getContext("2d");
         tempCtx.drawImage(image, 0, 0, image.width, image.height);
 
+        // We must handle the animations after ALL tile images have been loaded
+        let animationCandidates = new Map();
+
         for (let row = 0; row < this.nrows; row++) {
             for (let col = 0; col < this.ncols; col++) {
                 let id = row * this.ncols + col;
@@ -534,10 +583,45 @@ export class TilemapTileset extends Tileset {
                 if (friction != null) {
                     friction = friction.getAttribute("value");
                 }
+
+                let animation = spec.getElementsByTagName("animation")[0];
+                if (animation != null) {
+                    animationCandidates.set(id, spec);
+                }
+
                 let tile = new Tile(tileImage, path, id, collision, friction);
-                
                 this.tiles.set(id, tile);
             }
+        }
+
+        let animationTiles = new Map();
+
+        for (const [id, spec] of animationCandidates) {
+            let tile = this.tiles.get(id);
+            let animation = spec.getElementsByTagName("animation")[0];
+            let images = [];
+            let durations = [];
+            let imagePaths = [];
+
+            let frames = animation.getElementsByTagName("frame");
+
+            for (let i = 0; i < frames.length; i++) {
+                let frame = frames[i];
+                let refId = parseInt(frame.getAttribute("tileid"));
+                // Tiled uses milliseconds, we use seconds
+                let duration = parseFloat(frame.getAttribute("duration")) / 1000;
+
+                let refTile = this.tiles.get(refId);
+                images.push(refTile.image);
+                durations.push(duration);
+                imagePaths.push(refTile.path)
+            }
+
+            animationTiles.set(id, new AnimatedTile(images, imagePaths, durations, id, tile.collision, tile.friction));
+        }
+
+        for (const [id, animatedTile] of animationTiles) {
+            this.tiles.set(id, animatedTile);
         }
     }
 }

@@ -110,9 +110,19 @@
   </properties>
  </tile>
  <tile id="18">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
   <animation>
-   <frame tileid="18" duration="400"/>
-   <frame tileid="19" duration="400"/>
+   <frame tileid="18" duration="200"/>
+   <frame tileid="19" duration="200"/>
   </animation>
+ </tile>
+ <tile id="19">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
  </tile>
 </tileset>

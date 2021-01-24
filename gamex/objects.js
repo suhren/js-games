@@ -295,6 +295,16 @@ export class Level {
         this.showCard = true;
         this.cardDuration = 2;
         
+        this.animatedTiles = [];
+        for (let row = 0; row < this.nrows; row++) {
+            for (let col = 0; col < this.ncols; col++) {
+                let tile = this.tileMap[row][col];
+                if (tile != null && tile.animated) {
+                    this.animatedTiles.push(tile);
+                }
+            }
+        }
+
         this.objects = [];
         this.objects.push.apply(this.objects, deathBalls);
         this.objects.push.apply(this.objects, checkpoints);
@@ -318,12 +328,11 @@ export class Level {
         if (this.levelTimer >= this.cardDuration) {
             this.showCard = false;
         }
-
         for (let i = 0; i < this.objects.length; i++) {
             this.objects[i].update(this, dT);
         }
-
         this.objects = this.objects.filter(obj => !obj.isDisposed);
+        this.animatedTiles.forEach(tile => tile.update(dT));
     }
 }
 
