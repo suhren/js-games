@@ -41,13 +41,14 @@ export const SPRITESHEET_PLAYER = getSprite("assets/images/player.png");
 export const SPRITESHEET_COIN = getSprite("assets/images/coin.png");
 export const SPRITE_BALL = getSprite("assets/images/enemies/floaty_animation.png");
 
-
 export const SPRITESHEET_PLAYER_IDLE_LEFT = getSprite("assets/images/player/playerIdleLeft.png");
 export const SPRITESHEET_PLAYER_IDLE_RIGHT = getSprite("assets/images/player/playerIdleRight.png");
 export const SPRITESHEET_PLAYER_RUN_LEFT = getSprite("assets/images/player/playerRunLeft.png");
 export const SPRITESHEET_PLAYER_RUN_RIGHT = getSprite("assets/images/player/playerRunRight.png");
 export const SPRITESHEET_PLAYER_DASH_LEFT = getSprite("assets/images/player/playerDashLeft.png");
 export const SPRITESHEET_PLAYER_DASH_RIGHT = getSprite("assets/images/player/playerDashRight.png");
+export const SPRITESHEET_PLAYER_EXPLODE = getSprite("assets/images/player/explosion.png");
+export const SPRITESHEET_PLAYER_SPIRIT = getSprite("assets/images/player/spirit.png");
 
 // Template XML (Tiled .tx) files
 export var TEMPLATES = [];

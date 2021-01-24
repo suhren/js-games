@@ -1,5 +1,5 @@
 import * as go from "./objects.js";
-import {Vector, Rectangle, solve, clamp, rectIntersect, rectCircleInterset} from "./utils.js";
+import * as utils from "./utils.js";
 import * as cfg from "./config.js";
 import * as assets from "./assets.js";
 import * as drawing from "./drawing.js";
@@ -218,6 +218,7 @@ function gameLoop() {
 
 
 function loadLevel(lvl) {
+    lvl.setPlayer(player);
     if (lvl.goal != null) {
         lvl.goal.activated = false;
     }
@@ -237,18 +238,9 @@ function loadLevel(lvl) {
 function update(dT) {
     
     level.update(dT);
-
-    // Update player
-    player.update(level, dT);
     
     if (!changingLevel && level.goal.activated) {
         changingLevel = true;
         setTimeout(nextLevel, 1000);
-    }
-
-    if (!player.alive) {
-        restart();
-        level.showCard = false;
-        player.alive = true;
     }
 }

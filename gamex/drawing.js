@@ -15,6 +15,7 @@ var ctx = null;
 
 var playerAnimations = null;
 var ballAnimations = null;
+var playerExplodeAnimation = null;
 
 export function init(document) {
     documentCanvas = document.getElementById("gameCanvas");
@@ -26,15 +27,6 @@ export function init(document) {
     ctx = canvas.getContext("2d");
     canvas.width = cfg.WINDOW_WIDTH;
     canvas.height = cfg.WINDOW_HEIGHT;
-    playerAnimations = new PlayerAnimations(
-        new Animation(assets.SPRITESHEET_PLAYER_RUN_LEFT, 16, 6),
-        new Animation(assets.SPRITESHEET_PLAYER_RUN_RIGHT, 16, 6),
-        new Animation(assets.SPRITESHEET_PLAYER_IDLE_LEFT, 16, 1),
-        new Animation(assets.SPRITESHEET_PLAYER_IDLE_RIGHT, 16, 1),
-        new Animation(assets.SPRITESHEET_PLAYER_DASH_LEFT, 16, 1),
-        new Animation(assets.SPRITESHEET_PLAYER_DASH_RIGHT, 16, 1),
-    );
-    ballAnimations = new Animation(assets.SPRITE_BALL, 16, 6);
 }
 
 
@@ -195,22 +187,257 @@ function drawDropShadow(rect, color="#222222", alpha=0.3, xScale=1.0, yScale=0.2
 }
 
 
-class Animation {
-    constructor(image, frameWidth, fps) {
-        this.image = image;
-        this.timer = 0;
-        this.duration = 1 / fps;
-        this.frameWidth = frameWidth;
-        this.height = image.height;
-        this.numFrames = Math.floor(image.width / this.frameWidth);
-        this.index = 0;
+
+export class Renderer {
+    constructor(obj) {
+        this.obj = obj;
     }
 
     update(dT) {
-        this.timer += dT;
-        if (this.timer >= this.duration) {
-            this.index = (this.index + 1) % this.numFrames;
-            this.timer = 0;
+        return;
+    }
+
+    draw(obj) {
+        return;
+    }
+}
+
+
+export class CoinRenderer extends Renderer {
+    constructor(obj) {
+        super(obj);
+        this.animation = new Animation(assets.SPRITESHEET_COIN, 16, 8, true);
+    }
+
+    update(dT) {
+        if (!this.obj.collected) {
+            this.animation.update(dT);
+        }
+    }
+
+    draw() {
+        if (!this.obj.collected) {
+            var rect = getScreenRect(this.obj.rect);
+            drawDropShadow(rect);
+            this.animation.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
+
+            if (drawColliders) {
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "red";
+                let circle = getScreenCircle(this.obj.circ);
+                ctx.beginPath();
+                ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+export class ExplosionRenderer extends Renderer {
+    constructor(obj) {
+        super(obj);
+        this.animation = new Animation(assets.SPRITESHEET_PLAYER_EXPLODE, 20, 64, false, false);
+    }
+
+    update(dT) {
+        if (!this.obj.collected) {
+            this.animation.update(dT);
+        }
+    }
+
+    draw() {
+        var rect = getScreenRect(this.obj.rect);
+        this.animation.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
+    }
+}
+
+
+
+export class DoorRenderer extends Renderer {
+    constructor(obj, image) {
+        super(obj);
+        this.image = image;
+    }
+
+    draw() {
+        if (!this.obj.open) {
+            let rect = getScreenRect(this.obj.rect);
+            ctx.drawImage(this.image, rect.x, rect.y, rect.w, rect.h);
+        }
+    }
+}
+
+export class KeyRenderer extends Renderer {
+    constructor(obj, image) {
+        super(obj);
+        this.image = image;
+    }
+
+    draw() {
+        if (!this.obj.collected) {
+            let rect = getScreenRect(this.obj.rect);
+            ctx.drawImage(this.image, rect.x, rect.y, rect.w, rect.h);
+        }
+    }
+}
+
+export class SpikeRenderer extends Renderer {
+    constructor(obj, image) {
+        super(obj);
+        this.image = image;
+    }
+
+    draw() {
+        let rect = getScreenRect(this.obj.rect);
+        ctx.drawImage(this.image, rect.x, rect.y, rect.w, rect.h);
+    }
+}
+
+
+export class CheckpointRenderer extends Renderer {
+    constructor(obj) {
+        super(obj);
+    }
+
+    draw() {
+        let rect = getScreenRect(this.obj.rect);
+        ctx.lineWidth = 3;
+
+        if (this.obj.active) {
+            ctx.strokeStyle = "#FFD700";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = "#FFD700";
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 1;
+        }
+        else {
+            ctx.strokeStyle = "#DAA520";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+        }
+    }
+}
+
+
+export class GoalRenderer extends Renderer {
+    constructor(obj) {
+        super(obj);
+    }
+
+    draw() {
+        var rect = getScreenRect(this.obj.rect);
+        ctx.lineWidth = 3;
+        if (this.obj.activated) {
+            ctx.strokeStyle = "#7FFF00";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = "#7FFF00";
+            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.globalAlpha = 1;
+        }
+        else if (this.obj.unlocked) {
+            ctx.strokeStyle = "#228B22";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+        }
+    }
+}
+
+export class TextRenderer extends Renderer {
+    constructor(obj) {
+        super(obj);
+    }
+
+    draw() {
+        let center = getScreenVector(this.obj.rect.center());
+        drawText(this.obj.text, center.x, center.y, w2sS(this.obj.pixelsize), "middle", "center", true);
+    }
+}
+
+
+
+export class BallRenderer extends Renderer {
+    constructor(obj, type) {
+        super(obj);
+        this.type = type;
+        this.animation = new Animation(assets.SPRITE_BALL, 16, 6, true);
+    }
+
+    update(dT) {
+        this.animation.update(dT);
+    }
+
+    draw() {
+        if (drawDebug) {
+            if (this.type == "circle") {
+                var x = w2sX(this.obj.center.x);
+                var y = w2sY(this.obj.center.y);
+                var r = w2sS(this.obj.radius);
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#CCC";
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2, false);
+                ctx.arc(x, y, 2, 0, Math.PI * 2, false);
+                ctx.strokeStyle = "#CCC";
+                ctx.stroke();
+            }
+            else if (this.type === "line") {
+                var p1 = getScreenVector(this.obj.p1);
+                var p2 = getScreenVector(this.obj.p2);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#CCC"; 
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+        }
+        if (drawColliders) {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "red";
+            ctx.beginPath();
+            let circle = getScreenCircle(this.obj.circ);
+            ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
+            ctx.stroke();
+        }
+        var rect = getScreenRect(this.obj.rect);
+        drawDropShadow(rect);
+        this.animation.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
+    }
+}
+
+
+export class Animation {
+    constructor(image, frameWidth, fps, loop=true, randomStartFrame=false, callback=null) {
+        this.image = image;
+        this.timer = 0;
+        this.duration = 1 / fps;
+        this.loop = loop;
+        this.active = true;
+        this.frameWidth = frameWidth;
+        this.height = image.height;
+        this.numFrames = Math.floor(image.width / this.frameWidth);
+        this.index = randomStartFrame ? utils.randomInt(0, this.numFrames) : 0;
+        this.callback = callback;
+    }
+
+    update(dT) {
+        if (this.active) {       
+            this.timer += dT;
+            if (this.timer >= this.duration) {
+                this.index += 1;
+                if (this.index >= this.numFrames) {
+                    if (this.loop) {
+                        this.index = 0;
+                    }
+                    else {
+                        this.active = false;
+                    }
+                    if (this.callback != null) {
+                        this.callback();
+                    } 
+                }
+                this.timer = 0;
+            }
         }
     }
 
@@ -220,14 +447,16 @@ class Animation {
 }
 
 
-class PlayerAnimations {
-    constructor(aRunLeft, aRunRight, aIdleLeft, aIdleRight, aDashLeft, aDashRight) {
-        this.aRunLeft = aRunLeft;
-        this.aRunRight = aRunRight;
-        this.aIdleLeft = aIdleLeft;
-        this.aIdleRight = aIdleRight;
-        this.aDashLeft = aDashLeft;
-        this.aDashRight = aDashRight;
+export class PlayerRenderer extends Renderer {
+    constructor(obj) {
+        super(obj);
+        this.aRunLeft = new Animation(assets.SPRITESHEET_PLAYER_RUN_LEFT, 16, 6),
+        this.aRunRight = new Animation(assets.SPRITESHEET_PLAYER_RUN_RIGHT, 16, 6),
+        this.aIdleLeft = new Animation(assets.SPRITESHEET_PLAYER_IDLE_LEFT, 16, 1),
+        this.aIdleRight = new Animation(assets.SPRITESHEET_PLAYER_IDLE_RIGHT, 16, 1),
+        this.aDashLeft = new Animation(assets.SPRITESHEET_PLAYER_DASH_LEFT, 16, 1),
+        this.aDashRight = new Animation(assets.SPRITESHEET_PLAYER_DASH_RIGHT, 16, 1),
+        this.aSpirit = new Animation(assets.SPRITESHEET_PLAYER_SPIRIT, 16, 6),
         this.aCurrent = this.aIdleLeft;
         this.aLast = this.aCurrent;
         this.lastWish  = new utils.Vector(0, 1);
@@ -235,20 +464,23 @@ class PlayerAnimations {
         this.lastWishVertical  = 1
     }
 
-    update(dT, player) {
+    update(dT) {
         
         this.aCurrent.update(dT);
 
-        if (player.wish.length() > 0) {
+        if (!this.obj.alive) {
+            this.aCurrent = this.aSpirit;
+        }
+        else if (this.obj.wish.length() > 0) {
             // The player is trying to move   
-            if (player.wish.x != 0) {
-                this.lastWishHorizontal = player.wish.x
+            if (this.obj.wish.x != 0) {
+                this.lastWishHorizontal = this.obj.wish.x
             }
-            if (player.wish.y != 0) {
-                this.lastWishVertical = player.wish.y
+            if (this.obj.wish.y != 0) {
+                this.lastWishVertical = this.obj.wish.y
             }
             if (this.lastWishHorizontal == 1) {
-                if (player.isDashing) {
+                if (this.obj.isDashing) {
                     this.aCurrent = this.aDashRight;
                 }
                 else {
@@ -256,14 +488,14 @@ class PlayerAnimations {
                 }
             }
             else if (this.lastWishHorizontal == -1) {
-                if (player.isDashing) {
+                if (this.obj.isDashing) {
                     this.aCurrent = this.aDashLeft;
                 }
                 else {
                     this.aCurrent = this.aRunLeft;
                 }
             }
-            this.lastWish = player.wish.copy();
+            this.lastWish = this.obj.wish.copy();
         }
         else {
             // The player is not trying to move
@@ -282,13 +514,50 @@ class PlayerAnimations {
         this.aLast = this.aCurrent;
     }
 
-    drawImage(c, x, y, w, h) {
-        return this.aCurrent.drawImage(c, x, y, w, h)
+    draw() {
+        drawParticles(this.obj.dashParticleEmitter.particles);
+        drawParticles(this.obj.spiritParticleEmitter.particles);
+        var rect = this.obj.rect.copy();
+        rect.y -= (20 - rect.h);
+        rect.h = 20;
+        rect = getScreenRect(rect);
+        drawDropShadow(rect);
+        this.aCurrent.drawImage(ctx, rect.x, rect.y, rect.w, rect.h)
+
+        if (drawDebug) {
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+            let x = w2sX(cfg.TILE_SIZE * this.obj.col0);
+            let y = w2sY(cfg.TILE_SIZE * this.obj.row0);
+            let w = w2sS(cfg.TILE_SIZE * (this.obj.col1 - this.obj.col0));
+            let h = w2sS(cfg.TILE_SIZE * (this.obj.row1 - this.obj.row0));
+            ctx.strokeRect(x, y, w, h);
+
+            var rect = getScreenRect(this.obj.rect);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "red";
+            strokeVector(rect.center(), this.obj.vel.max(w2sS(64)));
+            ctx.strokeStyle = "blue";
+            strokeVector(rect.center(), this.obj.wish.setLength(w2sS(32)));            
+        }
+        
+        if (drawColliders) {
+            let rect = getScreenRect(this.obj.getCollisionRectangle());
+            let circ = getScreenCircle(this.obj.getCollisionCircle());
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+            ctx.beginPath();
+            ctx.arc(circ.c.x, circ.c.y, circ.r, 0, Math.PI * 2, false);
+            ctx.stroke();
+        }
+
     }
 }
 
-export function draw(dT, level, player, menu) {
+export function draw(dT, level, menu) {
 
+    let player = level.player;
     var playerPos = player.rect.center();
 
     // The camera should only follow the player if the screen-space distance
@@ -345,12 +614,7 @@ export function draw(dT, level, player, menu) {
                 let x = w2sX(col * cfg.TILE_SIZE);
                 let y = w2sY(row * cfg.TILE_SIZE);
                 let s = w2sS(cfg.TILE_SIZE);
-                try {
-                    ctx.drawImage(level.tileMap[row][col].image, x, y, s, s);
-                }
-                catch {
-                    console.log(level.tileMap[row][col]);
-                }
+                ctx.drawImage(level.tileMap[row][col].image, x, y, s, s);
             }
         }
     }
@@ -359,167 +623,12 @@ export function draw(dT, level, player, menu) {
     if (drawGrid)
         strokeGrid(level);
 
-    // Intersecting tiles
-    if (drawDebug) {
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 2;
-        let x = w2sX(cfg.TILE_SIZE * player.col0);
-        let y = w2sY(cfg.TILE_SIZE * player.row0);
-        let w = w2sS(cfg.TILE_SIZE * (player.col1 - player.col0));
-        let h = w2sS(cfg.TILE_SIZE * (player.row1 - player.row0));
-        ctx.strokeRect(x, y, w, h);
-    }
-
-    // Draw Checkpoints
-    for (let i = 0; i < level.checkpoints.length; i++) {
-        let checkpoint = level.checkpoints[i];
-        
-        let rect = getScreenRect(checkpoint.rect);
-        ctx.lineWidth = 3;
-
-        if (checkpoint.active) {
-            ctx.strokeStyle = "#FFD700";
-            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.globalAlpha = 0.5;
-            ctx.fillStyle = "#FFD700";
-            ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.globalAlpha = 1;
+    // Draw game objects
+    for (let i = 0; i < level.objects.length; i++) {
+        let renderer = level.objects[i].renderer;
+        if (renderer != null) {
+            renderer.draw();
         }
-        else {
-            ctx.strokeStyle = "#DAA520";
-            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-        }
-
-    }
-
-    // Draw goal
-    var rect = getScreenRect(level.goal.rect);
-    ctx.lineWidth = 3;
-    if (level.goal.activated) {
-        ctx.strokeStyle = "#7FFF00";
-        ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-        ctx.globalAlpha = 0.5;
-        ctx.fillStyle = "#7FFF00";
-        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
-        ctx.globalAlpha = 1;
-    }
-    else if (level.goal.unlocked) {
-        ctx.strokeStyle = "#228B22";
-        ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-    }
-
-    
-    // Draw coins
-    for (let i = 0; i < level.coins.length; i++) {
-        let coin = level.coins[i];
-        if (!coin.collected) {
-            let rect = getScreenRect(coin.rect);
-            ctx.drawImage(assets.SPRITESHEET_COIN,
-                          16 * coin.frameIndex,
-                          0,
-                          16,
-                          16,
-                          rect.x, rect.y, rect.w, rect.h);
-            
-            if (drawColliders) {
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                let circle = getScreenCircle(coin.circ);
-                ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
-                ctx.strokeStyle = "red";
-                ctx.stroke();
-            }
-        }
-    }
-
-    // Draw keys
-    for (let i = 0; i < level.keys.length; i++) {
-        let key = level.keys[i];
-        if (!key.collected) {
-            let rect = getScreenRect(key.rect);
-            ctx.drawImage(key.image, rect.x, rect.y, rect.w, rect.h);
-        }
-    }
-
-    // Draw doors
-    for (let i = 0; i < level.doors.length; i++) {
-        let door = level.doors[i];
-        if (!door.open) {
-            let rect = getScreenRect(door.rect);
-            ctx.drawImage(door.image, rect.x, rect.y, rect.w, rect.h);
-        }
-    }
-
-
-    // Draw player
-    drawParticles(player.dashParticleEmitter.particles);
-    var rect = player.rect.copy();
-    rect.y -= (20 - rect.h);
-    rect.h = 20;
-    rect = getScreenRect(rect);
-
-    playerAnimations.update(dT, player);
-    drawDropShadow(rect);
-    playerAnimations.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
-    
-    ballAnimations.update(dT);
-
-    // Draw death ball circles outline
-    for (let i = 0; i < level.deathBalls.length; i++) {
-        let ball = level.deathBalls[i];
-
-        if (drawDebug) {
-
-            if (ball instanceof go.DeathBallCircle) {
-
-                var x = w2sX(ball.center.x);
-                var y = w2sY(ball.center.y);
-                var r = w2sS(ball.radius);
-                
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.arc(x, y, r, 0, Math.PI * 2, false);
-                ctx.strokeStyle = "#CCC";
-                ctx.stroke();
-        
-                ctx.beginPath();
-                ctx.arc(x, y, 2, 0, Math.PI * 2, false);
-                ctx.strokeStyle = "#CCC";
-                ctx.stroke();
-            }
-
-            if (ball instanceof go.DeathBallLinear) {
-
-                var p1 = getScreenVector(ball.p1);
-                var p2 = getScreenVector(ball.p2);
-
-                ctx.strokeStyle = "#CCC"; 
-                ctx.beginPath();
-                ctx.moveTo(p1.x, p1.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.stroke();
-            }
-        }
-
-        if (drawColliders) {
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            let circle = getScreenCircle(ball.circ);
-            ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
-            ctx.strokeStyle = "red";
-            ctx.stroke();
-        }
-
-        var rect = getScreenRect(ball.rect);
-        drawDropShadow(rect);
-        ballAnimations.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
-    }
-
-    //Draw texts
-    for (let i = 0; i < level.texts.length; i++) {
-        let text = level.texts[i];
-        let center = getScreenVector(text.rect.center());
-        drawText(text.text, center.x, center.y, w2sS(text.pixelsize), "middle", "center", true);
     }
     
     // Draw player dash cooldown
@@ -536,7 +645,7 @@ export function draw(dT, level, player, menu) {
     
     // Draw keys
     for (let i = 0; i < player.keys.length; i++) {
-        ctx.drawImage(player.keys[i].image, 180 + i * 45, 16, 32, 32);
+        ctx.drawImage(player.keys[i].renderer.image, 180 + i * 45, 16, 32, 32);
     }
     
     // Draw coins
@@ -546,9 +655,7 @@ export function draw(dT, level, player, menu) {
 
     // Draw spikes
     for (let i = 0; i < level.spikes.length; i++) {
-        let spike = level.spikes[i];
-        let rect = getScreenRect(spike.rect);
-        ctx.drawImage(spike.image, rect.x, rect.y, rect.w, rect.h);
+        level.spikes[i].renderer.draw();
     }
 
     // Draw menu
@@ -581,33 +688,17 @@ export function draw(dT, level, player, menu) {
         ctx.strokeText(txt, 8, 60);
         ctx.fillText(txt, 8, 60);
 
-        txt = `FPS: ${(1/dT).toFixed(2)}`;
+        txt = `Level objects: ${level.objects.length}`;
         ctx.strokeText(txt, 8, 80);
         ctx.fillText(txt, 8, 80);
 
-        txt = "Press 'x' to toggle debug mode";
+        txt = `FPS: ${(1/dT).toFixed(2)}`;
         ctx.strokeText(txt, 8, 100);
         ctx.fillText(txt, 8, 100);
 
-        // Draw movement vectors
-        var rect = getScreenRect(player.rect);
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "red";
-        strokeVector(rect.center(), player.vel.max(w2sS(64)));
-        ctx.strokeStyle = "blue";
-        strokeVector(rect.center(), player.wish.setLength(w2sS(32)));
-    }
-
-    //Draw bounding boxes
-    if (drawColliders) {
-        let rect = getScreenRect(player.getCollisionRectangle());
-        let circ = getScreenCircle(player.getCollisionCircle());
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-        ctx.beginPath();
-        ctx.arc(circ.c.x, circ.c.y, circ.r, 0, Math.PI * 2, false);
-        ctx.stroke();
+        txt = "Press 'x' to toggle debug mode";
+        ctx.strokeText(txt, 8, 120);
+        ctx.fillText(txt, 8, 120);
     }
 
     // Draw level name and description card

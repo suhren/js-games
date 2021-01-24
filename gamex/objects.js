@@ -1,5 +1,7 @@
 import * as utils from './utils.js';
 import * as cfg from './config.js';
+import * as assets from './assets.js';
+import * as drawing from './drawing.js';
 
 
 export class GameOject {
@@ -7,6 +9,7 @@ export class GameOject {
         this.pos = pos.copy();
         this.w = w;
         this.h = h;
+        this.isDisposed = false;
     }
 
     get rect() {
@@ -21,6 +24,10 @@ export class GameOject {
 
     update(level, dT) {
         return;
+    }
+
+    dispose() {
+        this.isDisposed = true;
     }
 }
 
@@ -130,6 +137,7 @@ export class Text extends GameOject {
         this.text = text;
         this.pixelsize = (pixelsize != null) ? pixelsize : 16;
         this.wrap = wrap;
+        this.renderer = new drawing.TextRenderer(this);
     }
 }
 
@@ -143,9 +151,11 @@ export class DeathBallCircle extends GameOject {
         this.center = center;
         this.angle = angle;
         this.speed = speed;
+        this.renderer = new drawing.BallRenderer(this, "circle");
     }
 
     update(level, dT) {
+        this.renderer.update(dT);
         this.angle = this.angle + this.speed * dT;
         this.pos.x = this.center.x + Math.cos(this.angle) * this.radius - this.size;  
         this.pos.y = this.center.y + Math.sin(this.angle) * this.radius - this.size;
@@ -164,6 +174,7 @@ export class DeathBallLinear extends GameOject{
         this.t = t; // Between 0.0 and 1.0
         this.vel = speed;
         this.delta = this.p2.subtract(this.p1);
+        this.renderer = new drawing.BallRenderer(this, "line");
     }
 
     getOffset() {
@@ -172,6 +183,7 @@ export class DeathBallLinear extends GameOject{
     }
 
     update(level, dT) {
+        this.renderer.update(dT);
         if (this.t <= 0.0) {
             this.vel = this.speed;
         }
@@ -190,8 +202,8 @@ export class Key extends GameOject {
     constructor(rect, color, image) {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
         this.color = color;
-        this.image = image;
         this.collected = false;
+        this.renderer = new drawing.KeyRenderer(this, image);
     }
 }
 
@@ -201,8 +213,8 @@ export class Door extends GameOject {
     constructor(rect, color, image) {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
         this.color = color;
-        this.image = image;
         this.open = false;
+        this.renderer = new drawing.DoorRenderer(this, image);
     }
 }
 
@@ -212,18 +224,11 @@ export class Coin extends GameOject {
     constructor(rect) {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
         this.collected = false;
-        this.frameIndex = 0;
-        this.frameTimer = 0;
+        this.renderer = new drawing.CoinRenderer(this);
     }
 
     update(level, dT) {
-        if (!this.collected) {
-            this.frameTimer += dT;
-            if (this.frameTimer >= cfg.COIN_FRAME_DURATION) {
-                this.frameIndex = (this.frameIndex + 1) % 4;
-                this.frameTimer = 0;
-            }
-        }
+        this.renderer.update(dT);
     }
 }
 
@@ -232,6 +237,7 @@ export class Checkpoint extends GameOject {
     constructor(rect) {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
         this.active = false;
+        this.renderer = new drawing.CheckpointRenderer(this);
     }
 }
 
@@ -241,6 +247,7 @@ export class Goal extends GameOject {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
         this.activated = false;
         this.unlocked = true;
+        this.renderer = new drawing.GoalRenderer(this);
     }
 }
 
@@ -250,7 +257,7 @@ export class Spike extends GameOject {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
         this.rot = rot;
         this.spikeRot = spikeRot;
-        this.image = image;
+        this.renderer = new drawing.SpikeRenderer(this, image);
     }
 }
 
@@ -301,6 +308,11 @@ export class Level {
         this.backgroundColor = (backgroundColor != null) ? backgroundColor : "#000000";
     }
 
+    setPlayer(player) {
+        this.player = player;
+        this.objects.push(player);
+    }
+
     update(dT) {
         this.levelTimer += dT;
         if (this.levelTimer >= this.cardDuration) {
@@ -310,6 +322,8 @@ export class Level {
         for (let i = 0; i < this.objects.length; i++) {
             this.objects[i].update(this, dT);
         }
+
+        this.objects = this.objects.filter(obj => !obj.isDisposed);
     }
 }
 
@@ -346,11 +360,24 @@ export class Player extends GameOject {
         this.keys = [];
         this.sneaking = false;
         this.alive = true;
-
+        this.spiritTime = 0.2;
+        this.renderer = new drawing.PlayerRenderer(this);
         this.dashParticleEmitter = new ParticleEmitter(
             this.pos,
             128,
             [2, 6],
+            [0, 0],
+            [16, 32],
+            [-0.5, 0.5],
+            [0.5, 0.75],
+            "white",
+            [1.0, 1.0],
+            true
+        );
+        this.spiritParticleEmitter = new ParticleEmitter(
+            this.pos,
+            128,
+            [1, 2],
             [0, 0],
             [16, 32],
             [-0.5, 0.5],
@@ -452,8 +479,28 @@ export class Player extends GameOject {
         this.dashParticleEmitter.update(dT);
     }
 
+    updateSprit(level, dT) {
+        this.spiritProgress += this.spiritRate * dT;
+        this.pos = this.spiritTarget.subtract(this.spiritDelta.multiply(1 - this.spiritProgress));
+
+        if (this.spiritProgress >= 1) {
+            this.alive = true;
+            this.spiritParticleEmitter.active = false;
+            this.pos = this.spiritTarget.copy();
+        }
+    }
+
     update(level, dT) {
-        
+        this.renderer.update(dT);
+
+        this.spiritParticleEmitter.pos = this.rect.center();
+        this.spiritParticleEmitter.update(dT);
+
+        if (!this.alive) {
+            this.updateSprit(level, dT);
+            return
+        }
+
         this.updateMovement(level, dT);
         this.updateDash(dT);
         
@@ -518,6 +565,7 @@ export class Player extends GameOject {
             let coin = level.coins[i];
             if (!coin.collected && utils.rectCircleInterset(pRect, coin.circ)) {
                 level.coins.splice(i, 1);
+                coin.collected = true;
                 if (level.coins.length == 0) {
                     level.goal.unlocked = true;
                 } 
@@ -537,12 +585,7 @@ export class Player extends GameOject {
         for (let i = 0; i < level.deathBalls.length; i++) {
             let ball = level.deathBalls[i];
             if (utils.circleIntersect(this.getCollisionCircle(), ball.circ)) {
-                if (this.activeCheckpoint != null) {
-                    this.respawn();
-                }
-                else {
-                    this.alive = false;
-                }
+                this.die(level);
             }
         }
 
@@ -550,12 +593,7 @@ export class Player extends GameOject {
         for (let i = 0; i < level.spikes.length; i++) {
             let spike = level.spikes[i];
             if (utils.rectIntersect(this.getCollisionRectangle(), spike.rect)) {
-                if (this.activeCheckpoint != null) {
-                    this.respawn();
-                }
-                else {
-                    this.alive = false;
-                }
+                this.die(level);
             }
         }
 
@@ -572,19 +610,32 @@ export class Player extends GameOject {
         }
     }
 
-    respawn() {
+
+    die(level) {
+        this.alive = false;
+        this.spiritTarget = null;
         if (this.activeCheckpoint != null) {
-            this.pos = this.activeCheckpoint.rect.center();
-            this.pos.x -= this.w / 2;
-            this.pos.y -= this.h / 2;
+            this.spiritTarget = this.activeCheckpoint.rect.center();
         }
         else {
-            this.pos = this.start.copy();
-            this.pos.x -= this.w / 2;
-            this.pos.y -= this.h / 2;
+            this.spiritTarget = this.start.copy();
         }
+        this.spiritTarget.x -= this.rect.w / 2;
+        this.spiritTarget.y -= this.rect.h / 2;
+
+        this.spiritDelta = this.spiritTarget.subtract(this.pos);
+        this.spiritDistance = this.spiritDelta.length();
+        // The spirit should take a maximum of 1 second to get to the target
+        this.spiritSpeed = Math.max(this.maxSpeed, this.spiritDistance / this.spiritTime);
+        // Ratio of the total distance per second
+        this.spiritRate = this.spiritSpeed / this.spiritDistance;
+        this.spiritTimer = 0;
+        this.spiritProgress = 0;
+        this.spiritParticleEmitter.active = true;
         this.vel.x = 0;
         this.vel.y = 0;
+
+        level.objects.push(new Explosion(this.rect.center(), 32));
     }
 
     getCollisionRectangle() {
@@ -594,5 +645,20 @@ export class Player extends GameOject {
     getCollisionCircle() {
         let rect = this.getCollisionRectangle();
         return new utils.Circle(rect.center(), rect.w / 2);    
+    }
+}
+
+
+export class Explosion extends GameOject {
+    constructor(pos, size) {
+        let topleft = new utils.Vector(pos.x - size / 2, pos.y - size /2);
+        super(topleft, size, size);
+        this.renderer = new drawing.ExplosionRenderer(this);
+        // https://stackoverflow.com/questions/27232157/pass-class-function-as-parameter-to-another-class-to-use-as-callback-in-javascri
+        this.renderer.animation.callback = this.dispose.bind(this);
+    }
+
+    update(level, dT) {
+        this.renderer.update(dT);
     }
 }

@@ -3,12 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tileset_player.tsx",
+    "activeFile": "levels/test1.tmx",
     "expandedProjectPaths": [
         "levels",
+        "templates",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
-        ".",
-        "templates"
+        "."
     ],
     "fileStates": {
         "C:/Users/Adam/Desktop/test.tsx": {
@@ -48,8 +48,8 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 255.5,
-                "y": 128
+                "x": 256,
+                "y": 127.75
             }
         },
         "levels/test1.tmx": {
@@ -57,7 +57,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 256,
-                "y": 127.75
+                "y": 128
             }
         },
         "levels/test2.tmx": {
@@ -73,15 +73,15 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 256,
-                "y": 128.5
+                "y": 128.25
             }
         },
         "levels/test4.tmx": {
             "scale": 4.472916666666666,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 96.13414066138799,
-                "y": 95.91057289240803
+                "x": 95.91057289240803,
+                "y": 95.79878900791803
             }
         },
         "levels/test5.tmx": {
@@ -89,7 +89,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 256,
-                "y": 256
+                "y": 255.66666666666669
             }
         },
         "levels/test6.tmx": {
@@ -97,15 +97,15 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 96,
-                "y": 96
+                "y": 95.875
             }
         },
         "levels/test7.tmx": {
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 314.66666666666663,
-                "y": 112
+                "x": 256,
+                "y": 127.66666666666669
             }
         },
         "levels/tileset.tsx": {
@@ -183,8 +183,8 @@
         "tileset_dungeon.tsx",
         "levels/test7.tmx",
         "tileset_common.tsx",
-        "levels/test1.tmx",
         "tileset_player.tsx",
+        "levels/test1.tmx",
         "levels/test2.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

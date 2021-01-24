@@ -82,6 +82,10 @@ export function random(min, max) {
     return Math.random() * (max - min) + min; 
 }  
 
+export function randomInt(min, max) {  
+    return Math.floor(random(min, max)); 
+}  
+
 
 //Check how two rectangles (Player & Deathball for example) collide with each other
 export function rectIntersect(r1, r2) {
