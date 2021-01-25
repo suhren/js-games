@@ -203,14 +203,14 @@ export class Renderer {
 
 
 export class CoinRenderer extends Renderer {
-    constructor(obj) {
+    constructor(obj, tile) {
         super(obj);
-        this.animation = new Animation(assets.SPRITESHEET_COIN, 16, 8, true);
+        this.tile = tile;
     }
 
     update(dT) {
         if (!this.obj.collected) {
-            this.animation.update(dT);
+            this.tile.update(dT);
         }
     }
 
@@ -218,7 +218,8 @@ export class CoinRenderer extends Renderer {
         if (!this.obj.collected) {
             var rect = getScreenRect(this.obj.rect);
             drawDropShadow(rect);
-            this.animation.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
+            let image = this.tile.getImage()
+            ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h);
 
             if (drawColliders) {
                 ctx.lineWidth = 2;
@@ -355,14 +356,14 @@ export class TextRenderer extends Renderer {
 
 
 export class BallRenderer extends Renderer {
-    constructor(obj, type) {
+    constructor(obj, tile, type) {
         super(obj);
+        this.tile = tile;
         this.type = type;
-        this.animation = new Animation(assets.SPRITE_BALL, 16, 6, true);
     }
 
     update(dT) {
-        this.animation.update(dT);
+        this.tile.update(dT);
     }
 
     draw() {
@@ -400,7 +401,7 @@ export class BallRenderer extends Renderer {
         }
         var rect = getScreenRect(this.obj.rect);
         drawDropShadow(rect);
-        this.animation.drawImage(ctx, rect.x, rect.y, rect.w, rect.h);
+        ctx.drawImage(this.tile.getImage(), rect.x, rect.y, rect.w, rect.h);
     }
 }
 

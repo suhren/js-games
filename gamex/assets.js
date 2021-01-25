@@ -3,56 +3,19 @@ import * as go from "./objects.js";
 import * as cfg from "./config.js";
 
 
-function loadJson(path, callback) {   
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open("GET", path, true);
-    xobj.onreadystatechange = () => {
-        if (xobj.readyState == 4 && xobj.status == "200") {
-            // Callback as .open returns undefined in asynchronous mode
-            callback(JSON.parse(xobj.responseText));
-        }
-    };
-    xobj.send(null);
-}
-
-function loadXml(path, callback) {   
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/xml");
-    xobj.open("GET", path, true);
-    xobj.onreadystatechange = () => {
-        if (xobj.readyState == 4 && xobj.status == "200") {
-            // Callback as .open returns undefined in asynchronous mode
-            let parser = new DOMParser();
-            callback(parser.parseFromString(xobj.responseText, "text/xml"));
-        }
-    };
-    xobj.send(null);
-}
-
-
-function getFileName(path) {
-    return path.replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, "");
-}
-
 export var TILES = new Map();
-export const SPRITE_PLAYER = getSprite("assets/images/Womp3.png");
-export const SPRITESHEET_PLAYER = getSprite("assets/images/player.png");
-export const SPRITESHEET_COIN = getSprite("assets/images/coin.png");
-export const SPRITE_BALL = getSprite("assets/images/enemies/floaty_animation.png");
-
-export const SPRITESHEET_PLAYER_IDLE_LEFT = getSprite("assets/images/player/playerIdleLeft.png");
-export const SPRITESHEET_PLAYER_IDLE_RIGHT = getSprite("assets/images/player/playerIdleRight.png");
-export const SPRITESHEET_PLAYER_RUN_LEFT = getSprite("assets/images/player/playerRunLeft.png");
-export const SPRITESHEET_PLAYER_RUN_RIGHT = getSprite("assets/images/player/playerRunRight.png");
-export const SPRITESHEET_PLAYER_DASH_LEFT = getSprite("assets/images/player/playerDashLeft.png");
-export const SPRITESHEET_PLAYER_DASH_RIGHT = getSprite("assets/images/player/playerDashRight.png");
-export const SPRITESHEET_PLAYER_EXPLODE = getSprite("assets/images/player/explosion.png");
-export const SPRITESHEET_PLAYER_SPIRIT = getSprite("assets/images/player/spirit.png");
+export var SPRITESHEET_PLAYER_IDLE_LEFT = null;
+export var SPRITESHEET_PLAYER_IDLE_RIGHT = null;
+export var SPRITESHEET_PLAYER_RUN_LEFT = null;
+export var SPRITESHEET_PLAYER_RUN_RIGHT = null;
+export var SPRITESHEET_PLAYER_DASH_LEFT = null;
+export var SPRITESHEET_PLAYER_DASH_RIGHT = null;
+export var SPRITESHEET_PLAYER_EXPLODE = null;
+export var SPRITESHEET_PLAYER_SPIRIT = null;
 
 // Template XML (Tiled .tx) files
 export var TEMPLATES = [];
-const TEMPLATE_FILES = [
+export const TEMPLATE_FILES = [
     "./assets/templates/ball.tx",
     "./assets/templates/checkpoint.tx",
     "./assets/templates/coin.tx",
@@ -71,15 +34,11 @@ const TEMPLATE_FILES = [
     "./assets/templates/spike.tx",
     "./assets/templates/text.tx"
 ];
-var TEMPLATE_XMLS = new Map();
-TEMPLATE_FILES.forEach(path => loadXml(path,
-    xml => TEMPLATE_XMLS.set(getFileName(path), xml))
-);
-
+export var TEMPLATE_XMLS = new Map();
 
 // Level XML (Tiled .tmx) files
 export var LEVELS = [];
-const LEVEL_FILES = [
+export const LEVEL_FILES = [
     "./assets/levels/test7.tmx",
     "./assets/levels/test0.tmx",
     "./assets/levels/test1.tmx",
@@ -89,28 +48,205 @@ const LEVEL_FILES = [
     "./assets/levels/test5.tmx",
     "./assets/levels/test6.tmx"
 ];
+export var LEVEL_XMLS = new Map();
 export const NUM_LEVELS = LEVEL_FILES.length;
-var LEVEL_XMLS = new Map();
-LEVEL_FILES.forEach(path => loadXml(path, xml => LEVEL_XMLS.set(path, xml)));
-
 
 // Tileset XML (Tiled .tsx) files
 const ASSET_DIR = './assets/'
 const TILESET_FILES = [
     "./assets/tileset_common.tsx",
     "./assets/tileset_forest.tsx",
-    "./assets/tileset_dungeon.tsx"
+    "./assets/tileset_dungeon.tsx",
+    "./assets/tileset_floaty.tsx"
 ];
-var TILESETS = new Map();
-var TILESET_XMLS = new Map();
-TILESET_FILES.forEach(path => loadXml(path, xml => TILESET_XMLS.set(path, xml)));
+export var TILESET_XMLS = new Map();
+export var TILESETS = new Map();
 
 
-function getSprite(path) {
-    let image = new Image();
-    image.src = path;
-    return image
+export async function init() {
+    // Initialize the assets
+    
+    // First load XML files
+    for (let i = 0; i < TEMPLATE_FILES.length; i++) {
+        let path = TEMPLATE_FILES[i];
+        let xml = await getXML(path);
+        TEMPLATE_XMLS.set(getFileName(path), xml);
+        console.log(`Loaded ${path}`);
+    }
+    for (let i = 0; i < LEVEL_FILES.length; i++) {
+        let path = LEVEL_FILES[i];
+        let xml = await getXML(path);
+        LEVEL_XMLS.set(path, xml);
+        console.log(`Loaded ${path}`);
+    }
+    for (let i = 0; i < TILESET_FILES.length; i++) {
+        let path = TILESET_FILES[i];
+        let xml = await getXML(path);
+        TILESET_XMLS.set(path, xml);
+        console.log(`Loaded ${path}`);
+    }
+
+    SPRITESHEET_PLAYER_IDLE_LEFT = await getImage("assets/images/player/playerIdleLeft.png");
+    SPRITESHEET_PLAYER_IDLE_RIGHT = await getImage("assets/images/player/playerIdleRight.png");
+    SPRITESHEET_PLAYER_RUN_LEFT = await getImage("assets/images/player/playerRunLeft.png");
+    SPRITESHEET_PLAYER_RUN_RIGHT = await getImage("assets/images/player/playerRunRight.png");
+    SPRITESHEET_PLAYER_DASH_LEFT = await getImage("assets/images/player/playerDashLeft.png");
+    SPRITESHEET_PLAYER_DASH_RIGHT = await getImage("assets/images/player/playerDashRight.png");
+    SPRITESHEET_PLAYER_EXPLODE = await getImage("assets/images/player/explosion.png");
+    SPRITESHEET_PLAYER_SPIRIT = await getImage("assets/images/player/spirit.png");
+    
+    for (const [path, xml] of TILESET_XMLS.entries()) {
+        // https://www.w3schools.com/jsref/met_document_queryselector.asp
+        let root = xml.getElementsByTagName("tileset")[0];
+        let name = getFileName(path); //root.getAttribute("name");
+        // Check if the tileset is a collection of images or a single image
+        let image = root.querySelectorAll("tileset > image")[0];
+        let imagePath = (image != null) ? image.getAttribute("source") : null;
+        let specs = root.getElementsByTagName("tile");
+
+        if (imagePath) {
+            // If there is an image, we have a single tilemap tileset
+            imagePath = ASSET_DIR + imagePath;
+            let image = await getImage(imagePath);
+            let w = root.getAttribute("tilewidth");
+            let h = root.getAttribute("tileheight");
+            let ncols = Math.round(image.width / w);
+            let nrows = Math.round(image.height / h);
+            
+            let tempCanvas = document.createElement("canvas");
+            let tempCtx = tempCanvas.getContext("2d");
+            tempCtx.drawImage(image, 0, 0, image.width, image.height);
+            
+            let tileImages = new Map();
+            for (let row = 0; row < nrows; row++) {
+                for (let col = 0; col < ncols; col++) {
+                    let id = row * ncols + col;
+                    let data = tempCtx.getImageData(col * w, row * h, w, h);
+                    let tileImage = dataToImage(data);
+                    tileImages.set(id, tileImage);
+                }
+            }
+
+            TILESETS.set(name, new Tileset(name, tileImages, specs));
+        }
+        else {
+            // Otherwise, the tileset is a collection of separate image files
+            let tileImages = new Map();
+            for (let i = 0; i < specs.length; i++) {
+                let spec = specs[i];
+                let id = parseInt(spec.getAttribute("id"));
+                let imageSpec = spec.getElementsByTagName("image")[0]
+                let imagePath = ASSET_DIR + imageSpec.getAttribute("source");
+                let image = await getImage(imagePath);
+                tileImages.set(id, image);
+            }
+            TILESETS.set(name, new Tileset(name, tileImages, specs));
+        }
+    }
+
+    console.log(TILESETS);
 }
+
+
+export class Tileset {
+    constructor(name, tileImages, specs) {
+        this.name = name;
+        this.tiles = new Map();
+        tileImages.forEach((image, id) => this.tiles.set(id, new Tile(image, id, null, null)));
+
+        // We must handle the animations after ALL tile images have been loaded
+        let animationCandidates = new Map();
+
+        for (let i = 0; i < specs.length; i++) {
+            let spec = specs[i];
+            let id = parseInt(spec.getAttribute("id"));
+            let tile = this.tiles.get(id);
+            if (tile == null) {
+                continue;
+            }
+            let collisionSpec = spec.querySelectorAll("property[name='collision']")[0];
+            if (collisionSpec != null) {
+                tile.collision = (collisionSpec.getAttribute("value") == "true");
+            }
+            let frictionSpec = spec.querySelectorAll("property[name='friction']")[0];
+            if (frictionSpec != null) {
+                let friction = frictionSpec.getAttribute("value");
+                if (friction >= 0) {
+                    tile.friction = friction;
+                }
+            }
+            let animation = spec.getElementsByTagName("animation")[0];
+            if (animation != null) {
+                animationCandidates.set(id, spec);
+            }
+        }
+        
+        let animationTiles = new Map();
+
+        for (const [id, spec] of animationCandidates) {
+            let tile = this.tiles.get(id);
+            let animation = spec.getElementsByTagName("animation")[0];
+            let images = [];
+            let durations = [];
+
+            let frames = animation.getElementsByTagName("frame");
+
+            for (let i = 0; i < frames.length; i++) {
+                let frame = frames[i];
+                let refId = parseInt(frame.getAttribute("tileid"));
+                // Tiled uses milliseconds, we use seconds
+                let duration = parseFloat(frame.getAttribute("duration")) / 1000;
+                let refTile = this.tiles.get(refId);
+                images.push(refTile.image);
+                durations.push(duration);
+            }
+            
+            animationTiles.set(id, new AnimatedTile(images, durations, id, tile.collision, tile.friction));
+        }
+
+        for (const [id, animatedTile] of animationTiles) {
+            this.tiles.set(id, animatedTile);
+        }
+    }
+}
+
+
+
+async function getImage(url) {
+    // https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
+    return new Promise(function (resolve, reject) {
+        let image = new Image();
+        image.addEventListener("load", () => resolve(image));
+        image.addEventListener("error", (err) => reject(err));
+        image.src = url;
+    });
+}
+
+
+function getXML(url) {
+    // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseXML
+    // https://stackoverflow.com/questions/48969495/in-javascript-how-do-i-should-i-use-async-await-with-xmlhttprequest
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.overrideMimeType("application/xml");
+        xhr.onload = function () {
+            var status = xhr.status;
+            if (status == 200) {
+                resolve(xhr.responseXML);
+            } else {
+                reject(status);
+            }
+        };
+        xhr.send();
+    });
+}
+
+function getFileName(path) {
+    return path.replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, "");
+}
+
+
 
 function tiledVector(obj) {
     return new utils.Vector(parseInt(obj.getAttribute("x")),
@@ -154,7 +290,6 @@ function tiledRectangle(x, y, w, h, rot=0, flipY=false) {
 }
 
 
-
 function getAttribute(name, object, template) {
     var x = object.getAttribute(name);
     if (x == null) {
@@ -165,15 +300,6 @@ function getAttribute(name, object, template) {
 
 
 function getProperty(name, object, template) {
-    var x = object.querySelectorAll(`property[name='${name}']`)[0];
-    if (x == null) {
-        x = template.querySelectorAll(`property[name='${name}']`)[0];
-    }
-    return x.getAttribute("value");
-}
-
-
-function getTile(object, template) {
     var x = object.querySelectorAll(`property[name='${name}']`)[0];
     if (x == null) {
         x = template.querySelectorAll(`property[name='${name}']`)[0];
@@ -222,11 +348,11 @@ function levelFromXml(xml, path) {
 
     for (const [templateName, xml] of TEMPLATE_XMLS) {
         let template = xml.getElementsByTagName("template")[0];
-        let specs = template.getElementsByTagName("tileset");
-        if (specs != null && specs.length > 0) {
+        let tilesetSpecs = template.getElementsByTagName("tileset");
+        if (tilesetSpecs != null && tilesetSpecs.length > 0) {
             var lookup = new Map();
-            for (let i = 0; i < specs.length; i++) {
-                var spec = specs[i];
+            for (let i = 0; i < tilesetSpecs.length; i++) {
+                var spec = tilesetSpecs[i];
                 var tilesetName =  getFileName(spec.getAttribute("source"));
                 var firstGid = parseInt(spec.getAttribute("firstgid"));
                 var tileset = TILESETS.get(tilesetName);
@@ -338,7 +464,16 @@ function levelFromXml(xml, path) {
                 var w = parseInt(getAttribute("width", obj, templateObject));
                 var h = parseInt(getAttribute("height", obj, templateObject));
                 var rect = tiledRectangle(x, y, w, h, 0, true);
-                coins.push(new go.Coin(rect));
+                var gid = parseInt(getAttribute("gid", obj, templateObject));
+                var templateTileLookup = templateTileLookups.get(templateName);
+                var tile = null;
+                if (templateTileLookup != null) {
+                    tile = templateTileLookup.get(gid);
+                }
+                else {
+                    tile = levelTileLookup.get(gid);
+                }
+                coins.push(new go.Coin(rect, tile.copy()));
                 break;
 
             case "key":
@@ -418,6 +553,16 @@ function levelFromXml(xml, path) {
                 var h = parseInt(getAttribute("height", obj, templateObject));
                 var rect = tiledRectangle(x, y, w, h, 0, true);
 
+                var gid = parseInt(getAttribute("gid", obj, templateObject));
+                var templateTileLookup = templateTileLookups.get(templateName);
+                var tile = null;
+                if (templateTileLookup != null) {
+                    tile = templateTileLookup.get(gid);
+                }
+                else {
+                    tile = levelTileLookup.get(gid);
+                }
+
                 var pos = rect.center();
                 let size = rect.w / 2;
 
@@ -436,7 +581,7 @@ function levelFromXml(xml, path) {
                     let radius = pos.subtract(center).length();
                     let angle = Math.atan2(pos.y - center.y, pos.x - center.x);
                     speed = speed / 180 * Math.PI;
-                    balls.push(new go.DeathBallCircle(center, radius, speed, size, angle));
+                    balls.push(new go.DeathBallCircle(center, tile.copy(), radius, speed, size, angle));
                 }
                 else {
                     // Ball moving along some line
@@ -462,7 +607,7 @@ function levelFromXml(xml, path) {
                         let lineVector = p2.subtract(p1);
                         let proj =  pos.subtract(p1).project(lineVector);                    
                         let t = proj.length() / lineVector.length();
-                        balls.push(new go.DeathBallLinear(p1, p2, speed, size, t));
+                        balls.push(new go.DeathBallLinear(p1, p2, tile.copy(), speed, size, t));
                     }
                 }
                 break;
@@ -488,13 +633,16 @@ function dataToImage(data) {
 
 
 export class Tile {
-    constructor(image, imagePath, id, collision=false, friction=null){
+    constructor(image, id, collision=false, friction=null){
         this.image = image;
-        this.imagePath = imagePath;
         this.id = id;
         this.collision = (collision == null) ? false : collision;
         this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
         this.animated = false;
+    }
+
+    update(dT) {
+        return;
     }
 
     getImage() {
@@ -504,10 +652,9 @@ export class Tile {
 
 
 export class AnimatedTile {
-    constructor(images, imagePaths, durations, id, collision=false, friction=null, randomize=true){
+    constructor(images, durations, id, collision=false, friction=null, randomize=true){
         this.images = images;
         this.durations = durations;
-        this.imagePaths = imagePaths;
         this.id = id;
         this.collision = (collision == null) ? false : collision;
         this.friction = (friction == null || friction < 0) ? cfg.FRICTION_DEFAULT : friction;
@@ -534,199 +681,12 @@ export class AnimatedTile {
     }
 
     copy() {
-        return new AnimatedTile(this.images, this.imagePaths, this.durations, this.id, this.collision, this.friction, true);
+        return new AnimatedTile(this.images, this.durations, this.id, this.collision, this.friction, true);
     }
 }
-
-
-export class Tileset {
-    constructor(name){
-        this.name = name;
-        this.tiles = new Map();
-    }
-}
-
-export class TilemapTileset extends Tileset {
-    constructor(name, path, image, tileWidth=16, tileHeight=16, root) {
-        super(name);
-        this.image = image;
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
-        this.ncols = Math.round(image.width / tileWidth);
-        this.nrows = Math.round(image.height / tileHeight);
-
-        let tempCanvas = document.createElement("canvas");
-        let tempCtx = tempCanvas.getContext("2d");
-        tempCtx.drawImage(image, 0, 0, image.width, image.height);
-
-        // We must handle the animations after ALL tile images have been loaded
-        let animationCandidates = new Map();
-
-        for (let row = 0; row < this.nrows; row++) {
-            for (let col = 0; col < this.ncols; col++) {
-                let id = row * this.ncols + col;
-                let x = col * this.tileWidth;
-                let y = row * this.tileHeight;
-                let data = tempCtx.getImageData(x, y, tileHeight, tileWidth, tileHeight);
-                let tileImage = dataToImage(data);
-
-                let spec = root.querySelectorAll(`tile[id='${id}']`)[0];
-                if (spec == null) {
-                    continue;
-                }
-
-                let collision = spec.querySelectorAll("property[name='collision']")[0];
-                if (collision != null) {
-                    collision = (collision.getAttribute("value") == "true");
-                }
-                let friction = spec.querySelectorAll("property[name='friction']")[0];
-                if (friction != null) {
-                    friction = friction.getAttribute("value");
-                }
-
-                let animation = spec.getElementsByTagName("animation")[0];
-                if (animation != null) {
-                    animationCandidates.set(id, spec);
-                }
-
-                let tile = new Tile(tileImage, path, id, collision, friction);
-                this.tiles.set(id, tile);
-            }
-        }
-
-        let animationTiles = new Map();
-
-        for (const [id, spec] of animationCandidates) {
-            let tile = this.tiles.get(id);
-            let animation = spec.getElementsByTagName("animation")[0];
-            let images = [];
-            let durations = [];
-            let imagePaths = [];
-
-            let frames = animation.getElementsByTagName("frame");
-
-            for (let i = 0; i < frames.length; i++) {
-                let frame = frames[i];
-                let refId = parseInt(frame.getAttribute("tileid"));
-                // Tiled uses milliseconds, we use seconds
-                let duration = parseFloat(frame.getAttribute("duration")) / 1000;
-
-                let refTile = this.tiles.get(refId);
-                images.push(refTile.image);
-                durations.push(duration);
-                imagePaths.push(refTile.path)
-            }
-
-            animationTiles.set(id, new AnimatedTile(images, imagePaths, durations, id, tile.collision, tile.friction));
-        }
-
-        for (const [id, animatedTile] of animationTiles) {
-            this.tiles.set(id, animatedTile);
-        }
-    }
-}
-
-
-export class ImageTileset extends Tileset {
-    constructor(name, root){
-        super(name);
-
-        let specs = root.getElementsByTagName("tile");
-
-        // We must handle the animations after ALL tile images have been loaded
-        let animationCandidates = new Map();
-
-        for (let i = 0; i < specs.length; i++) {
-            let spec = specs[i];
-            let id = parseInt(spec.getAttribute("id"));
-            let imageSpec = spec.getElementsByTagName("image")[0]
-            let imagePath = ASSET_DIR + imageSpec.getAttribute("source");
-            let image = getSprite(imagePath);
-
-            let collision = spec.querySelectorAll("property[name='collision']")[0];
-            if (collision != null) {
-                collision = (collision.getAttribute("value") == "true");
-            }
-            let friction = spec.querySelectorAll("property[name='friction']")[0];
-            if (friction != null) {
-                friction = friction.getAttribute("value");
-            }
-            
-            let animation = spec.getElementsByTagName("animation")[0];
-            if (animation != null) {
-                animationCandidates.set(id, spec);
-            }
-
-            let tile = new Tile(image, imagePath, id, collision, friction);
-            this.tiles.set(id, tile);
-        }
-        
-        let animationTiles = new Map();
-
-        for (const [id, spec] of animationCandidates) {
-            let tile = this.tiles.get(id);
-            let animation = spec.getElementsByTagName("animation")[0];
-            let images = [];
-            let durations = [];
-            let imagePaths = [];
-
-            let frames = animation.getElementsByTagName("frame");
-
-            for (let i = 0; i < frames.length; i++) {
-                let frame = frames[i];
-                let refId = parseInt(frame.getAttribute("tileid"));
-                // Tiled uses milliseconds, we use seconds
-                let duration = parseFloat(frame.getAttribute("duration")) / 1000;
-
-                let refTile = this.tiles.get(refId);
-                images.push(refTile.image);
-                durations.push(duration);
-                imagePaths.push(refTile.path)
-            }
-
-            animationTiles.set(id, new AnimatedTile(images, imagePaths, durations, id, tile.collision, tile.friction));
-        }
-
-        for (const [id, animatedTile] of animationTiles) {
-            this.tiles.set(id, animatedTile);
-        }
-    }
-}
-
 
 export function loadLevelFromIndex(index) {
     let path = LEVEL_FILES[index];
     let xml = LEVEL_XMLS.get(path);
     return levelFromXml(xml, path);
-}
-
-
-export async function init() {
-    // Initialize the tileset object
-
-    for (const [path, xml] of TILESET_XMLS.entries()) {
-        // https://www.w3schools.com/jsref/met_document_queryselector.asp
-        let root = xml.getElementsByTagName("tileset")[0];
-
-        let name = root.getAttribute("name");
-        // Check if the tileset is a collection of images or a single image
-        let image = root.querySelectorAll("tileset > image")[0];
-        let imagePath = (image != null) ? image.getAttribute("source") : null;
-
-        if (imagePath) {
-            // If there is an image, we have a single tilemap tileset
-            imagePath = ASSET_DIR + imagePath;
-            let image = getSprite(imagePath);
-            await image.decode();
-            let tileWidth = root.getAttribute("tilewidth");
-            let tileHeight = root.getAttribute("tileheight");
-            let tileset = new TilemapTileset(name, imagePath, image, tileWidth, tileHeight, root);
-            TILESETS.set(name, tileset);
-        }
-        else {
-            // Otherwise, the tileset is a collection of separate image files
-            let tileset = new ImageTileset(name, root);
-            TILESETS.set(name, tileset);
-        }
-    }
 }

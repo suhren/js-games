@@ -144,14 +144,14 @@ export class Text extends GameOject {
 
 export class DeathBallCircle extends GameOject {
     
-    constructor(center, radius=75, speed=0.08, size=16, angle=0) {
+    constructor(center, tile, radius=75, speed=0.08, size=16, angle=0) {
         super(center, 2 * size, 2 * size);
         this.size = size;
         this.radius = radius;
         this.center = center;
         this.angle = angle;
         this.speed = speed;
-        this.renderer = new drawing.BallRenderer(this, "circle");
+        this.renderer = new drawing.BallRenderer(this, tile, "circle");
     }
 
     update(level, dT) {
@@ -165,7 +165,7 @@ export class DeathBallCircle extends GameOject {
 
 export class DeathBallLinear extends GameOject{
 
-    constructor(p1, p2, speed=0.08, size=16, t=0.0) {
+    constructor(p1, p2, tile, speed=0.08, size=16, t=0.0) {
         super(p1, 2 * size, 2 * size);
         this.size = size;
         this.p1 = p1;
@@ -174,7 +174,7 @@ export class DeathBallLinear extends GameOject{
         this.t = t; // Between 0.0 and 1.0
         this.vel = speed;
         this.delta = this.p2.subtract(this.p1);
-        this.renderer = new drawing.BallRenderer(this, "line");
+        this.renderer = new drawing.BallRenderer(this, tile, "line");
     }
 
     getOffset() {
@@ -221,10 +221,10 @@ export class Door extends GameOject {
 
 export class Coin extends GameOject {
 
-    constructor(rect) {
+    constructor(rect, tile) {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
         this.collected = false;
-        this.renderer = new drawing.CoinRenderer(this);
+        this.renderer = new drawing.CoinRenderer(this, tile);
     }
 
     update(level, dT) {

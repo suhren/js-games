@@ -20,7 +20,7 @@ window.onload = function() {
 }
 
 
-var player = new go.Player();
+var player = null;
 var level;
 var levelIndex = 0;
 var changingLevel = false;
@@ -171,7 +171,7 @@ function toggleMusic() {
 }
 
 
-function init() {
+async function init() {
     menu = new inter.Menu();
     menu.x = (canvas.width - menu.w) / 2;
     menu.y = (canvas.height - menu.h) / 2;
@@ -190,14 +190,15 @@ function init() {
 
     menu.init(buttons);
     // Wait for level JSONs to load (avoid null references)
-    setTimeout(assets.init, 200);
-    setTimeout(drawing.init, 1000, document);
-    setTimeout(start, 1000);
+    await assets.init();
+    start();
 }
 
 
 function start() {
+    drawing.init(document);
     levelIndex = 0;
+    player = new go.Player();
     loadLevel(assets.loadLevelFromIndex(levelIndex));
     // Set up to call the function "gameLoop" 60 times/second
     setInterval(gameLoop, 1000 / cfg.FPS);

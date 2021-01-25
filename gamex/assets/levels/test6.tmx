@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="47">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="59">
  <properties>
   <property name="description" value="Narrow Times"/>
   <property name="name" value="Level 6"/>
  </properties>
  <tileset firstgid="1" source="../tileset_common.tsx"/>
+ <tileset firstgid="32" source="../tileset_floaty.tsx"/>
  <layer id="1" name="Tile Layer 1" width="12" height="12">
   <properties>
    <property name="description" value="Narrow Times"/>
@@ -26,67 +27,11 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="2" template="../templates/ball.tx" gid="9" x="112" y="160" width="48" height="48">
-   <properties>
-    <property name="center" type="object" value="5"/>
-    <property name="speed" type="float" value="25"/>
-   </properties>
-  </object>
   <object id="5" template="../templates/position.tx" x="136" y="144"/>
   <object id="6" template="../templates/spawn.tx" x="24" y="168"/>
   <object id="7" template="../templates/goal.tx" x="48" y="160" width="16" height="16"/>
   <object id="8" template="../templates/coin.tx" x="160" y="176"/>
   <object id="10" template="../templates/coin.tx" x="96" y="112"/>
-  <object id="11" template="../templates/ball.tx" gid="9" x="16" y="144" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="32"/>
-   </properties>
-  </object>
-  <object id="12" template="../templates/ball.tx" gid="9" x="32" y="112" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="33"/>
-   </properties>
-  </object>
-  <object id="13" template="../templates/ball.tx" gid="9" x="16" y="80" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="34"/>
-   </properties>
-  </object>
-  <object id="15" template="../templates/ball.tx" gid="9" x="64" y="32" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="36"/>
-   </properties>
-  </object>
-  <object id="16" template="../templates/ball.tx" gid="9" x="96" y="48" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="37"/>
-   </properties>
-  </object>
-  <object id="17" template="../templates/ball.tx" gid="9" x="128" y="32" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="38"/>
-   </properties>
-  </object>
-  <object id="18" template="../templates/ball.tx" gid="9" x="112" y="96" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="39"/>
-   </properties>
-  </object>
-  <object id="20" template="../templates/ball.tx" gid="9" x="64" y="96" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="41"/>
-   </properties>
-  </object>
-  <object id="21" template="../templates/ball.tx" gid="9" x="80" y="64" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="40"/>
-   </properties>
-  </object>
-  <object id="22" template="../templates/ball.tx" gid="9" x="48" y="128" width="16" height="16">
-   <properties>
-    <property name="line" type="object" value="42"/>
-   </properties>
-  </object>
   <object id="32" template="../templates/line.tx" x="20" y="132.5">
    <polyline points="4,3.5 20,3.5"/>
   </object>
@@ -118,13 +63,69 @@
    <polyline points="-20,15.5 -4,15.5"/>
   </object>
   <object id="43" template="../templates/checkpoint.tx" x="144" y="48" width="32" height="32"/>
-  <object id="44" template="../templates/ball.tx" gid="9" x="32" y="48" width="16" height="16">
+  <object id="46" template="../templates/line.tx" x="24.25" y="39.25">
+   <polyline points="-0.25,0.75 15.75,0.75"/>
+  </object>
+  <object id="47" template="../templates/ball.tx" x="16" y="144">
+   <properties>
+    <property name="line" type="object" value="32"/>
+   </properties>
+  </object>
+  <object id="48" template="../templates/ball.tx" x="32" y="112">
+   <properties>
+    <property name="line" type="object" value="33"/>
+   </properties>
+  </object>
+  <object id="49" template="../templates/ball.tx" x="16" y="80">
+   <properties>
+    <property name="line" type="object" value="34"/>
+   </properties>
+  </object>
+  <object id="50" template="../templates/ball.tx" x="32" y="48">
    <properties>
     <property name="line" type="object" value="46"/>
    </properties>
   </object>
-  <object id="46" template="../templates/line.tx" x="24.25" y="39.25">
-   <polyline points="-0.25,0.75 15.75,0.75"/>
+  <object id="51" template="../templates/ball.tx" x="64" y="32">
+   <properties>
+    <property name="line" type="object" value="36"/>
+   </properties>
+  </object>
+  <object id="52" template="../templates/ball.tx" x="96" y="48">
+   <properties>
+    <property name="line" type="object" value="37"/>
+   </properties>
+  </object>
+  <object id="53" template="../templates/ball.tx" x="128" y="32">
+   <properties>
+    <property name="line" type="object" value="38"/>
+   </properties>
+  </object>
+  <object id="54" template="../templates/ball.tx" x="48" y="128">
+   <properties>
+    <property name="line" type="object" value="42"/>
+   </properties>
+  </object>
+  <object id="55" template="../templates/ball.tx" x="80" y="64">
+   <properties>
+    <property name="line" type="object" value="40"/>
+   </properties>
+  </object>
+  <object id="56" template="../templates/ball.tx" x="64" y="96">
+   <properties>
+    <property name="line" type="object" value="41"/>
+   </properties>
+  </object>
+  <object id="57" template="../templates/ball.tx" x="112" y="96">
+   <properties>
+    <property name="line" type="object" value="39"/>
+   </properties>
+  </object>
+  <object id="58" template="../templates/ball.tx" x="112" y="160" width="48" height="48">
+   <properties>
+    <property name="center" type="object" value="5"/>
+    <property name="speed" type="float" value="25"/>
+   </properties>
   </object>
  </objectgroup>
 </map>
