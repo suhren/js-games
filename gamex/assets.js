@@ -71,19 +71,16 @@ export async function init() {
         let path = TEMPLATE_FILES[i];
         let xml = await getXML(path);
         TEMPLATE_XMLS.set(getFileName(path), xml);
-        console.log(`Loaded ${path}`);
     }
     for (let i = 0; i < LEVEL_FILES.length; i++) {
         let path = LEVEL_FILES[i];
         let xml = await getXML(path);
         LEVEL_XMLS.set(path, xml);
-        console.log(`Loaded ${path}`);
     }
     for (let i = 0; i < TILESET_FILES.length; i++) {
         let path = TILESET_FILES[i];
         let xml = await getXML(path);
         TILESET_XMLS.set(path, xml);
-        console.log(`Loaded ${path}`);
     }
 
     SPRITESHEET_PLAYER_IDLE_LEFT = await getImage("assets/images/player/playerIdleLeft.png");
@@ -143,8 +140,6 @@ export async function init() {
             TILESETS.set(name, new Tileset(name, tileImages, specs));
         }
     }
-
-    console.log(TILESETS);
 }
 
 

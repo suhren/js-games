@@ -76,23 +76,23 @@ function w2sY(y) {
 
 
 function getScreenRect(rect) {
-    let x = w2sX(rect.x);
-    let y = w2sY(rect.y);
-    let w = w2sS(rect.w);
-    let h = w2sS(rect.h);
+    let x = Math.floor(w2sX(rect.x));
+    let y = Math.floor(w2sY(rect.y));
+    let w = Math.floor(w2sS(rect.w));
+    let h = Math.floor(w2sS(rect.h));
     return new utils.Rectangle(x, y, w, h);
 }
 
 function getScreenCircle(circle) {
-    let x = w2sX(circle.c.x);
-    let y = w2sY(circle.c.y);
-    let r = w2sS(circle.r);
+    let x = Math.floor(w2sX(circle.c.x));
+    let y = Math.floor(w2sY(circle.c.y));
+    let r = Math.floor(w2sS(circle.r));
     return new utils.Circle(new utils.Vector(x, y), r);
 }
 
 function getScreenVector(vector) {
-    let x = w2sX(vector.x);
-    let y = w2sY(vector.y);
+    let x = Math.floor(w2sX(vector.x));
+    let y = Math.floor(w2sY(vector.y));
     return new utils.Vector(x, y);
 }
 
