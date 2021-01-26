@@ -5,8 +5,6 @@ import * as assets from "./assets.js";
 import * as drawing from "./drawing.js";
 import * as inter from "./interface.js";
 
-
-var audio = document.getElementById("sounds");
 var canvas = document.getElementById("gameCanvas")
 
 
@@ -25,6 +23,7 @@ var level;
 var levelIndex = 0;
 var changingLevel = false;
 var menu = null;
+var started = false;
 
 
 function mousemove(e) {
@@ -39,6 +38,9 @@ function click(e) {
 var spaceDown = false;
 
 function keyDown(e) {
+    if (!started) {
+        return;
+    }
     // Up arrow (38) or w (87)
     if (e.keyCode == 38 || e.keyCode == 87) {
         player.wish.y = -1;
@@ -69,6 +71,9 @@ function keyDown(e) {
 }
 
 function keyUp(e) {
+    if (!started) {
+        return;
+    }
     // Up arrow
     if (e.keyCode == 38 || e.keyCode == 87) {
         if (player.wish.y < 0) {
@@ -161,11 +166,11 @@ function toggleDebug() {
 
 
 function toggleMusic() {
-    if(audio.paused){
-        audio.play();
+    if(assets.GAME_AUDIO.paused){
+        assets.GAME_AUDIO.play();
         musicButton.text = "m: Music: ON";
     } else {
-        audio.pause();
+        assets.GAME_AUDIO.pause();
         musicButton.text = "m: Music: OFF";
     }
 }
@@ -173,8 +178,6 @@ function toggleMusic() {
 
 async function init() {
     menu = new inter.Menu();
-    menu.x = (canvas.width - menu.w) / 2;
-    menu.y = (canvas.height - menu.h) / 2;
 
     musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 200, 32);
     debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 200, 32);
@@ -197,11 +200,14 @@ async function init() {
 
 function start() {
     drawing.init(document);
+    menu.x = (canvas.width - menu.w) / 2;
+    menu.y = (canvas.height - menu.h) / 2;
     levelIndex = 0;
     player = new go.Player();
     loadLevel(assets.loadLevelFromIndex(levelIndex));
     // Set up to call the function "gameLoop" 60 times/second
     setInterval(gameLoop, 1000 / cfg.FPS);
+    started = true;
 }
 
 
@@ -213,7 +219,7 @@ function gameLoop() {
     dT = (new Date() - lastLoopTime) / 1000;
     update(dT);
     lastLoopTime = new Date();
-    drawing.draw(dT, level, player, menu);
+    drawing.draw(dT, level, menu);
 
 }
 

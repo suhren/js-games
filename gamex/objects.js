@@ -540,6 +540,7 @@ export class Player extends GameOject {
                 for (let j = 0; j < this.keys.length; j++) {
                     if (this.keys[j].color === door.color) {
                         level.doors[i].open = true;
+                        assets.playAudio(assets.DOOR_AUDIO);
                         break;
                     }
                 }
@@ -556,6 +557,7 @@ export class Player extends GameOject {
                 if (!cp.active) {
                     cp.active = true;
                     this.activeCheckpoint = cp;
+                    assets.playAudio(assets.CHECKPOINT_AUDIO);
                     for (let j = 0; j < level.checkpoints.length; j++) {
                         level.checkpoints[j].active = (i == j);
                     }
@@ -567,6 +569,7 @@ export class Player extends GameOject {
             !level.goal.activated &&
             utils.rectIntersect(pRect, level.goal.rect)) {
             level.goal.activated = true;
+            assets.playAudio(assets.GOAL_AUDIO);
         }
         
         // Update coins
@@ -575,6 +578,7 @@ export class Player extends GameOject {
             if (!coin.collected && utils.rectCircleInterset(pRect, coin.circ)) {
                 level.coins.splice(i, 1);
                 coin.collected = true;
+                assets.playAudio(assets.COIN_AUDIO);
                 if (level.coins.length == 0) {
                     level.goal.unlocked = true;
                 } 
@@ -586,6 +590,7 @@ export class Player extends GameOject {
             let key = level.keys[i];
             if (!key.collected && utils.rectIntersect(pRect, key.rect)) {
                 level.keys[i].collected = true;
+                assets.playAudio(assets.COIN_AUDIO);
                 this.keys.push(key);
             }
         }
@@ -615,6 +620,7 @@ export class Player extends GameOject {
                 this.vel = this.vel.add(dir.multiply(cfg.PLAYER_DASH_SPEED));
                 this.isDashAvailable = false;
                 this.isDashing = true;
+                assets.playAudio(assets.PLAYER_DASH_AUDIO);
             }
         }
     }
@@ -643,7 +649,7 @@ export class Player extends GameOject {
         this.spiritParticleEmitter.active = true;
         this.vel.x = 0;
         this.vel.y = 0;
-
+        assets.playAudio(assets.PLAYER_DEATH_AUDIO);
         level.objects.push(new Explosion(this.rect.center(), 32));
     }
 

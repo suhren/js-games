@@ -13,6 +13,42 @@ export var SPRITESHEET_PLAYER_DASH_RIGHT = null;
 export var SPRITESHEET_PLAYER_EXPLODE = null;
 export var SPRITESHEET_PLAYER_SPIRIT = null;
 
+
+
+async function getImage(url) {
+    // https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
+    return new Promise(function (resolve, reject) {
+        let image = new Image();
+        image.addEventListener("load", () => resolve(image));
+        image.addEventListener("error", (err) => reject(err));
+        image.src = url;
+    });
+}
+
+async function getAudio(url) {
+    // https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
+    return new Promise(function (resolve, reject) {
+        let audio = new Audio(url);
+        audio.addEventListener("canplaythrough", () => resolve(audio));
+        audio.addEventListener("error", (err) => reject(err));
+    });
+}
+
+export var GAME_AUDIO = null;
+export var GOAL_AUDIO = null;
+export var DOOR_AUDIO = null;
+export var PLAYER_DASH_AUDIO = null;
+export var PLAYER_DEATH_AUDIO = null;
+export var CHECKPOINT_AUDIO = null;
+export var COIN_AUDIO = null;
+
+
+export function playAudio(audio) {
+    audio.currentTime = 0;
+    audio.play();
+}
+
+
 // Template XML (Tiled .tx) files
 export var TEMPLATES = [];
 export const TEMPLATE_FILES = [
@@ -64,8 +100,44 @@ export var TILESETS = new Map();
 
 
 export async function init() {
+
     // Initialize the assets
-    
+    GAME_AUDIO = await getAudio("assets/sounds/mixkit-game-level-music-689.wav");
+    GAME_AUDIO.volume = 0.15;
+    GAME_AUDIO.playbackRate = 1;
+    GAME_AUDIO.loop = true;
+
+    GOAL_AUDIO = await getAudio("assets/sounds/mixkit-retro-arcade-casino-notification-211.wav");
+    GOAL_AUDIO.volume = 0.25;
+    GOAL_AUDIO.playbackRate = 1;
+    GOAL_AUDIO.loop = false;
+
+    DOOR_AUDIO = await getAudio("assets/sounds/mixkit-mechanical-crate-pick-up-3154.wav");
+    DOOR_AUDIO.volume = 0.25;
+    DOOR_AUDIO.playbackRate = 4;
+    DOOR_AUDIO.loop = false;
+
+    PLAYER_DASH_AUDIO = await getAudio("assets/sounds/mixkit-arcade-retro-jump-223.wav");
+    PLAYER_DASH_AUDIO.volume = 0.20;
+    PLAYER_DASH_AUDIO.playbackRate = 4;
+    PLAYER_DASH_AUDIO.loop = false;
+
+    PLAYER_DEATH_AUDIO = await getAudio("assets/sounds/mixkit-sci-fi-laser-in-space-sound-2825.wav");
+    PLAYER_DEATH_AUDIO.volume = 0.4;
+    PLAYER_DEATH_AUDIO.playbackRate = 2;
+    PLAYER_DEATH_AUDIO.loop = false;
+
+    CHECKPOINT_AUDIO = await getAudio("assets/sounds/mixkit-player-jumping-in-a-video-game-2043.wav")
+    CHECKPOINT_AUDIO.volume = 0.25;
+    CHECKPOINT_AUDIO.playbackRate = 0.5;
+    CHECKPOINT_AUDIO.loop = false;
+
+    COIN_AUDIO = await getAudio("assets/sounds/mixkit-explainer-video-game-alert-sweep-236.wav")
+    COIN_AUDIO.volume = 0.25;
+    COIN_AUDIO.playbackRate = 1;
+    COIN_AUDIO.loop = false;
+
+
     // First load XML files
     for (let i = 0; i < TEMPLATE_FILES.length; i++) {
         let path = TEMPLATE_FILES[i];
@@ -203,18 +275,6 @@ export class Tileset {
             this.tiles.set(id, animatedTile);
         }
     }
-}
-
-
-
-async function getImage(url) {
-    // https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
-    return new Promise(function (resolve, reject) {
-        let image = new Image();
-        image.addEventListener("load", () => resolve(image));
-        image.addEventListener("error", (err) => reject(err));
-        image.src = url;
-    });
 }
 
 
