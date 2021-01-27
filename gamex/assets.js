@@ -75,7 +75,7 @@ export var TEMPLATE_XMLS = new Map();
 // Level XML (Tiled .tmx) files
 export var LEVELS = [];
 export const LEVEL_FILES = [
-    "./assets/levels/test7.tmx",
+    "./assets/levels/level0.tmx",
     "./assets/levels/test0.tmx",
     "./assets/levels/test1.tmx",
     "./assets/levels/test2.tmx",
@@ -93,7 +93,8 @@ const TILESET_FILES = [
     "./assets/tileset_common.tsx",
     "./assets/tileset_forest.tsx",
     "./assets/tileset_dungeon.tsx",
-    "./assets/tileset_floaty.tsx"
+    "./assets/tileset_floaty.tsx",
+    "./assets/tileset_talisman.tsx"
 ];
 export var TILESET_XMLS = new Map();
 export var TILESETS = new Map();

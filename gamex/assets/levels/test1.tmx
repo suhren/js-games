@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="111">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="113">
  <properties>
   <property name="description" value="This is Level 1"/>
   <property name="name" value="Level 1"/>
  </properties>
  <tileset firstgid="1" source="../tileset_common.tsx"/>
  <tileset firstgid="32" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="39" source="../tileset_talisman.tsx"/>
  <layer id="1" name="Tile Layer 1" width="32" height="16">
   <data encoding="csv">
 31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,

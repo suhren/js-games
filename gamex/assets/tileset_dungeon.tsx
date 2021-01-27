@@ -1,127 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.4" tiledversion="1.4.3" name="tileset_dungeon" tilewidth="16" tileheight="16" tilecount="64" columns="8">
  <image source="images/dungeon/dungeon.png" width="128" height="128"/>
- <tile id="0">
+ <terraintypes>
+  <terrain name="walls" tile="0"/>
+ </terraintypes>
+ <tile id="0" terrain=",,,0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="1">
+ <tile id="1" terrain=",,0,0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="2">
+ <tile id="2" terrain=",,0,">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="3">
+ <tile id="3" terrain="0,0,0,">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="4">
+ <tile id="4" terrain="0,0,,0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="5">
+ <tile id="8" terrain=",0,,0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="6">
+ <tile id="9" terrain="0,0,0,0"/>
+ <tile id="10" terrain="0,,0,">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="7">
+ <tile id="11" terrain="0,,0,0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="8">
+ <tile id="12" terrain=",0,0,0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="9">
+ <tile id="16" terrain=",0,,">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="10">
+ <tile id="17" terrain="0,0,,">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="11">
+ <tile id="18" terrain="0,,,">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="12">
+ <tile id="24">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="13">
-  <properties>
-   <property name="collision" type="bool" value="false"/>
-   <property name="friction" type="float" value="-1"/>
-  </properties>
- </tile>
- <tile id="14">
+ <tile id="25">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="15">
-  <properties>
-   <property name="collision" type="bool" value="true"/>
-   <property name="friction" type="float" value="-1"/>
-  </properties>
- </tile>
- <tile id="16">
-  <properties>
-   <property name="collision" type="bool" value="true"/>
-   <property name="friction" type="float" value="-1"/>
-  </properties>
- </tile>
- <tile id="17">
-  <properties>
-   <property name="collision" type="bool" value="true"/>
-   <property name="friction" type="float" value="-1"/>
-  </properties>
- </tile>
- <tile id="18">
+ <tile id="26">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
   <animation>
-   <frame tileid="18" duration="200"/>
-   <frame tileid="19" duration="200"/>
+   <frame tileid="25" duration="200"/>
+   <frame tileid="26" duration="200"/>
   </animation>
  </tile>
- <tile id="19">
+ <tile id="32">
   <properties>
-   <property name="collision" type="bool" value="true"/>
+   <property name="collision" type="bool" value="false"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
