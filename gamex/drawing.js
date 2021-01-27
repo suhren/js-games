@@ -209,26 +209,22 @@ export class CoinRenderer extends Renderer {
     }
 
     update(dT) {
-        if (!this.obj.collected) {
-            this.tile.update(dT);
-        }
+        this.tile.update(dT);
     }
 
     draw() {
-        if (!this.obj.collected) {
-            var rect = getScreenRect(this.obj.rect);
-            drawDropShadow(rect);
-            let image = this.tile.getImage()
-            ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h);
+        var rect = getScreenRect(this.obj.rect);
+        drawDropShadow(rect);
+        let image = this.tile.getImage()
+        ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h);
 
-            if (drawColliders) {
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = "red";
-                let circle = getScreenCircle(this.obj.circ);
-                ctx.beginPath();
-                ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
-                ctx.stroke();
-            }
+        if (drawColliders) {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "red";
+            let circle = getScreenCircle(this.obj.circ);
+            ctx.beginPath();
+            ctx.arc(circle.c.x, circle.c.y, circle.r, 0, Math.PI * 2, false);
+            ctx.stroke();
         }
     }
 }
@@ -388,6 +384,18 @@ export class BallRenderer extends Renderer {
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+            else if (this.type === "polygon") {
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#CCC"; 
+                ctx.beginPath();
+                this.obj.segments.map(seg => {
+                    var p1 = getScreenVector(seg[0]);
+                    var p2 = getScreenVector(seg[1]);
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y)
+                });
                 ctx.stroke();
             }
         }

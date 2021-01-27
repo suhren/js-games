@@ -76,6 +76,10 @@ export var TEMPLATE_XMLS = new Map();
 export var LEVELS = [];
 export const LEVEL_FILES = [
     "./assets/levels/level0.tmx",
+    "./assets/levels/level1.tmx",
+    "./assets/levels/level2.tmx",
+    "./assets/levels/level3.tmx",
+    "./assets/levels/level4.tmx",
     "./assets/levels/test0.tmx",
     "./assets/levels/test1.tmx",
     "./assets/levels/test2.tmx",
@@ -434,9 +438,7 @@ function levelFromXml(xml, path) {
         }
     }
 
-    // Naively select the first object layer. Change if more layers are neeed.
-    let objectLayer = root.getElementsByTagName("objectgroup")[0];
-    let objects = objectLayer.getElementsByTagName("object");
+    let objectLayers = root.getElementsByTagName("objectgroup");
 
     let spawn = null;
     let checkpoints = [];
@@ -448,225 +450,293 @@ function levelFromXml(xml, path) {
     let doors = [];
     let spikes = [];
 
-    for (let i = 0; i < objects.length; i++) {
-        
-        let obj = objects[i];
-        
-        let template = null;
-        let templateName = null;
-        let templateObject = null;
-        let type = null;
-        let templatePath = obj.getAttribute("template");
+    for (let objLayerIdx = 0; objLayerIdx < objectLayers.length; objLayerIdx++) {
+        let objectLayer = objectLayers[objLayerIdx];
+        let objects = objectLayer.getElementsByTagName("object");
 
-        if (templatePath == null) {
-            type = obj.getAttribute("type");
-            if (type == null) {
-                continue;
-            }
-        }
-        else {
-            templateName = getFileName(templatePath);
-            template = TEMPLATE_XMLS.get(templateName);
-            template = template.getElementsByTagName("template")[0];
-            templateObject = template.getElementsByTagName("object")[0];
-            type = templateObject.getAttribute("type");
-        }
-
-        switch (type) {
-
-            case "spawn":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                spawn = new utils.Vector(x, y);
-                break;
-
-            case "checkpoint":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                checkpoints.push(new go.Checkpoint(tiledRectangle(x, y, w, h)));
-                break;
-
-            case "goal":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                goal = new go.Goal(tiledRectangle(x, y, w, h));
-                break;
-
-            case "text":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                var rect = tiledRectangle(x, y, w, h);
-
-                var textObj = obj.getElementsByTagName("text")[0];
-
-                if (textObj == null) {
-                    textObj = templateObject.getElementsByTagName("text")[0];
-                }
-                var text = textObj.firstChild.data;
-                let pixelsize = parseInt(textObj.getAttribute("pixelsize"));
-                let wrap = parseInt(textObj.getAttribute("wrap"));
-                texts.push(new go.Text(text, pixelsize, rect, wrap));
-                break;
+        for (let i = 0; i < objects.length; i++) {
             
-            case "coin":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                var rect = tiledRectangle(x, y, w, h, 0, true);
-                var gid = parseInt(getAttribute("gid", obj, templateObject));
-                var templateTileLookup = templateTileLookups.get(templateName);
-                var tile = null;
-                if (templateTileLookup != null) {
-                    tile = templateTileLookup.get(gid);
-                }
-                else {
-                    tile = levelTileLookup.get(gid);
-                }
-                coins.push(new go.Coin(rect, tile.copy()));
-                break;
+            let obj = objects[i];
+            
+            let template = null;
+            let templateName = null;
+            let templateObject = null;
+            let type = null;
+            let templatePath = obj.getAttribute("template");
 
-            case "key":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                var rect = tiledRectangle(x, y, w, h, 0, true);
-                var color = getProperty("color", obj, templateObject);
-                var gid = parseInt(getAttribute("gid", obj, templateObject));
-                var templateTileLookup = templateTileLookups.get(templateName);
-                var image = null;
-                if (templateTileLookup != null) {
-                    image = templateTileLookup.get(gid).image;
+            if (templatePath == null) {
+                type = obj.getAttribute("type");
+                if (type == null) {
+                    continue;
                 }
-                else {
-                    image = levelTileLookup.get(gid).image;
-                }
-                keys.push(new go.Key(rect, color, image));
-                break;
+            }
+            else {
+                templateName = getFileName(templatePath);
+                template = TEMPLATE_XMLS.get(templateName);
+                template = template.getElementsByTagName("template")[0];
+                templateObject = template.getElementsByTagName("object")[0];
+                type = templateObject.getAttribute("type");
+            }
 
-            case "door":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                var rect = tiledRectangle(x, y, w, h, 0, true);
-                var color = getProperty("color", obj, templateObject);
-                var gid = parseInt(getAttribute("gid", obj, templateObject));
-                
-                var templateTileLookup = templateTileLookups.get(templateName);
-                var image = null;
-                if (templateTileLookup != null) {
-                    image = templateTileLookup.get(gid).image;
-                }
-                else {
-                    image = levelTileLookup.get(gid).image;
-                }
+            switch (type) {
 
-                doors.push(new go.Door(rect, color, image));
-                break;
-
-            case "spike":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                var rot = parseFloat(getAttribute("rotation", obj, templateObject));
-                if (rot == null || isNaN(rot)) {
-                    rot = 0;
-                }
-                var rect = tiledRectangle(x, y, w, h, rot, true);
-                // Rotation: 0 degrees -> up, 90 degrees -> right, ...
-                var imageRot = rot * Math.PI / 180;
-                // Convert to javascript canvas radians (0 right, pi/2 down, etc.)
-                // NOTE: Not radians where pi/2 is up (canvas has positive y down)
-                // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate
-                var spikeRot = (rot - 90) * Math.PI / 180;
-                var gid = parseInt(getAttribute("gid", obj, templateObject));
-                
-                var templateTileLookup = templateTileLookups.get(templateName);
-                var image = null;
-                if (templateTileLookup != null) {
-                    image = templateTileLookup.get(gid).image;
-                }
-                else {
-                    image = levelTileLookup.get(gid).image;
-                }
-                spikes.push(new go.Spike(rect, imageRot, spikeRot, image));
-                break;
-
-                    
-            case "ball":
-                var x = parseInt(getAttribute("x", obj, templateObject));
-                var y = parseInt(getAttribute("y", obj, templateObject));
-                var w = parseInt(getAttribute("width", obj, templateObject));
-                var h = parseInt(getAttribute("height", obj, templateObject));
-                var rect = tiledRectangle(x, y, w, h, 0, true);
-
-                var gid = parseInt(getAttribute("gid", obj, templateObject));
-                var templateTileLookup = templateTileLookups.get(templateName);
-                var tile = null;
-                if (templateTileLookup != null) {
-                    tile = templateTileLookup.get(gid);
-                }
-                else {
-                    tile = levelTileLookup.get(gid);
-                }
-
-                var pos = rect.center();
-                let size = rect.w / 2;
-
-                var speed = getProperty("speed", obj, templateObject);
-                var centerIdx = getProperty("center", obj, templateObject);
-                var lineIdx = getProperty("line", obj, templateObject);
-
-                if (centerIdx != null && centerIdx != 0) {
-                    // Ball rotating around some center
-                    var centerObj = root.querySelectorAll(`object[id='${centerIdx}']`)[0]
-
+                case "spawn":
                     var x = parseInt(getAttribute("x", obj, templateObject));
                     var y = parseInt(getAttribute("y", obj, templateObject));
-                    
-                    var center = tiledVector(centerObj);
-                    let radius = pos.subtract(center).length();
-                    let angle = Math.atan2(pos.y - center.y, pos.x - center.x);
-                    speed = speed / 180 * Math.PI;
-                    balls.push(new go.DeathBallCircle(center, tile.copy(), radius, speed, size, angle));
-                }
-                else {
-                    // Ball moving along some line
-                    if (lineIdx != 0) {
-                        var lineObj = root.querySelectorAll(`object[id='${lineIdx}']`)[0]
-                        var polyline = lineObj.getElementsByTagName("polyline")[0];
-                        var pointsString = polyline.getAttribute("points");
-                        var pairs = pointsString.split(" ");
-                        var points = pairs.map(
-                            str => str.split(",").map(s => parseFloat(s))
-                        );
-                        
-                        let p = tiledVector(lineObj);
-                        let p1 = new utils.Vector(points[0][0], points[0][1]);
-                        let p2 = new utils.Vector(points[1][0], points[1][1]);
-                        
-                        p1 = p.add(p1);
-                        p2 = p.add(p2);
-                        speed = speed / 100;
+                    spawn = new utils.Vector(x, y);
+                    break;
 
-                        // Relative to p1: the length from p1 to the projection
-                        // should be proportional to t
-                        let lineVector = p2.subtract(p1);
-                        let proj =  pos.subtract(p1).project(lineVector);                    
-                        let t = proj.length() / lineVector.length();
-                        balls.push(new go.DeathBallLinear(p1, p2, tile.copy(), speed, size, t));
+                case "checkpoint":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    checkpoints.push(new go.Checkpoint(tiledRectangle(x, y, w, h)));
+                    break;
+
+                case "goal":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    goal = new go.Goal(tiledRectangle(x, y, w, h));
+                    break;
+
+                case "text":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    var rect = tiledRectangle(x, y, w, h);
+
+                    var textObj = obj.getElementsByTagName("text")[0];
+
+                    if (textObj == null) {
+                        textObj = templateObject.getElementsByTagName("text")[0];
                     }
-                }
-                break;
+                    var text = textObj.firstChild.data;
+                    let pixelsize = parseInt(textObj.getAttribute("pixelsize"));
+                    let wrap = parseInt(textObj.getAttribute("wrap"));
+                    texts.push(new go.Text(text, pixelsize, rect, wrap));
+                    break;
+                
+                case "coin":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    var rect = tiledRectangle(x, y, w, h, 0, true);
+                    var gid = parseInt(getAttribute("gid", obj, templateObject));
+                    var templateTileLookup = templateTileLookups.get(templateName);
+                    var tile = null;
+                    if (templateTileLookup != null) {
+                        tile = templateTileLookup.get(gid);
+                    }
+                    else {
+                        tile = levelTileLookup.get(gid);
+                    }
+                    coins.push(new go.Coin(rect, tile.copy()));
+                    break;
+
+                case "key":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    var rect = tiledRectangle(x, y, w, h, 0, true);
+                    var color = getProperty("color", obj, templateObject);
+                    var gid = parseInt(getAttribute("gid", obj, templateObject));
+                    var templateTileLookup = templateTileLookups.get(templateName);
+                    var image = null;
+                    if (templateTileLookup != null) {
+                        image = templateTileLookup.get(gid).image;
+                    }
+                    else {
+                        image = levelTileLookup.get(gid).image;
+                    }
+                    keys.push(new go.Key(rect, color, image));
+                    break;
+
+                case "door":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    var rect = tiledRectangle(x, y, w, h, 0, true);
+                    var color = getProperty("color", obj, templateObject);
+                    var gid = parseInt(getAttribute("gid", obj, templateObject));
+                    
+                    var templateTileLookup = templateTileLookups.get(templateName);
+                    var image = null;
+                    if (templateTileLookup != null) {
+                        image = templateTileLookup.get(gid).image;
+                    }
+                    else {
+                        image = levelTileLookup.get(gid).image;
+                    }
+
+                    doors.push(new go.Door(rect, color, image));
+                    break;
+
+                case "spike":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    var rot = parseFloat(getAttribute("rotation", obj, templateObject));
+                    if (rot == null || isNaN(rot)) {
+                        rot = 0;
+                    }
+                    var rect = tiledRectangle(x, y, w, h, rot, true);
+                    // Rotation: 0 degrees -> up, 90 degrees -> right, ...
+                    var imageRot = rot * Math.PI / 180;
+                    // Convert to javascript canvas radians (0 right, pi/2 down, etc.)
+                    // NOTE: Not radians where pi/2 is up (canvas has positive y down)
+                    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate
+                    var spikeRot = (rot - 90) * Math.PI / 180;
+                    var gid = parseInt(getAttribute("gid", obj, templateObject));
+                    
+                    var templateTileLookup = templateTileLookups.get(templateName);
+                    var image = null;
+                    if (templateTileLookup != null) {
+                        image = templateTileLookup.get(gid).image;
+                    }
+                    else {
+                        image = levelTileLookup.get(gid).image;
+                    }
+                    spikes.push(new go.Spike(rect, imageRot, spikeRot, image));
+                    break;
+
+                        
+                case "ball":
+                    var x = parseInt(getAttribute("x", obj, templateObject));
+                    var y = parseInt(getAttribute("y", obj, templateObject));
+                    var w = parseInt(getAttribute("width", obj, templateObject));
+                    var h = parseInt(getAttribute("height", obj, templateObject));
+                    var rect = tiledRectangle(x, y, w, h, 0, true);
+
+                    var gid = parseInt(getAttribute("gid", obj, templateObject));
+                    var templateTileLookup = templateTileLookups.get(templateName);
+                    var tile = null;
+                    if (templateTileLookup != null) {
+                        tile = templateTileLookup.get(gid);
+                    }
+                    else {
+                        tile = levelTileLookup.get(gid);
+                    }
+
+                    var pos = rect.center();
+                    let size = rect.w / 2;
+
+                    var speed = getProperty("speed", obj, templateObject);
+                    var centerIdx = getProperty("center", obj, templateObject);
+                    var lineIdx = getProperty("line", obj, templateObject);
+
+                    if (centerIdx != null && centerIdx != 0) {
+                        // Ball rotating around some center
+                        var centerObj = root.querySelectorAll(`object[id='${centerIdx}']`)[0]
+
+                        var x = parseInt(getAttribute("x", obj, templateObject));
+                        var y = parseInt(getAttribute("y", obj, templateObject));
+                        
+                        var center = tiledVector(centerObj);
+                        let radius = pos.subtract(center).length();
+                        let angle = Math.atan2(pos.y - center.y, pos.x - center.x);
+                        speed = speed / 180 * Math.PI;
+                        balls.push(new go.DeathBallCircle(center, tile.copy(), radius, speed, size, angle));
+                    }
+                    else {
+                        // Ball moving along some line
+                        if (lineIdx != 0) {
+                            var lineObj = root.querySelectorAll(`object[id='${lineIdx}']`)[0]
+                            var polyline = lineObj.getElementsByTagName("polyline")[0];
+                            var pointsString = polyline.getAttribute("points");
+                            var pairs = pointsString.split(" ");
+                            var points = pairs.map(
+                                str => str.split(",").map(s => parseFloat(s))
+                            );
+                            
+                            // Origin point of the lien object
+                            let origin = tiledVector(lineObj);
+
+                            if (points.length == 2) {
+                                // Two points forming a single line
+                                let p1 = new utils.Vector(points[0][0], points[0][1]);
+                                let p2 = new utils.Vector(points[1][0], points[1][1]);
+                                
+                                p1 = origin.add(p1);
+                                p2 = origin.add(p2);
+                                speed = speed / 100;
+    
+                                // Relative to p1: the length from p1 to the projection
+                                // should be proportional to t
+                                let lineVector = p2.subtract(p1);
+                                let proj =  pos.subtract(p1).project(lineVector);                    
+                                let t = proj.length() / lineVector.length();
+                                balls.push(new go.DeathBallLinear(p1, p2, tile.copy(), speed, size, t));
+                            }
+                            else if (points.length > 2) {
+                                // More than Two points forming a polygon
+                                
+                                // First determine if the polygon is closed.
+                                // I.e. if the coordinate of the final point is the same as the first point
+                                // (Close enough according to some epsilon distance)
+                                let n = points.length;
+                                let vecs = points.map(p => new utils.Vector(origin.x + p[0], origin.y + p[1]));
+                                let firstPoint = vecs[0];
+                                let lastPoint = vecs[n-1];
+                                speed = speed / 100;
+                                
+                                let d = lastPoint.subtract(firstPoint).length();
+                                let loop = (d < 0.5);
+
+                                let segments = []
+                                // Skip last vector if it is in same position as first
+                                if (loop) {
+                                    for (let idx = 1; idx < vecs.length-1; idx++) {
+                                        segments.push([vecs[idx-1], vecs[idx]]);
+                                    }
+                                    segments.push([vecs[n-2], vecs[0]]);
+                                }
+                                else {
+                                    for (let idx = 1; idx < vecs.length; idx++) {
+                                        segments.push([vecs[idx-1], vecs[idx]]);
+                                    }
+                                }
+
+                                // First figure out which line segment is closest
+                                let smallestDist = 9999999;
+                                let smallestIdx = 0;
+                                let tStart = 0;
+                                let posStart = null;
+
+                                for (let idx = 0; idx < segments.length; idx++) {
+                                    let p1 = segments[idx][0];
+                                    let p2 = segments[idx][1];
+                                    let xMin = Math.min(p1.x, p2.x);
+                                    let yMin = Math.min(p1.y, p2.y);
+                                    let xMax = Math.max(p1.x, p2.x);
+                                    let yMax = Math.max(p1.y, p2.y);
+                                    let lineVector = p2.subtract(p1);
+                                    let proj =  pos.subtract(p1).project(lineVector).add(p1);                    
+                                    proj.x = utils.clamp(proj.x, xMin, xMax);
+                                    proj.y = utils.clamp(proj.y, yMin, yMax);
+                                    let t = proj.subtract(p1).length() / lineVector.length();
+                                    
+                                    let dist = proj.subtract(pos).length();
+                                    if (dist < smallestDist) {
+                                        smallestIdx = idx;
+                                        smallestDist = dist;
+                                        tStart = t;
+                                        posStart = proj;
+                                    }
+                                }
+                                balls.push(new go.DeathBallPolygon(segments, smallestIdx, tStart, tile.copy(), loop, speed, size));
+                            }
+                        }
+                    }
+                    break;
+            }
         }
     }
 

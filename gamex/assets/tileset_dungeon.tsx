@@ -34,6 +34,12 @@
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
+ <tile id="5" terrain="0,0,0,0" probability="0">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
+ </tile>
  <tile id="8" terrain=",0,,0">
   <properties>
    <property name="collision" type="bool" value="true"/>
@@ -59,6 +65,12 @@
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
+ <tile id="13" terrain="0,0,0,0" probability="0">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
+ </tile>
  <tile id="16" terrain=",0,,">
   <properties>
    <property name="collision" type="bool" value="true"/>
@@ -77,19 +89,25 @@
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="24">
+ <tile id="21" terrain="0,0,0,0" probability="0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="25">
+ <tile id="24" terrain="0,0,0,0" probability="0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
   </properties>
  </tile>
- <tile id="26">
+ <tile id="25" terrain="0,0,0,0" probability="0">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
+ </tile>
+ <tile id="26" terrain="0,0,0,0" probability="0">
   <properties>
    <property name="collision" type="bool" value="true"/>
    <property name="friction" type="float" value="-1"/>
@@ -99,7 +117,25 @@
    <frame tileid="26" duration="200"/>
   </animation>
  </tile>
- <tile id="32">
+ <tile id="27" terrain="0,0,0,0" probability="0">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
+ </tile>
+ <tile id="28" terrain="0,0,0,0" probability="0">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
+ </tile>
+ <tile id="29" terrain="0,0,0,0" probability="0">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="friction" type="float" value="-1"/>
+  </properties>
+ </tile>
+ <tile id="32" terrain="0,0,0,0" probability="0">
   <properties>
    <property name="collision" type="bool" value="false"/>
    <property name="friction" type="float" value="-1"/>

@@ -3,10 +3,10 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tileset_dungeon.tsx",
+    "activeFile": "levels/level0.tmx",
     "expandedProjectPaths": [
-        "templates",
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
+        "templates",
         ".",
         "levels"
     ],
@@ -48,40 +48,72 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 288,
-                "y": 218
+                "x": 239.33333333333331,
+                "y": 164
+            }
+        },
+        "levels/level1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 387.3333333333333,
+                "y": 191.33333333333334
+            }
+        },
+        "levels/level2.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 286,
+                "y": 246.66666666666669
+            }
+        },
+        "levels/level3.tmx": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 167.5,
+                "y": 266
+            }
+        },
+        "levels/level4.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 258.66666666666663,
+                "y": 200.66666666666669
             }
         },
         "levels/test0.tmx": {
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 255.66666666666666,
-                "y": 128
+                "x": 255.99999999999997,
+                "y": 127.83333333333334
             }
         },
         "levels/test1.tmx": {
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 290.5,
-                "y": 174
+                "x": 256,
+                "y": 127.75
             }
         },
         "levels/test2.tmx": {
             "scale": 2.19,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 128.08219178082192,
-                "y": 128.31050228310502
+                "x": 127.85388127853882,
+                "y": 127.85388127853882
             }
         },
         "levels/test3.tmx": {
-            "scale": 2,
-            "selectedLayer": 0,
+            "scale": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 256,
-                "y": 128.25
+                "x": 206.66666666666666,
+                "y": 102.66666666666667
             }
         },
         "levels/test4.tmx": {
@@ -170,43 +202,36 @@
     },
     "frame.defaultDuration": 200,
     "lastUsedTilesetExportFilter": "JSON tileset files (*.json)",
-    "map.height": 16,
+    "map.height": 24,
     "map.lastUsedExportFilter": "JSON map files (*.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 32,
+    "map.width": 24,
     "openFiles": [
         "levels/test5.tmx",
-        "levels/test6.tmx",
-        "levels/test4.tmx",
-        "levels/test3.tmx",
-        "tileset_forest.tsx",
-        "tileset_common.tsx",
-        "tileset_player.tsx",
-        "levels/test1.tmx",
-        "levels/test7.tmx",
-        "tileset_floaty.tsx",
-        "tileset_talisman.tsx",
-        "levels/test0.tmx",
         "levels/level0.tmx",
-        "tileset_dungeon.tsx"
+        "levels/level1.tmx",
+        "levels/test2.tmx",
+        "levels/level2.tmx",
+        "levels/level3.tmx",
+        "levels/level4.tmx"
     ],
     "project": "game.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "levels/test7.tmx",
-        "tileset_dungeon.tsx",
         "levels/test5.tmx",
-        "levels/test6.tmx",
-        "levels/test4.tmx",
-        "levels/test3.tmx",
-        "tileset_forest.tsx",
-        "tileset_common.tsx",
-        "tileset_player.tsx",
-        "levels/test1.tmx",
+        "levels/level4.tmx",
+        "levels/level3.tmx",
+        "levels/level2.tmx",
+        "levels/test2.tmx",
+        "levels/level1.tmx",
+        "levels/level0.tmx",
+        "tileset_dungeon.tsx",
+        "levels/test0.tmx",
+        "tileset_talisman.tsx",
         "tileset_floaty.tsx",
-        "tileset_talisman.tsx"
+        "levels/test1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

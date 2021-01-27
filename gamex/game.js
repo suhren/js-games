@@ -239,6 +239,7 @@ function loadLevel(lvl) {
     player.pos.y -= player.h / 2;
     player.start = level.playerStart.copy();
     player.keys = [];
+    player.coinsSinceLastCheckpoint = new Array();
 }
 
 

@@ -198,6 +198,65 @@ export class DeathBallLinear extends GameOject{
 }
 
 
+
+export class DeathBallPolygon extends GameOject{
+
+    constructor(segments, startSegment, tStart, tile, loop=false, speed=0.08, size=16) {
+        // Speed is ratio of total distance per second
+        super(segments[0][0], 2 * size, 2 * size);
+        this.loop = loop;
+        this.size = size;
+        this.segments = segments;
+        this.t = tStart;
+        this.semgentIdx = startSegment;
+        this.fromPoint = segments[this.semgentIdx][0]
+        this.toPoint = segments[this.semgentIdx][1]
+        this.delta = this.toPoint.subtract(this.fromPoint);
+        this.dists = this.segments.map(seg => seg[0].subtract(seg[1]).length());
+        this.totalDist = this.dists.reduce((a, b) => a + b, 0)
+        this.speed = Math.abs(speed * this.totalDist);
+        // Ratio of each distance per second
+        this.segmentSpeeds = this.dists.map(d => this.speed / d);
+        this.vel = this.segmentSpeeds[this.semgentIdx];
+        this.renderer = new drawing.BallRenderer(this, tile, "polygon");
+    }
+
+    update(level, dT) {
+        this.renderer.update(dT);
+        if (this.t < 0.0) {
+            if (this.semgentIdx > 0 || this.loop) {
+                this.semgentIdx  = (this.semgentIdx > 0) ? this.semgentIdx - 1 : this.segments.length - 1;
+                this.fromPoint = this.segments[this.semgentIdx][0]
+                this.toPoint = this.segments[this.semgentIdx][1]
+                this.delta = this.toPoint.subtract(this.fromPoint);
+                this.vel = -this.segmentSpeeds[this.semgentIdx];
+                this.t = 1.0;
+            }
+            else {
+                this.vel = this.segmentSpeeds[this.semgentIdx];
+            }
+        }
+        else if (this.t >= 1.0) {
+            if (this.semgentIdx < this.segments.length - 1  || this.loop) {
+                this.semgentIdx = (this.semgentIdx + 1) % this.segments.length;
+                this.fromPoint = this.segments[this.semgentIdx][0]
+                this.toPoint = this.segments[this.semgentIdx][1]
+                this.delta = this.toPoint.subtract(this.fromPoint);
+                this.vel = this.segmentSpeeds[this.semgentIdx];
+                this.t = 0;    
+            }
+            else {
+                this.vel = -this.segmentSpeeds[this.semgentIdx];
+            }
+        }
+        this.t += this.vel * dT;
+        this.pos = this.fromPoint.add(this.delta.multiply(this.t));
+        this.pos.x -= this.size;
+        this.pos.y -= this.size;
+    }
+}
+
+
 export class Key extends GameOject {
     constructor(rect, color, image) {
         super(new utils.Vector(rect.x, rect.y), rect.w, rect.h);
@@ -371,6 +430,9 @@ export class Player extends GameOject {
         this.alive = true;
         this.spiritTime = 0.2;
         this.renderer = new drawing.PlayerRenderer(this);
+
+        this.coinsSinceLastCheckpoint = new Array()
+
         this.dashParticleEmitter = new ParticleEmitter(
             this.pos,
             128,
@@ -558,6 +620,7 @@ export class Player extends GameOject {
                     cp.active = true;
                     this.activeCheckpoint = cp;
                     assets.playAudio(assets.CHECKPOINT_AUDIO);
+                    this.coinsSinceLastCheckpoint = new Array();
                     for (let j = 0; j < level.checkpoints.length; j++) {
                         level.checkpoints[j].active = (i == j);
                     }
@@ -565,6 +628,7 @@ export class Player extends GameOject {
             }
         }
 
+        level.goal.unlocked = (level.coins.length == 0);
         if (level.goal.unlocked &&
             !level.goal.activated &&
             utils.rectIntersect(pRect, level.goal.rect)) {
@@ -575,13 +639,12 @@ export class Player extends GameOject {
         // Update coins
         for (let i = 0; i < level.coins.length; i++) {
             let coin = level.coins[i];
-            if (!coin.collected && utils.rectCircleInterset(pRect, coin.circ)) {
+            if (utils.rectCircleInterset(pRect, coin.circ)) {
+                this.coinsSinceLastCheckpoint.push(coin);
                 level.coins.splice(i, 1);
-                coin.collected = true;
+                const j = level.objects.indexOf(coin);
+                level.objects.splice(j, 1);
                 assets.playAudio(assets.COIN_AUDIO);
-                if (level.coins.length == 0) {
-                    level.goal.unlocked = true;
-                } 
             }
         }
 
@@ -627,6 +690,12 @@ export class Player extends GameOject {
 
 
     die(level) {
+        console.log(this.coinsSinceLastCheckpoint);
+        level.objects = level.objects.concat(this.coinsSinceLastCheckpoint);
+        level.coins = level.coins.concat(this.coinsSinceLastCheckpoint);
+        this.coinsSinceLastCheckpoint = new Array();
+        console.log(level.coins);
+
         this.alive = false;
         this.spiritTarget = null;
         if (this.activeCheckpoint != null) {
