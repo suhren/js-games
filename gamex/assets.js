@@ -75,6 +75,9 @@ export var TEMPLATE_XMLS = new Map();
 // Level XML (Tiled .tmx) files
 export var LEVELS = [];
 export const LEVEL_FILES = [
+    "./assets/levels/level01.tmx",
+    "./assets/levels/level02.tmx",
+    "./assets/levels/level03.tmx",
     "./assets/levels/level1.tmx",
     "./assets/levels/level2.tmx",
     "./assets/levels/level3.tmx",
