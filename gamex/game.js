@@ -262,6 +262,8 @@ function loadLevel(lvl) {
     player.start = level.playerStart.copy();
     player.keys = [];
     player.coinsSinceLastCheckpoint = new Array();
+    player.alive = true;
+    player.spiritParticleEmitter.active = false;
 }
 
 
