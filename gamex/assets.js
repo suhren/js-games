@@ -80,6 +80,7 @@ export const LEVEL_FILES = [
     "./assets/levels/level2.tmx",
     "./assets/levels/level3.tmx",
     "./assets/levels/level4.tmx",
+    "./assets/levels/level5.tmx",
     "./assets/levels/test0.tmx",
     "./assets/levels/test1.tmx",
     "./assets/levels/test2.tmx",

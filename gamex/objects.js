@@ -217,7 +217,7 @@ export class DeathBallPolygon extends GameOject{
         this.speed = Math.abs(speed * this.totalDist);
         // Ratio of each distance per second
         this.segmentSpeeds = this.dists.map(d => this.speed / d);
-        this.vel = this.segmentSpeeds[this.semgentIdx];
+        this.vel = Math.sign(speed) * this.segmentSpeeds[this.semgentIdx];
         this.renderer = new drawing.BallRenderer(this, tile, "polygon");
     }
 
@@ -690,11 +690,9 @@ export class Player extends GameOject {
 
 
     die(level) {
-        console.log(this.coinsSinceLastCheckpoint);
         level.objects = level.objects.concat(this.coinsSinceLastCheckpoint);
         level.coins = level.coins.concat(this.coinsSinceLastCheckpoint);
         this.coinsSinceLastCheckpoint = new Array();
-        console.log(level.coins);
 
         this.alive = false;
         this.spiritTarget = null;
