@@ -198,8 +198,8 @@ async function init() {
         new inter.Button("r: Restart", restart, 0, 0, 200, 32),
         debugButton,
         musicButton,
-        new inter.Button("c: Prev level", nextLevel, 0, 0, 200, 32),
-        new inter.Button("v: Next level", prevLevel, 0, 0, 200, 32),
+        new inter.Button("c: Prev level", prevLevel, 0, 0, 200, 32),
+        new inter.Button("v: Next level", nextLevel, 0, 0, 200, 32),
     ];
 
     menu.init(buttons);
