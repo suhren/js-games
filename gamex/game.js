@@ -208,18 +208,22 @@ function start() {
     // Set up to call the function "gameLoop" 60 times/second
     setInterval(gameLoop, 1000 / cfg.FPS);
     started = true;
+    startTime = new Date();
 }
 
-
+var startTime = 0;
+var elapsedTime = 0;
 var lastLoopTime = new Date();
 var dT = 0;
 
 function gameLoop() {
     // ms -> s
-    dT = (new Date() - lastLoopTime) / 1000;
+    let currentTime = new Date();
+    elapsedTime = new Date(currentTime - startTime);
+    dT = (currentTime - lastLoopTime) / 1000;
     update(dT);
     lastLoopTime = new Date();
-    drawing.draw(dT, level, menu);
+    drawing.draw(dT, level, menu, elapsedTime);
 
 }
 

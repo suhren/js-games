@@ -3,12 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "levels/level0.tmx",
+    "activeFile": "levels/level7.tmx",
     "expandedProjectPaths": [
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
         "templates",
-        ".",
-        "levels"
+        "levels",
+        "."
     ],
     "fileStates": {
         "C:/Users/Adam/Desktop/test.tsx": {
@@ -57,15 +57,15 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 384,
-                "y": 191.66666666666669
+                "y": 192
             }
         },
         "levels/level2.tmx": {
             "scale": 1.5,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 256,
-                "y": 255.66666666666669
+                "x": 321.3333333333333,
+                "y": 302.6666666666667
             }
         },
         "levels/level3.tmx": {
@@ -73,7 +73,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 192,
-                "y": 191.75
+                "y": 192
             }
         },
         "levels/level4.tmx": {
@@ -81,15 +81,39 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 256,
-                "y": 255.66666666666669
+                "y": 256
+            }
+        },
+        "levels/level5.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 367,
+                "y": 313
+            }
+        },
+        "levels/level6.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 294.66666666666663,
+                "y": 312.6666666666667
+            }
+        },
+        "levels/level7.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 206,
+                "y": 236
             }
         },
         "levels/test0.tmx": {
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 255.99999999999997,
-                "y": 127.83333333333334
+                "x": 255.66666666666666,
+                "y": 128
             }
         },
         "levels/test1.tmx": {
@@ -97,15 +121,15 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 256,
-                "y": 127.75
+                "y": 128
             }
         },
         "levels/test2.tmx": {
             "scale": 2.19,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 127.85388127853884,
-                "y": 128.08219178082192
+                "x": 128.31050228310505,
+                "y": 128.31050228310502
             }
         },
         "levels/test3.tmx": {
@@ -215,23 +239,28 @@
         "levels/test2.tmx",
         "levels/level2.tmx",
         "levels/level3.tmx",
-        "levels/level4.tmx"
+        "levels/level4.tmx",
+        "levels/level5.tmx",
+        "levels/level6.tmx",
+        "levels/test0.tmx",
+        "levels/test1.tmx",
+        "levels/level7.tmx"
     ],
     "project": "game.tiled-project",
     "property.type": "string",
     "recentFiles": [
         "levels/test5.tmx",
-        "levels/level4.tmx",
-        "levels/level3.tmx",
-        "levels/level2.tmx",
-        "levels/test2.tmx",
-        "levels/level1.tmx",
         "levels/level0.tmx",
-        "tileset_dungeon.tsx",
+        "levels/level1.tmx",
+        "levels/test2.tmx",
+        "levels/level2.tmx",
+        "levels/level3.tmx",
+        "levels/level4.tmx",
+        "levels/level5.tmx",
+        "levels/level6.tmx",
         "levels/test0.tmx",
-        "tileset_talisman.tsx",
-        "tileset_floaty.tsx",
-        "levels/test1.tmx"
+        "levels/test1.tmx",
+        "levels/level7.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

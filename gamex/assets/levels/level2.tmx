@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="38">
+ <properties>
+  <property name="description" value="Risky rotation"/>
+  <property name="name" value="Level 2"/>
+ </properties>
  <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
  <tileset firstgid="65" source="../tileset_floaty.tsx"/>
  <tileset firstgid="72" source="../tileset_common.tsx"/>
@@ -151,7 +155,7 @@
     <property name="speed" type="float" value="90"/>
    </properties>
   </object>
-  <object id="23" template="../templates/ball.tx" x="132" y="264">
+  <object id="23" template="../templates/ball.tx" x="128" y="264">
    <properties>
     <property name="center" type="object" value="1"/>
     <property name="speed" type="float" value="90"/>
@@ -163,7 +167,7 @@
     <property name="speed" type="float" value="90"/>
    </properties>
   </object>
-  <object id="25" template="../templates/ball.tx" x="248" y="388">
+  <object id="25" template="../templates/ball.tx" x="248" y="384">
    <properties>
     <property name="center" type="object" value="1"/>
     <property name="speed" type="float" value="90"/>
@@ -187,7 +191,7 @@
     <property name="speed" type="float" value="90"/>
    </properties>
   </object>
-  <object id="37" template="../templates/ball.tx" x="112" y="264">
+  <object id="37" template="../templates/ball.tx" x="104" y="264">
    <properties>
     <property name="center" type="object" value="1"/>
     <property name="speed" type="float" value="90"/>

@@ -563,7 +563,7 @@ export class PlayerRenderer extends Renderer {
     }
 }
 
-export function draw(dT, level, menu) {
+export function draw(dT, level, menu, elapsedTime) {
 
     let player = level.player;
     var playerPos = player.rect.center();
@@ -676,6 +676,13 @@ export function draw(dT, level, menu) {
         }
     }
 
+    let timeString = elapsedTime.toISOString().split('T')[1]
+    timeString = timeString.substring(0, timeString.length - 5);
+    drawText(`Time: ${timeString}`, canvas.width - 250, 32, 16, "middle", "left", true);
+    drawText(`Level: ${level.index + 1}/${assets.NUM_LEVELS}`, canvas.width - 250, 64, 16, "middle", "left", true);
+    drawText(`Deaths: ${player.numDeaths}`, canvas.width - 250, 96, 16, "middle", "left", true);
+
+
     // Draw player position and other debug information
     if (drawDebug) {
         // Draw status text
@@ -716,9 +723,10 @@ export function draw(dT, level, menu) {
         ctx.textAlign = "center";
         if (level.name != null) {
             ctx.fillStyle = "black";
-            ctx.fillText(level.name, canvas.width / 2, canvas.height / 2 - 16);
+            let txt = `Level ${level.index+1}`;
+            ctx.fillText(txt, canvas.width / 2, canvas.height / 2 - 16);
             ctx.fillStyle = "white";
-            ctx.fillText(level.name, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
+            ctx.fillText(txt, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
         }
         if (level.desciption != null) {
             ctx.fillStyle = "black";

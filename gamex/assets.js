@@ -75,19 +75,13 @@ export var TEMPLATE_XMLS = new Map();
 // Level XML (Tiled .tmx) files
 export var LEVELS = [];
 export const LEVEL_FILES = [
-    "./assets/levels/level0.tmx",
     "./assets/levels/level1.tmx",
     "./assets/levels/level2.tmx",
     "./assets/levels/level3.tmx",
     "./assets/levels/level4.tmx",
     "./assets/levels/level5.tmx",
-    "./assets/levels/test0.tmx",
-    "./assets/levels/test1.tmx",
-    "./assets/levels/test2.tmx",
-    "./assets/levels/test3.tmx",
-    "./assets/levels/test4.tmx",
-    "./assets/levels/test5.tmx",
-    "./assets/levels/test6.tmx"
+    "./assets/levels/level6.tmx",
+    "./assets/levels/level7.tmx"
 ];
 export var LEVEL_XMLS = new Map();
 export const NUM_LEVELS = LEVEL_FILES.length;
@@ -370,7 +364,7 @@ function getProperty(name, object, template) {
 
 
 
-function levelFromXml(xml, path) {
+function levelFromXml(index, xml, path) {
 
     let root = xml.getElementsByTagName("map")[0];
     let backgroundcolor = root.getAttribute("backgroundcolor");
@@ -742,7 +736,7 @@ function levelFromXml(xml, path) {
     }
 
     
-    let level = new go.Level(name, description, path, spawn, balls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundcolor);
+    let level = new go.Level(index, name, description, path, spawn, balls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundcolor);
     return level;
 }
 
@@ -815,5 +809,5 @@ export class AnimatedTile {
 export function loadLevelFromIndex(index) {
     let path = LEVEL_FILES[index];
     let xml = LEVEL_XMLS.get(path);
-    return levelFromXml(xml, path);
+    return levelFromXml(index, xml, path);
 }

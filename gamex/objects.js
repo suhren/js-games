@@ -328,7 +328,8 @@ export class Spawn extends GameOject {
 
 
 export class Level {
-    constructor(name, desciption, path, playerStart, deathBalls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundColor) {
+    constructor(index, name, desciption, path, playerStart, deathBalls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundColor) {
+        this.index = index;
         this.name = name;
         this.desciption = desciption;
         this.path = path;
@@ -430,6 +431,7 @@ export class Player extends GameOject {
         this.alive = true;
         this.spiritTime = 0.2;
         this.renderer = new drawing.PlayerRenderer(this);
+        this.numDeaths = 0;
 
         this.coinsSinceLastCheckpoint = new Array()
 
@@ -690,6 +692,7 @@ export class Player extends GameOject {
 
 
     die(level) {
+        this.numDeaths += 1;
         level.objects = level.objects.concat(this.coinsSinceLastCheckpoint);
         level.coins = level.coins.concat(this.coinsSinceLastCheckpoint);
         this.coinsSinceLastCheckpoint = new Array();
