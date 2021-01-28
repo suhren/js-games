@@ -17,7 +17,7 @@ var playerAnimations = null;
 var ballAnimations = null;
 var playerExplodeAnimation = null;
 
-export function init(document) {
+export async function init(document) {
     documentCanvas = document.getElementById("gameCanvas");
     documentCtx = documentCanvas.getContext("2d");
     documentCanvas.width = cfg.WINDOW_WIDTH;
@@ -600,6 +600,7 @@ export class PlayerRenderer extends Renderer {
     }
 }
 
+
 export function draw(dT, level, menu, elapsedTime) {
 
     let player = level.player;
@@ -796,4 +797,34 @@ function drawButton(x0, y0, button) {
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.fillText(button.text, x + button.w / 2, y + button.h / 2);
+}
+
+
+export function drawSplashScreen() {
+    // (Clear) draw background color on the entire screen
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    let cx = canvas.width / 2;
+    let cy = canvas.height / 2;
+
+    drawText("AMAZING TOP-DOWN GAME", cx, cy, 64, "middle", "center", true);
+    drawText("PRESS ANY KEY", cx, cy  + 64, 48, "middle", "center", true);
+
+    // Render the buffer canvas onto the document canvas
+    documentCtx.drawImage(canvas, 0, 0);
+}
+
+export function drawLoadingScreen() {
+    // (Clear) draw background color on the entire screen
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    let cx = canvas.width / 2;
+    let cy = canvas.height / 2;
+
+    drawText("LOADING...", cx, cy, 64, "middle", "center", true);
+
+    // Render the buffer canvas onto the document canvas
+    documentCtx.drawImage(canvas, 0, 0);
 }

@@ -26,13 +26,13 @@ async function getImage(url) {
 }
 
 async function getAudio(url) {
-    // https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
     return new Promise(function (resolve, reject) {
         let audio = new Audio(url);
         audio.addEventListener("canplaythrough", () => resolve(audio));
         audio.addEventListener("error", (err) => reject(err));
     });
 }
+
 
 export var GAME_AUDIO = null;
 export var GOAL_AUDIO = null;
@@ -75,7 +75,6 @@ export var TEMPLATE_XMLS = new Map();
 // Level XML (Tiled .tmx) files
 export var LEVELS = [];
 export const LEVEL_FILES = [
-    "./assets/levels/level0.tmx",
     "./assets/levels/level1.tmx",
     "./assets/levels/level2.tmx",
     "./assets/levels/level3.tmx",

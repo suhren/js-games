@@ -14,7 +14,11 @@ window.onload = function() {
     document.addEventListener("keyup", keyUp);
     canvas.addEventListener("click", click);
     canvas.addEventListener("mousemove", mousemove);
-    init();
+    // Force the game font to load first
+    // Will only load the first time it is used otherwise.
+    // https://hacks.mozilla.org/2016/06/webfont-preloading-for-html5-games/
+    document.fonts.load('10px GameFont');
+    document.fonts.ready.then(() => init());
 }
 
 
@@ -24,6 +28,7 @@ var levelIndex = 0;
 var changingLevel = false;
 var menu = null;
 var started = false;
+var initialized = false;
 
 
 function mousemove(e) {
@@ -38,8 +43,11 @@ function click(e) {
 var spaceDown = false;
 
 function keyDown(e) {
-    if (!started) {
+    if (!initialized) {
         return;
+    }
+    if (showSplashScreen) {
+        start();
     }
     // Up arrow (38) or w (87)
     if (e.keyCode == 38 || e.keyCode == 87) {
@@ -177,6 +185,9 @@ function toggleMusic() {
 
 
 async function init() {
+    drawing.init(document);
+    drawing.drawLoadingScreen();
+
     menu = new inter.Menu();
 
     musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 200, 32);
@@ -194,27 +205,30 @@ async function init() {
     menu.init(buttons);
     // Wait for level JSONs to load (avoid null references)
     await assets.init();
-    start();
-}
 
-
-function start() {
-    drawing.init(document);
     menu.x = (canvas.width - menu.w) / 2;
     menu.y = (canvas.height - menu.h) / 2;
+    
+    initialized = true;
+    setInterval(gameLoop, 1000 / cfg.FPS);
+}
+
+function start() {
     levelIndex = 0;
     player = new go.Player();
     loadLevel(assets.loadLevelFromIndex(levelIndex));
     // Set up to call the function "gameLoop" 60 times/second
-    setInterval(gameLoop, 1000 / cfg.FPS);
     started = true;
     startTime = new Date();
+    showSplashScreen = false;
 }
+
 
 var startTime = 0;
 var elapsedTime = 0;
 var lastLoopTime = new Date();
 var dT = 0;
+var showSplashScreen = true;
 
 function gameLoop() {
     // ms -> s
@@ -223,8 +237,12 @@ function gameLoop() {
     dT = (currentTime - lastLoopTime) / 1000;
     update(dT);
     lastLoopTime = new Date();
-    drawing.draw(dT, level, menu, elapsedTime);
-
+    if (level != null) {
+        drawing.draw(dT, level, menu, elapsedTime);
+    }
+    if (showSplashScreen) {
+        drawing.drawSplashScreen();
+    }
 }
 
 
@@ -248,11 +266,11 @@ function loadLevel(lvl) {
 
 
 function update(dT) {
-    
-    level.update(dT);
-    
-    if (!changingLevel && level.goal.activated) {
-        changingLevel = true;
-        setTimeout(nextLevel, 1000);
+    if (level != null) {
+        level.update(dT);
+        if (!changingLevel && level.goal.activated) {
+            changingLevel = true;
+            setTimeout(nextLevel, 1000);
+        }
     }
 }
