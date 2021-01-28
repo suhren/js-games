@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="40" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="27">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="40" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="28">
  <properties>
   <property name="description" value="Cramped corridors"/>
   <property name="name" value="Level 6"/>
@@ -112,5 +112,6 @@
   <object id="26" template="../templates/text.tx" x="12" y="308" width="120" height="11">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">Torch is safe</text>
   </object>
+  <object id="27" template="../templates/spike.tx" x="144" y="224"/>
  </objectgroup>
 </map>

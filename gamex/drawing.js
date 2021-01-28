@@ -190,6 +190,7 @@ function drawDropShadow(rect, color="#222222", alpha=0.3, xScale=1.0, yScale=0.2
 export class Renderer {
     constructor(obj) {
         this.obj = obj;
+        this.zPosValue = null;
     }
 
     update(dT) {
@@ -198,6 +199,20 @@ export class Renderer {
 
     draw(obj) {
         return;
+    }
+
+    get zPos() {
+        if (this.zPosValue == null) {
+            let rect = this.obj.rect;
+            return rect.y + rect.h;
+        }
+        else {
+            return this.zPosValue;
+        }
+    }
+
+    set zPos(z) {
+        this.zPosValue = z;
     }
 }
 
@@ -281,11 +296,18 @@ export class SpikeRenderer extends Renderer {
     constructor(obj, image) {
         super(obj);
         this.image = image;
+        this.zPos = -9999;
     }
 
     draw() {
         let rect = getScreenRect(this.obj.rect);
         ctx.drawImage(this.image, rect.x, rect.y, rect.w, rect.h);
+        if (drawColliders) {
+            ctx.lineWidth = 2;
+            rect = getScreenRect(this.obj.getCollisionRect());
+            ctx.strokeStyle = "red";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+        }
     }
 }
 
@@ -293,6 +315,7 @@ export class SpikeRenderer extends Renderer {
 export class CheckpointRenderer extends Renderer {
     constructor(obj) {
         super(obj);
+        this.zPos = -9999;
     }
 
     draw() {
@@ -318,6 +341,7 @@ export class CheckpointRenderer extends Renderer {
 export class GoalRenderer extends Renderer {
     constructor(obj) {
         super(obj);
+        this.zPos = -9999;
     }
 
     draw() {
@@ -470,6 +494,8 @@ export class PlayerRenderer extends Renderer {
         this.lastWish  = new utils.Vector(0, 1);
         this.lastWishHorizontal  = 1
         this.lastWishVertical  = 1
+        this.height = this.aCurrent.height;
+        this.width = this.aCurrent.frameWidth;
     }
 
     update(dT) {
@@ -526,8 +552,10 @@ export class PlayerRenderer extends Renderer {
         drawParticles(this.obj.dashParticleEmitter.particles);
         drawParticles(this.obj.spiritParticleEmitter.particles);
         var rect = this.obj.rect.copy();
-        rect.y -= (20 - rect.h);
-        rect.h = 20;
+        rect.y = rect.y + rect.h - this.height;
+        rect.x = rect.x + (rect.w - this.width) / 2;
+        rect.w = this.width;
+        rect.h = this.height;
         rect = getScreenRect(rect);
         drawDropShadow(rect);
         this.aCurrent.drawImage(ctx, rect.x, rect.y, rect.w, rect.h)
@@ -540,7 +568,7 @@ export class PlayerRenderer extends Renderer {
             let w = w2sS(cfg.TILE_SIZE * (this.obj.col1 - this.obj.col0));
             let h = w2sS(cfg.TILE_SIZE * (this.obj.row1 - this.obj.row0));
             ctx.strokeRect(x, y, w, h);
-
+            
             var rect = getScreenRect(this.obj.rect);
             ctx.lineWidth = 3;
             ctx.strokeStyle = "red";
@@ -550,14 +578,23 @@ export class PlayerRenderer extends Renderer {
         }
         
         if (drawColliders) {
-            let rect = getScreenRect(this.obj.getCollisionRectangle());
-            let circ = getScreenCircle(this.obj.getCollisionCircle());
-            ctx.lineWidth = 2;
+            
+            ctx.lineWidth = 1;
+
+            // Base rectangle
+            ctx.strokeStyle = "white";
+            let rect = getScreenRect(this.obj.getBaseRect());
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+
+            // Tile collision rectangle
+            rect = getScreenRect(this.obj.getTileCollisionRect());
             ctx.strokeStyle = "red";
             ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-            ctx.beginPath();
-            ctx.arc(circ.c.x, circ.c.y, circ.r, 0, Math.PI * 2, false);
-            ctx.stroke();
+
+            // Enemy collision rectangle
+            rect = getScreenRect(this.obj.getCollisionRect());
+            ctx.strokeStyle = "lime";
+            ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
         }
 
     }
@@ -631,14 +668,29 @@ export function draw(dT, level, menu, elapsedTime) {
     if (drawGrid)
         strokeGrid(level);
 
-    // Draw game objects
+    let renderers = [];
     for (let i = 0; i < level.objects.length; i++) {
-        let renderer = level.objects[i].renderer;
-        if (renderer != null) {
-            renderer.draw();
+        if (level.objects[i].renderer != null) {
+            renderers.push(level.objects[i].renderer);
         }
     }
+    renderers.sort((a, b) => (a.zPos > b.zPos) ? 1 : -1)
+
+    // Draw game objects
+    for (let i = 0; i < renderers.length; i++) {
+        renderers[i].draw();
+    }
     
+    // Draw keys
+    for (let i = 0; i < player.keys.length; i++) {
+        ctx.drawImage(player.keys[i].renderer.image, 180 + i * 45, 16, 32, 32);
+    }
+    
+    // Draw coins
+    if (level.num_coins > 0) {
+        drawText(`Coins: ${level.num_coins - level.coins.length}/${level.num_coins}`, 16, 60, 20, "middle", "left", true);
+    }
+
     // Draw player dash cooldown
     let t = player.isDashAvailable ? 1 : player.dashCooldownTimer / cfg.PLAYER_DASH_COOLDOWN;
     ctx.fillStyle = "#555555";
@@ -651,21 +703,6 @@ export function draw(dT, level, menu, elapsedTime) {
     ctx.strokeStyle = "#000000";
     ctx.strokeRect(16, 16, 150, 20);
     
-    // Draw keys
-    for (let i = 0; i < player.keys.length; i++) {
-        ctx.drawImage(player.keys[i].renderer.image, 180 + i * 45, 16, 32, 32);
-    }
-    
-    // Draw coins
-    if (level.num_coins > 0) {
-        drawText(`Coins: ${level.num_coins - level.coins.length}/${level.num_coins}`, 16, 60, 20, "middle", "left", true);
-    }
-
-    // Draw spikes
-    for (let i = 0; i < level.spikes.length; i++) {
-        level.spikes[i].renderer.draw();
-    }
-
     // Draw menu
     if (menu.active) {
         ctx.fillStyle = "black";
@@ -678,9 +715,9 @@ export function draw(dT, level, menu, elapsedTime) {
 
     let timeString = elapsedTime.toISOString().split('T')[1]
     timeString = timeString.substring(0, timeString.length - 5);
-    drawText(`Time: ${timeString}`, canvas.width - 250, 32, 16, "middle", "left", true);
-    drawText(`Level: ${level.index + 1}/${assets.NUM_LEVELS}`, canvas.width - 250, 64, 16, "middle", "left", true);
-    drawText(`Deaths: ${player.numDeaths}`, canvas.width - 250, 96, 16, "middle", "left", true);
+    drawText(`Time: ${timeString}`, canvas.width - 250, 24, 16, "middle", "left", true);
+    drawText(`Level: ${level.index + 1}/${assets.NUM_LEVELS}`, canvas.width - 250, 48, 16, "middle", "left", true);
+    drawText(`Deaths: ${player.numDeaths}`, canvas.width - 250, 72, 16, "middle", "left", true);
 
 
     // Draw player position and other debug information

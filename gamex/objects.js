@@ -317,6 +317,15 @@ export class Spike extends GameOject {
         this.rot = rot;
         this.spikeRot = spikeRot;
         this.renderer = new drawing.SpikeRenderer(this, image);
+        this.collisionRect = this.rect.copy();
+        this.collisionRect.x += 2;
+        this.collisionRect.y += 2;
+        this.collisionRect.w -= 4;
+        this.collisionRect.h -= 4;
+    }
+
+    getCollisionRect() {
+        return this.collisionRect;
     }
 }
 
@@ -372,6 +381,7 @@ export class Level {
         this.objects.push.apply(this.objects, keys);
         this.objects.push.apply(this.objects, doors);
         this.objects.push.apply(this.objects, texts);
+        this.objects.push.apply(this.objects, spikes);
         if (this.goal) {
             this.objects.push(goal);
         }
@@ -405,7 +415,7 @@ function coordToTile(x) {
 // Establish the Player, aka WHAT IS THE PLAYER!?
 export class Player extends GameOject {
     constructor(start = new utils.Vector()) {
-        super(start, 14, 14);
+        super(start, cfg.PLAYER_TILE_COLLISION_WIDTH, cfg.PLAYER_TILE_COLLISION_HEIGHT);
         this.start = start;
         this.vel = new utils.Vector();
         this.wish = new utils.Vector();
@@ -582,11 +592,12 @@ export class Player extends GameOject {
             for (let col = this.col0; col < this.col1; col++) {
                 let tile = level.tileMap[row][col];
                 if (tile != null && tile.collision) {
+                    let playerCollisionRect = this.getTileCollisionRect();
                     let tileRect = new utils.Rectangle(col * cfg.TILE_SIZE,
                                                        row * cfg.TILE_SIZE,
                                                        cfg.TILE_SIZE,
                                                        cfg.TILE_SIZE);
-                    if (utils.rectIntersect(this.rect, tileRect)) {
+                    if (utils.rectIntersect(playerCollisionRect, tileRect)) {
                         utils.solve(this, tileRect);
                     }
                 }
@@ -663,7 +674,7 @@ export class Player extends GameOject {
         // Check death ball collisions
         for (let i = 0; i < level.deathBalls.length; i++) {
             let ball = level.deathBalls[i];
-            if (utils.circleIntersect(this.getCollisionCircle(), ball.circ)) {
+            if (utils.rectCircleInterset(this.getCollisionRect(), ball.circ)) {
                 this.die(level);
             }
         }
@@ -671,7 +682,7 @@ export class Player extends GameOject {
         // Check spike collisions
         for (let i = 0; i < level.spikes.length; i++) {
             let spike = level.spikes[i];
-            if (utils.rectIntersect(this.getCollisionRectangle(), spike.rect)) {
+            if (utils.rectIntersect(this.getCollisionRect(), spike.getCollisionRect())) {
                 this.die(level);
             }
         }
@@ -723,13 +734,25 @@ export class Player extends GameOject {
         level.objects.push(new Explosion(this.rect.center(), 32));
     }
 
-    getCollisionRectangle() {
-        return new utils.Rectangle(this.pos.x + 3, this.pos.y + 3, this.w - 6, this.h - 6);    
+    getBaseRect() {
+        let w = cfg.PLAYER_BASE_WIDTH;
+        let h = cfg.PLAYER_BASE_HEIGHT;
+        let y = this.pos.y + this.h - h;
+        let x = this.pos.x + (this.w - w) / 2;
+        return new utils.Rectangle(x, y, w, h);    
     }
 
-    getCollisionCircle() {
-        let rect = this.getCollisionRectangle();
-        return new utils.Circle(rect.center(), rect.w / 2);    
+    getTileCollisionRect() {
+        return this.rect;    
+    }
+
+    getCollisionRect() {
+        let rect = this.rect.copy();
+        rect.y = rect.y + rect.h - cfg.PLAYER_OBJECT_COLLISION_HEIGHT;
+        rect.x = rect.x + (rect.w - cfg.PLAYER_OBJECT_COLLISION_WIDTH) / 2;
+        rect.w = cfg.PLAYER_OBJECT_COLLISION_WIDTH;
+        rect.h = cfg.PLAYER_OBJECT_COLLISION_HEIGHT;
+        return rect;    
     }
 }
 
