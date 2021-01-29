@@ -443,7 +443,9 @@ export class Player extends GameOject {
         this.renderer = new drawing.PlayerRenderer(this);
         this.numDeaths = 0;
 
-        this.coinsSinceLastCheckpoint = new Array()
+        this.coinsSinceLastCheckpoint = new Array();
+        this.keysSinceLastCheckpoint = new Array();
+        this.doorsSinceLastCheckpoint = new Array();
 
         this.dashParticleEmitter = new ParticleEmitter(
             this.pos,
@@ -614,7 +616,8 @@ export class Player extends GameOject {
             if (utils.rectIntersect(this.rect, door.rect)) {
                 for (let j = 0; j < this.keys.length; j++) {
                     if (this.keys[j].color === door.color) {
-                        level.doors[i].open = true;
+                        this.doorsSinceLastCheckpoint.push(door);
+                        door.open = true;
                         assets.playAudio(assets.DOOR_AUDIO);
                         break;
                     }
@@ -634,6 +637,8 @@ export class Player extends GameOject {
                     this.activeCheckpoint = cp;
                     assets.playAudio(assets.CHECKPOINT_AUDIO);
                     this.coinsSinceLastCheckpoint = new Array();
+                    this.keysSinceLastCheckpoint = new Array();
+                    this.doorsSinceLastCheckpoint = new Array();
                     for (let j = 0; j < level.checkpoints.length; j++) {
                         level.checkpoints[j].active = (i == j);
                     }
@@ -664,8 +669,11 @@ export class Player extends GameOject {
         // Update keys
         for (let i = 0; i < level.keys.length; i++) {
             let key = level.keys[i];
-            if (!key.collected && utils.rectIntersect(pRect, key.rect)) {
-                level.keys[i].collected = true;
+            if ( utils.rectIntersect(pRect, key.rect)) {
+                this.keysSinceLastCheckpoint.push(key);
+                level.keys.splice(i, 1);
+                const j = level.objects.indexOf(key);
+                level.objects.splice(j, 1);
                 assets.playAudio(assets.COIN_AUDIO);
                 this.keys.push(key);
             }
@@ -705,8 +713,19 @@ export class Player extends GameOject {
     die(level) {
         this.numDeaths += 1;
         level.objects = level.objects.concat(this.coinsSinceLastCheckpoint);
+        level.objects = level.objects.concat(this.keysSinceLastCheckpoint);
         level.coins = level.coins.concat(this.coinsSinceLastCheckpoint);
+        level.keys = level.keys.concat(this.keysSinceLastCheckpoint);
+        
+        for (let i = 0; i < this.doorsSinceLastCheckpoint.length; i++) {
+            this.doorsSinceLastCheckpoint[i].open = false;
+        }
+        this.doorsSinceLastCheckpoint = new Array();
+
+        this.keys = this.keys.filter(key => this.keysSinceLastCheckpoint.indexOf(key) === -1);
+        
         this.coinsSinceLastCheckpoint = new Array();
+        this.keysSinceLastCheckpoint = new Array();
 
         this.alive = false;
         this.spiritTarget = null;

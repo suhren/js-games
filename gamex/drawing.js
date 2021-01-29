@@ -285,10 +285,8 @@ export class KeyRenderer extends Renderer {
     }
 
     draw() {
-        if (!this.obj.collected) {
-            let rect = getScreenRect(this.obj.rect);
-            ctx.drawImage(this.image, rect.x, rect.y, rect.w, rect.h);
-        }
+        let rect = getScreenRect(this.obj.rect);
+        ctx.drawImage(this.image, rect.x, rect.y, rect.w, rect.h);
     }
 }
 
