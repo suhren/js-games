@@ -757,13 +757,11 @@ export function draw(dT, level, menu, elapsedTime) {
         ctx.font = "32px GameFont";
         ctx.textBaseline = 'middle';
         ctx.textAlign = "center";
-        if (level.name != null) {
-            ctx.fillStyle = "black";
-            let txt = `Level ${level.index+1}`;
-            ctx.fillText(txt, canvas.width / 2, canvas.height / 2 - 16);
-            ctx.fillStyle = "white";
-            ctx.fillText(txt, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
-        }
+        ctx.fillStyle = "black";
+        let txt = `Level ${level.index+1}`;
+        ctx.fillText(txt, canvas.width / 2, canvas.height / 2 - 16);
+        ctx.fillStyle = "white";
+        ctx.fillText(txt, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
         if (level.desciption != null) {
             ctx.fillStyle = "black";
             ctx.fillText(level.desciption, canvas.width / 2, canvas.height / 2 + 16);
