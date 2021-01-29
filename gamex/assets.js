@@ -84,7 +84,8 @@ export const LEVEL_FILES = [
     "./assets/levels/level4.tmx",
     "./assets/levels/level5.tmx",
     "./assets/levels/level6.tmx",
-    "./assets/levels/level7.tmx"
+    "./assets/levels/level7.tmx",
+    "./assets/levels/level8.tmx"
 ];
 export var LEVEL_XMLS = new Map();
 export const NUM_LEVELS = LEVEL_FILES.length;
@@ -105,7 +106,7 @@ export var TILESETS = new Map();
 export async function init() {
 
     // Initialize the assets
-    GAME_AUDIO = await getAudio("assets/sounds/mixkit-game-level-music-689.wav");
+    GAME_AUDIO = await getAudio("assets/sounds/Spel_2021_tema.mp3");
     GAME_AUDIO.volume = 0.15;
     GAME_AUDIO.playbackRate = 1;
     GAME_AUDIO.loop = true;

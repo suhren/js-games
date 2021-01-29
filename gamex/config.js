@@ -19,11 +19,11 @@ export const PLAYER_OBJECT_COLLISION_HEIGHT = 8;
 export const COIN_FRAME_RATE = 8;
 export const COIN_FRAME_DURATION = 1 / COIN_FRAME_RATE;
 
-export const WINDOW_TILE_SIZE = 52;
+export const WINDOW_TILE_SIZE = 48;
 export const TILE_SIZE = 16;
 
-const desired_window_width = 1500;
-const desired_window_height = 900;
+const desired_window_width = 1300;
+const desired_window_height = 700;
 
 export const WINDOW_WIDTH = WINDOW_TILE_SIZE * Math.floor(desired_window_width / WINDOW_TILE_SIZE);
 export const WINDOW_HEIGHT = WINDOW_TILE_SIZE * Math.floor(desired_window_height / WINDOW_TILE_SIZE);

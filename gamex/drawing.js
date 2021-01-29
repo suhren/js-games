@@ -808,8 +808,8 @@ export function drawSplashScreen() {
     let cx = canvas.width / 2;
     let cy = canvas.height / 2;
 
-    drawText("AMAZING TOP-DOWN GAME", cx, cy, 64, "middle", "center", true);
-    drawText("PRESS ANY KEY", cx, cy  + 64, 48, "middle", "center", true);
+    drawText("AMAZING TOP-DOWN GAME", cx, cy, 40, "middle", "center", true);
+    drawText("PRESS ANY KEY", cx, cy  + 64, 32, "middle", "center", true);
 
     // Render the buffer canvas onto the document canvas
     documentCtx.drawImage(canvas, 0, 0);
@@ -823,7 +823,7 @@ export function drawLoadingScreen() {
     let cx = canvas.width / 2;
     let cy = canvas.height / 2;
 
-    drawText("LOADING...", cx, cy, 64, "middle", "center", true);
+    drawText("LOADING...", cx, cy, 48, "middle", "center", true);
 
     // Render the buffer canvas onto the document canvas
     documentCtx.drawImage(canvas, 0, 0);

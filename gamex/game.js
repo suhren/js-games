@@ -221,6 +221,7 @@ function start() {
     started = true;
     startTime = new Date();
     showSplashScreen = false;
+    toggleMusic();
 }
 
 
