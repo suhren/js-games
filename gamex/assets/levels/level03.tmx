@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="97">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="99">
  <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
  <tileset firstgid="65" source="../tileset_common.tsx"/>
  <tileset firstgid="96" source="../tileset_floaty.tsx"/>
@@ -23,13 +23,13 @@
 0,0,0,0,0,0,17,5,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,4,19,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,17,5,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,17,18,18,5,95,95,95,95,95,95,95,95,95,4,18,19,0,0,0,0,0,0,0,0,
-0,0,1,2,2,3,0,0,0,0,0,17,18,18,5,33,33,4,18,18,18,19,0,0,0,1,2,2,2,3,0,0,
-0,1,13,25,25,12,2,3,0,0,0,0,0,0,9,33,33,11,0,0,0,0,0,1,2,13,25,25,25,12,3,0,
+0,0,1,2,2,3,0,0,0,0,0,17,18,18,5,65,65,4,18,18,18,19,0,0,0,1,2,2,2,3,0,0,
+0,1,13,25,25,12,2,3,0,0,0,0,0,0,9,65,65,11,0,0,0,0,0,1,2,13,25,25,25,12,3,0,
 0,9,25,95,95,25,25,12,2,3,0,0,0,1,13,33,33,12,3,0,0,0,1,13,25,25,33,33,33,25,11,0,
 1,13,95,95,95,95,95,25,25,12,2,2,2,13,25,33,33,25,12,2,2,2,13,25,33,33,33,33,33,33,12,3,
 9,25,95,95,95,95,95,95,95,25,25,25,25,25,33,33,33,33,25,25,25,25,25,33,33,33,33,33,33,33,25,11,
-9,95,95,95,95,95,95,95,95,95,33,33,33,33,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,
-9,95,95,95,95,95,95,95,95,95,33,33,33,33,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,
+9,95,95,95,95,95,95,95,95,95,33,33,33,33,33,69,69,33,33,33,65,65,33,33,33,33,33,33,33,33,33,11,
+9,95,95,95,95,95,95,95,95,95,33,33,33,33,33,69,69,33,33,33,65,65,33,33,33,33,33,33,33,33,33,11,
 9,95,95,95,95,95,95,95,95,95,4,18,18,5,33,33,33,33,4,18,18,18,5,33,33,33,33,33,33,33,33,11,
 17,5,95,95,95,95,95,95,4,18,19,0,0,17,18,18,18,18,19,0,0,0,17,18,5,33,33,33,33,33,4,19,
 0,17,5,95,95,95,95,4,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,33,33,11,0,
@@ -128,10 +128,12 @@
   <object id="93" template="../templates/spike.tx" x="160" y="128"/>
   <object id="94" template="../templates/coin.tx" x="296" y="152"/>
   <object id="95" template="../templates/text.tx" x="180" y="52" width="160" height="15">
-   <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">The goal require</text>
+   <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">The goal requires</text>
   </object>
   <object id="96" template="../templates/text.tx" x="136" y="64" width="248" height="20">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">all collectibles</text>
   </object>
+  <object id="97" template="../templates/checkpoint.tx" x="240" y="272" width="32" height="32"/>
+  <object id="98" template="../templates/checkpoint.tx" x="320" y="352" width="32" height="32"/>
  </objectgroup>
 </map>

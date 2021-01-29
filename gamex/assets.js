@@ -86,7 +86,8 @@ export const LEVEL_FILES = [
     "./assets/levels/level6.tmx",
     "./assets/levels/level7.tmx",
     "./assets/levels/level8.tmx",
-    "./assets/levels/level9.tmx"
+    "./assets/levels/level9.tmx",
+    "./assets/levels/level10.tmx"
 ];
 export var LEVEL_XMLS = new Map();
 export const NUM_LEVELS = LEVEL_FILES.length;
@@ -95,7 +96,6 @@ export const NUM_LEVELS = LEVEL_FILES.length;
 const ASSET_DIR = './assets/'
 const TILESET_FILES = [
     "./assets/tileset_common.tsx",
-    "./assets/tileset_forest.tsx",
     "./assets/tileset_dungeon.tsx",
     "./assets/tileset_floaty.tsx",
     "./assets/tileset_talisman.tsx"

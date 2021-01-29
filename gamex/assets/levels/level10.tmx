@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="26">
+ <properties>
+  <property name="description" value="Quad quest"/>
+ </properties>
+ <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../tileset_common.tsx"/>
+ <tileset firstgid="96" source="../tileset_talisman.tsx"/>
+ <tileset firstgid="112" source="../tileset_floaty.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="32" height="24">
+  <data encoding="csv">
+1,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,3,
+9,25,25,25,25,12,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,13,25,25,25,25,11,
+9,33,33,33,33,25,27,25,25,25,27,25,25,27,25,25,25,25,27,25,25,27,25,25,25,27,25,33,33,33,33,11,
+9,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,67,67,33,11,
+9,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,67,67,33,11,
+9,33,33,33,33,4,5,33,33,4,18,18,18,18,5,33,33,4,18,18,18,18,5,33,33,4,5,33,33,33,33,11,
+17,18,18,18,18,19,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,17,18,18,18,18,19,
+0,0,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,12,2,2,2,2,13,33,33,12,2,2,2,2,13,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,25,27,25,25,27,25,33,33,25,27,25,25,27,25,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,4,18,18,18,18,5,33,33,4,18,18,18,18,5,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,9,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,12,2,2,2,2,13,33,33,12,2,2,2,2,13,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,25,27,25,25,27,25,33,33,25,27,25,25,27,25,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,19,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" template="../templates/coin.tx" x="120" y="72"/>
+  <object id="2" template="../templates/coin.tx" x="120" y="216"/>
+  <object id="3" template="../templates/coin.tx" x="120" y="360"/>
+  <object id="4" template="../templates/coin.tx" x="248" y="360"/>
+  <object id="5" template="../templates/coin.tx" x="248" y="216"/>
+  <object id="6" template="../templates/coin.tx" x="248" y="72"/>
+  <object id="7" template="../templates/coin.tx" x="376" y="72"/>
+  <object id="8" template="../templates/coin.tx" x="376" y="216"/>
+  <object id="9" template="../templates/coin.tx" x="376" y="360"/>
+  <object id="24" template="../templates/goal.tx" x="448" y="48"/>
+  <object id="25" template="../templates/spawn.tx" x="48" y="64"/>
+ </objectgroup>
+ <objectgroup id="3" name="Object Layer 2">
+  <object id="16" template="../templates/line.tx" x="218.667" y="126.667">
+   <polyline points="-90.6667,-62.6667 37.3333,-62.6667 37.3333,81.3333 -90.6667,81.3333 -90.6667,-62.6667"/>
+  </object>
+  <object id="18" template="../templates/line.tx" x="348" y="128">
+   <polyline points="-92,-64 36,-64 36,80 -92,80 -92,-64"/>
+  </object>
+  <object id="19" template="../templates/line.tx" x="218.562" y="270.594">
+   <polyline points="-90.5615,-62.594 37.29,-62.594 37.29,81.239 -90.5615,81.239 -90.5615,-62.594"/>
+  </object>
+  <object id="20" template="../templates/line.tx" x="347.745" y="271.926">
+   <polyline points="-91.8933,-63.9258 35.9582,-63.9258 35.9582,79.9072 -91.8933,79.9072 -91.8933,-63.9258"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Object Layer 3">
+  <object id="17" template="../templates/ball.tx" x="112" y="224" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="16"/>
+    <property name="speed" type="float" value="30"/>
+   </properties>
+  </object>
+  <object id="21" template="../templates/ball.tx" x="240" y="224" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="18"/>
+    <property name="speed" type="float" value="30"/>
+   </properties>
+  </object>
+  <object id="22" template="../templates/ball.tx" x="240" y="368" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="20"/>
+    <property name="speed" type="float" value="30"/>
+   </properties>
+  </object>
+  <object id="23" template="../templates/ball.tx" x="112" y="368" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="19"/>
+    <property name="speed" type="float" value="30"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

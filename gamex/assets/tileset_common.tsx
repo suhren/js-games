@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.4" tiledversion="1.4.3" name="tileset_common" tilewidth="16" tileheight="16" tilecount="25" columns="0">
+<tileset version="1.4" tiledversion="1.4.3" name="tileset_common" tilewidth="16" tileheight="16" tilecount="22" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <properties>
@@ -35,33 +35,6 @@
    <property name="friction" type="float" value="-1"/>
   </properties>
   <image width="16" height="16" source="images/Start.png"/>
- </tile>
- <tile id="5">
-  <properties>
-   <property name="collision" type="bool" value="true"/>
-   <property name="friction" type="float" value="-1"/>
-  </properties>
-  <image width="16" height="16" source="images/Wall2.png"/>
- </tile>
- <tile id="7">
-  <properties>
-   <property name="collision" type="bool" value="true"/>
-   <property name="friction" type="float" value="-1"/>
-  </properties>
-  <image width="16" height="16" source="images/Stone_brick.png"/>
- </tile>
- <tile id="8" type="ball">
-  <properties>
-   <property name="center" type="object" value="0"/>
-   <property name="line" type="object" value="0"/>
-   <property name="speed" type="float" value="50"/>
-  </properties>
-  <image width="16" height="16" source="images/DeathBot.png"/>
-  <objectgroup draworder="index" id="3">
-   <object id="2" x="0" y="0" width="16" height="16">
-    <ellipse/>
-   </object>
-  </objectgroup>
  </tile>
  <tile id="10">
   <image width="16" height="16" source="images/coin_0.png"/>
