@@ -337,7 +337,7 @@ export class Spawn extends GameOject {
 
 
 export class Level {
-    constructor(index, name, desciption, path, playerStart, deathBalls, spikes, checkpoints, coins, keys, doors, goal, texts, tileMap, backgroundColor) {
+    constructor(index, name, desciption, path, playerStart, deathBalls, spikes, checkpoints, coins, keys, doors, goal, texts, tilemap, backgroundColor) {
         this.index = index;
         this.name = name;
         this.desciption = desciption;
@@ -355,24 +355,17 @@ export class Level {
         }
         this.num_coins = this.coins.length;
         this.texts = texts;
-        this.tileMap = tileMap;
-        this.nrows = this.tileMap.length;
-        this.ncols = this.tileMap[0].length;        
+        this.tilemap = tilemap;
+        this.nrows = this.tilemap.length;
+        this.ncols = this.tilemap[0].length;        
         this.width = this.ncols * cfg.TILE_SIZE;
         this.height = this.nrows * cfg.TILE_SIZE;
         this.levelTimer = 0;
         this.showCard = true;
         this.cardDuration = 2;
-        
-        this.animatedTiles = [];
-        for (let row = 0; row < this.nrows; row++) {
-            for (let col = 0; col < this.ncols; col++) {
-                let tile = this.tileMap[row][col];
-                if (tile != null && tile.animated) {
-                    this.animatedTiles.push(tile);
-                }
-            }
-        }
+
+
+        this.renderer = new drawing.TilemapRenderer(this);
 
         this.objects = [];
         this.objects.push.apply(this.objects, deathBalls);
@@ -385,7 +378,6 @@ export class Level {
         if (this.goal) {
             this.objects.push(goal);
         }
-        this.backgroundColor = (backgroundColor != null) ? backgroundColor : "#000000";
     }
 
     setPlayer(player) {
@@ -402,7 +394,7 @@ export class Level {
             this.objects[i].update(this, dT);
         }
         this.objects = this.objects.filter(obj => !obj.isDisposed);
-        this.animatedTiles.forEach(tile => tile.update(dT));
+        this.renderer.update(dT);
     }
 }
 
@@ -534,7 +526,7 @@ export class Player extends GameOject {
         let friction = 0.0;
         for (let row = this.row0; row < this.row1; row++) {
             for (let col = this.col0; col < this.col1; col++) {
-                let tile = level.tileMap[row][col];
+                let tile = level.tilemap[row][col];
                 if (tile != null && !tile.collision) {
                     friction = Math.max(friction, tile.friction);
                 }
@@ -593,7 +585,7 @@ export class Player extends GameOject {
         // Check collisions
         for (let row = this.row0; row < this.row1; row++) {
             for (let col = this.col0; col < this.col1; col++) {
-                let tile = level.tileMap[row][col];
+                let tile = level.tilemap[row][col];
                 if (tile != null && tile.collision) {
                     let playerCollisionRect = this.getTileCollisionRect();
                     let tileRect = new utils.Rectangle(col * cfg.TILE_SIZE,

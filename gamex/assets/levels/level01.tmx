@@ -1,99 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="40" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="26">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="26">
  <properties>
   <property name="description" value="Tutorial 1"/>
  </properties>
  <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
  <tileset firstgid="65" source="../tileset_common.tsx"/>
  <tileset firstgid="96" source="../tileset_floaty.tsx"/>
- <layer id="1" name="Tile Layer 1" width="40" height="16">
+ <layer id="1" name="Tile Layer 1" width="50" height="24">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,3,1,2,2,2,2,3,9,25,27,25,25,25,27,25,11,0,0,0,0,0,0,0,0,0,
-0,0,1,2,2,2,2,3,9,25,27,25,25,27,25,11,9,25,27,25,25,11,9,33,33,33,33,33,33,33,11,1,2,2,2,2,3,0,0,0,
-0,0,9,25,25,27,25,12,13,33,33,33,33,33,33,12,13,33,33,33,33,12,13,33,33,33,33,33,33,33,12,13,25,27,25,25,11,0,0,0,
-0,0,9,33,33,33,33,25,25,33,33,33,33,33,33,25,25,33,33,33,33,25,25,33,33,4,18,5,33,33,25,25,33,33,33,33,11,0,0,0,
-0,0,9,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,9,33,33,33,33,33,67,67,33,11,0,0,0,
-0,0,9,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,12,2,13,33,33,33,33,33,67,67,33,11,0,0,0,
-0,0,9,33,33,33,33,4,5,33,33,33,33,33,33,4,5,33,33,33,33,4,5,33,33,25,25,25,33,33,4,5,33,33,33,33,11,0,0,0,
-0,0,17,18,18,18,18,19,9,33,33,33,33,33,33,11,9,33,33,33,33,11,9,33,33,33,33,33,33,33,11,17,18,18,18,18,19,0,0,0,
-0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,19,17,18,18,18,18,19,9,33,33,33,33,33,33,33,11,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,18,19,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,3,1,2,2,2,2,3,9,25,27,25,25,25,27,25,11,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,2,2,2,2,3,9,25,27,25,25,27,25,11,9,25,27,25,25,11,9,33,33,33,33,33,33,33,11,1,2,2,2,2,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,25,25,27,25,12,13,33,33,33,33,33,33,12,13,33,33,33,33,12,13,33,33,33,33,33,33,33,12,13,25,27,25,25,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,33,33,33,25,25,33,33,33,33,33,33,25,25,33,33,33,33,25,25,33,33,4,18,5,33,33,25,25,33,33,33,33,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,9,33,33,33,33,33,67,67,33,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,69,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,12,2,13,33,33,33,33,33,67,67,33,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,33,33,33,4,5,33,33,33,33,33,33,4,5,33,33,33,33,4,5,33,33,25,25,25,33,33,4,5,33,33,33,33,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,17,18,18,18,18,19,9,33,33,33,33,33,33,11,9,33,33,33,33,11,9,33,33,33,33,33,33,33,11,17,18,18,18,18,19,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,19,17,18,18,18,18,19,9,33,33,33,33,33,33,33,11,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,18,19,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" template="../templates/spawn.tx" x="80" y="144"/>
-  <object id="3" template="../templates/text.tx" x="256" y="44" width="100" height="19">
+  <object id="1" template="../templates/spawn.tx" x="176" y="208"/>
+  <object id="3" template="../templates/text.tx" x="352" y="108" width="100" height="19">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">in lines...</text>
   </object>
-  <object id="5" template="../templates/line.tx" x="228" y="270.667">
+  <object id="5" template="../templates/line.tx" x="324" y="334.667">
    <polyline points="60,-94.6667 60,-158.667"/>
   </object>
-  <object id="6" template="../templates/line.tx" x="260" y="272">
+  <object id="6" template="../templates/line.tx" x="356" y="336">
    <polyline points="60,-96 60,-160"/>
   </object>
-  <object id="7" template="../templates/ball.tx" x="280" y="120">
+  <object id="7" template="../templates/ball.tx" x="376" y="184">
    <properties>
     <property name="line" type="object" value="5"/>
     <property name="speed" type="float" value="100"/>
    </properties>
   </object>
-  <object id="8" template="../templates/ball.tx" x="312" y="184">
+  <object id="8" template="../templates/ball.tx" x="408" y="248">
    <properties>
     <property name="line" type="object" value="6"/>
     <property name="speed" type="float" value="100"/>
    </properties>
   </object>
-  <object id="10" template="../templates/position.tx" x="192" y="144"/>
-  <object id="11" template="../templates/ball.tx" x="184" y="184">
+  <object id="10" template="../templates/position.tx" x="288" y="208"/>
+  <object id="11" template="../templates/ball.tx" x="280" y="248">
    <properties>
     <property name="center" type="object" value="10"/>
     <property name="speed" type="float" value="180"/>
    </properties>
   </object>
-  <object id="12" template="../templates/ball.tx" x="184" y="120">
+  <object id="12" template="../templates/ball.tx" x="280" y="184">
    <properties>
     <property name="center" type="object" value="10"/>
     <property name="speed" type="float" value="180"/>
    </properties>
   </object>
-  <object id="13" template="../templates/line.tx" x="368" y="124">
+  <object id="13" template="../templates/line.tx" x="464" y="188">
    <polyline points="16,68 16,-28 96,-28 96,68 16,68"/>
   </object>
-  <object id="14" template="../templates/ball.tx" x="368" y="112" width="32" height="32">
+  <object id="14" template="../templates/ball.tx" x="464" y="176" width="32" height="32">
    <properties>
     <property name="line" type="object" value="13"/>
     <property name="speed" type="float" value="40"/>
    </properties>
   </object>
-  <object id="15" template="../templates/ball.tx" x="448" y="208" width="32" height="32">
+  <object id="15" template="../templates/ball.tx" x="544" y="272" width="32" height="32">
    <properties>
     <property name="line" type="object" value="13"/>
     <property name="speed" type="float" value="40"/>
    </properties>
   </object>
-  <object id="16" template="../templates/goal.tx" x="528" y="128"/>
-  <object id="18" template="../templates/text.tx" x="144" y="16" width="96" height="15">
+  <object id="16" template="../templates/goal.tx" x="624" y="192"/>
+  <object id="18" template="../templates/text.tx" x="240" y="80" width="96" height="15">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">Enemies</text>
   </object>
-  <object id="19" template="../templates/text.tx" x="144" y="32" width="96" height="16">
+  <object id="19" template="../templates/text.tx" x="240" y="96" width="96" height="16">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">can move</text>
   </object>
-  <object id="20" template="../templates/text.tx" x="144" y="48" width="108" height="16">
+  <object id="20" template="../templates/text.tx" x="240" y="112" width="108" height="16">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">in circles...</text>
   </object>
-  <object id="21" template="../templates/text.tx" x="352" y="28" width="136" height="19">
+  <object id="21" template="../templates/text.tx" x="448" y="92" width="136" height="19">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">or along paths</text>
   </object>
-  <object id="24" template="../templates/text.tx" x="32" y="48" width="96" height="15">
+  <object id="24" template="../templates/text.tx" x="128" y="112" width="96" height="15">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">This is</text>
   </object>
-  <object id="25" template="../templates/text.tx" x="32" y="64" width="96" height="16">
+  <object id="25" template="../templates/text.tx" x="128" y="128" width="96" height="16">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">you</text>
   </object>
  </objectgroup>

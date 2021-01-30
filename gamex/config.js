@@ -19,7 +19,7 @@ export const PLAYER_OBJECT_COLLISION_HEIGHT = 8;
 export const COIN_FRAME_RATE = 8;
 export const COIN_FRAME_DURATION = 1 / COIN_FRAME_RATE;
 
-export const WINDOW_TILE_SIZE = 48;
+export const WINDOW_TILE_SIZE = 40;
 export const TILE_SIZE = 16;
 
 const desired_window_width = 1300;

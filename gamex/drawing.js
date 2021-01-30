@@ -4,26 +4,15 @@ import * as cfg from "./config.js";
 import * as assets from "./assets.js";
 
 
-// The actual canvas in the document
-var documentCanvas = null;
-var documentCtx = null;
-
-// The buffer canvas which will the copied to the document canvas
 var canvas = null;
 var ctx = null;
-
 
 var playerAnimations = null;
 var ballAnimations = null;
 var playerExplodeAnimation = null;
 
 export async function init(document) {
-    documentCanvas = document.getElementById("gameCanvas");
-    documentCtx = documentCanvas.getContext("2d");
-    documentCanvas.width = cfg.WINDOW_WIDTH;
-    documentCanvas.height = cfg.WINDOW_HEIGHT;
-    canvas = document.createElement("canvas");
-    canvas.id = "bufferCanvas"
+    canvas = document.getElementById("gameCanvas");
     ctx = canvas.getContext("2d");
     canvas.width = cfg.WINDOW_WIDTH;
     canvas.height = cfg.WINDOW_HEIGHT;
@@ -197,7 +186,7 @@ export class Renderer {
         return;
     }
 
-    draw(obj) {
+    draw() {
         return;
     }
 
@@ -215,6 +204,67 @@ export class Renderer {
         this.zPosValue = z;
     }
 }
+
+
+export class TilemapRenderer {
+    constructor(obj) {
+        this.obj = obj;
+        this.tiles = obj.tilemap;
+        this.aTiles = [];
+        this.aTilePos = [];
+        this.nrows = obj.nrows;
+        this.ncols = obj.ncols;
+        this.bgColor = (obj.backgroundColor != null) ? obj.backgroundColor : "#000000";
+
+        // Pre-render all static tiles on a canvas
+        this.staticCanvas = document.createElement('canvas');
+        var staticCtx = this.staticCanvas.getContext('2d');
+        this.staticCanvas.width = w2sS(cfg.TILE_SIZE * this.ncols);
+        this.staticCanvas.height = w2sS(cfg.TILE_SIZE * this.nrows);
+        this.s = w2sS(cfg.TILE_SIZE);
+
+        for (let row = 0; row < this.nrows; row++) {
+            for (let col = 0; col < this.ncols; col++) {
+                let tile = this.tiles[row][col];
+                if (tile != null) {
+                    let x = col * cfg.TILE_SIZE;
+                    let y = row * cfg.TILE_SIZE;
+                    if (tile.animated) {
+                        this.aTiles.push(tile);
+                        this.aTilePos.push([x, y]);
+                    }
+                    else {
+                        staticCtx.drawImage(tile.getImage(), w2sS(x), w2sS(y), this.s, this.s);
+                    }
+                }
+            }
+        }
+    }
+
+    update(dT) {
+        for (let i = 0; i < this.aTiles.length; i++) {
+            this.aTiles[i].update(dT);
+        }
+    }
+
+    draw() {
+
+        // (Clear) draw background color on the entire screen
+        ctx.fillStyle = this.bgColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the static canvas contents
+        ctx.drawImage(this.staticCanvas, w2sX(0), w2sY(0));
+
+        // Next, draw the animated tiles
+        for (let i = 0; i < this.aTiles.length; i++) {
+            let x = w2sX(this.aTilePos[i][0]);
+            let y = w2sY(this.aTilePos[i][1]);
+            ctx.drawImage(this.aTiles[i].getImage(), x, y, this.s, this.s);
+        }
+    }
+}
+
 
 
 export class CoinRenderer extends Renderer {
@@ -645,23 +695,9 @@ export function draw(dT, level, menu, elapsedTime) {
     }
 
     ctx.imageSmoothingEnabled = false;
-    
-    // (Clear) draw background color on the entire screen
-    ctx.fillStyle = level.backgroundColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw Tile Map
-    for (let row = 0; row < level.nrows; row++) {
-        for (let col = 0; col < level.ncols; col++) {
-            let tile = level.tileMap[row][col];
-            if (tile != null) {
-                let x = w2sX(col * cfg.TILE_SIZE);
-                let y = w2sY(row * cfg.TILE_SIZE);
-                let s = w2sS(cfg.TILE_SIZE);
-                ctx.drawImage(level.tileMap[row][col].getImage(), x, y, s, s);
-            }
-        }
-    }
+    level.renderer.draw();
 
     // Draw grid
     if (drawGrid)
@@ -680,17 +716,17 @@ export function draw(dT, level, menu, elapsedTime) {
         renderers[i].draw();
     }
     
-    // Draw keys
+    // Draw keys in UI
     for (let i = 0; i < player.keys.length; i++) {
         ctx.drawImage(player.keys[i].renderer.image, 180 + i * 45, 16, 32, 32);
     }
     
-    // Draw coins
+    // Draw coins in UI
     if (level.num_coins > 0) {
         drawText(`Coins: ${level.num_coins - level.coins.length}/${level.num_coins}`, 16, 60, 20, "middle", "left", true);
     }
 
-    // Draw player dash cooldown
+    // Draw player dash cooldown in UI
     let t = player.isDashAvailable ? 1 : player.dashCooldownTimer / cfg.PLAYER_DASH_COOLDOWN;
     ctx.fillStyle = "#555555";
     ctx.fillRect(16, 16, 150, 20);
@@ -769,9 +805,6 @@ export function draw(dT, level, menu, elapsedTime) {
             ctx.fillText(level.desciption, canvas.width / 2 - 4, canvas.height / 2 + 16 - 4);
         }
     }
-
-    // Render the buffer canvas onto the document canvas
-    documentCtx.drawImage(canvas, 0, 0);
 }
 
 function drawButton(x0, y0, button) {
@@ -807,8 +840,7 @@ export function drawSplashScreen() {
     drawText("AMAZING TOP-DOWN GAME", cx, cy, 40, "middle", "center", true);
     drawText("PRESS ANY KEY", cx, cy  + 64, 32, "middle", "center", true);
 
-    // Render the buffer canvas onto the document canvas
-    documentCtx.drawImage(canvas, 0, 0);
+    ctx.drawImage(canvas, 0, 0);
 }
 
 export function drawLoadingScreen() {
@@ -821,6 +853,5 @@ export function drawLoadingScreen() {
 
     drawText("LOADING...", cx, cy, 48, "middle", "center", true);
 
-    // Render the buffer canvas onto the document canvas
-    documentCtx.drawImage(canvas, 0, 0);
+    ctx.drawImage(canvas, 0, 0);
 }
