@@ -159,13 +159,10 @@ function drawText(text, x, y, size, textBaseline="middle", textAlign="center", d
 }
 
 function drawDropShadow(rect, color="#222222", alpha=0.3, xScale=1.0, yScale=0.2) {
-
     let radiusX = (rect.w * xScale) / 2;
     let radiusY = (rect.h * yScale) / 2;
-
     let x = rect.x + rect.w / 2;
     let y = rect.y + rect.h;
-
     let oldAlpha = ctx.globalAlpha;
     ctx.fillStyle = color;
     ctx.globalAlpha = alpha;
@@ -851,7 +848,7 @@ export function drawSplashScreen() {
     let cy = canvas.height / 2;
 
     drawText("AMAZING TOP-DOWN GAME", cx, cy, 40, "middle", "center", true);
-    drawText("PRESS ANY KEY", cx, cy  + 64, 32, "middle", "center", true);
+    drawText("PRESS ANY KEYBOARD KEY", cx, cy  + 64, 32, "middle", "center", true);
 
     ctx.drawImage(canvas, 0, 0);
 }

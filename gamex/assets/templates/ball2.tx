@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="../tileset_floaty2.tsx"/>
+ <object type="ball2" gid="7" width="32" height="32">
+  <properties>
+   <property name="line" type="object" value="0"/>
+   <property name="center" type="object" value="0"/>
+   <property name="speed" type="float" value="50"/>
+  </properties>
+ </object>
+</template>

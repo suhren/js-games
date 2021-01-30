@@ -152,17 +152,17 @@
   <object id="24" template="../templates/spike.tx" x="512" y="336"/>
  </objectgroup>
  <objectgroup id="5" name="Object Layer 4">
-  <object id="25" template="../templates/ball.tx" x="288" y="304" width="32" height="32">
+  <object id="25" template="../templates/ball2.tx" x="288" y="304" width="32" height="32">
    <properties>
     <property name="line" type="object" value="28"/>
    </properties>
   </object>
-  <object id="26" template="../templates/ball.tx" x="368" y="320" width="32" height="32">
+  <object id="26" template="../templates/ball2.tx" x="368" y="320" width="32" height="32">
    <properties>
     <property name="line" type="object" value="31"/>
    </properties>
   </object>
-  <object id="27" template="../templates/ball.tx" x="416" y="304" width="32" height="32">
+  <object id="27" template="../templates/ball2.tx" x="416" y="304" width="32" height="32">
    <properties>
     <property name="line" type="object" value="32"/>
    </properties>
@@ -178,7 +178,7 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="Object Layer 5">
-  <object id="43" template="../templates/ball.tx" x="240" y="352" width="32" height="32">
+  <object id="43" template="../templates/ball2.tx" x="240" y="352" width="32" height="32">
    <properties>
     <property name="line" type="object" value="44"/>
     <property name="speed" type="float" value="10"/>
@@ -187,7 +187,7 @@
   <object id="44" template="../templates/line.tx" x="256" y="380">
    <polyline points="-16,-44 0,-44 0,196 352,196 352,212 -16,212 -16,-44"/>
   </object>
-  <object id="45" template="../templates/ball.tx" x="592" y="608" width="32" height="32">
+  <object id="45" template="../templates/ball2.tx" x="592" y="608" width="32" height="32">
    <properties>
     <property name="line" type="object" value="44"/>
     <property name="speed" type="float" value="10"/>
@@ -207,7 +207,7 @@
   <object id="62" template="../templates/spike.tx" x="256" y="400"/>
   <object id="63" template="../templates/spike.tx" x="256" y="416"/>
   <object id="64" template="../templates/spike.tx" x="256" y="368"/>
-  <object id="66" template="../templates/ball.tx" x="224" y="608" width="32" height="32">
+  <object id="66" template="../templates/ball2.tx" x="224" y="608" width="32" height="32">
    <properties>
     <property name="line" type="object" value="44"/>
     <property name="speed" type="float" value="10"/>

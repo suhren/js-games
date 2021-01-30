@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="48" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="11">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="48" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="12">
  <properties>
   <property name="description" value=""/>
   <property name="name" value=""/>
@@ -27,12 +27,6 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" template="../templates/ball.tx" x="208" y="224" width="32" height="32">
-   <properties>
-    <property name="line" type="object" value="2"/>
-    <property name="speed" type="float" value="70"/>
-   </properties>
-  </object>
   <object id="2" template="../templates/line.tx" x="211.75" y="233">
    <polyline points="12.25,-25 300.25,-25"/>
   </object>
@@ -51,6 +45,12 @@
   </object>
   <object id="10" template="../templates/text.tx" x="308" y="144" width="120" height="20">
    <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">with space</text>
+  </object>
+  <object id="11" template="../templates/ball2.tx" x="208" y="224" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="2"/>
+    <property name="speed" type="float" value="70"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

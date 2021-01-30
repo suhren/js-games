@@ -14,7 +14,6 @@ export var SPRITESHEET_PLAYER_EXPLODE = null;
 export var SPRITESHEET_PLAYER_SPIRIT = null;
 
 
-
 async function getImage(url) {
     // https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
     return new Promise(function (resolve, reject) {
@@ -54,6 +53,7 @@ export function playAudio(audio) {
 export var TEMPLATES = [];
 export const TEMPLATE_FILES = [
     "./assets/templates/ball.tx",
+    "./assets/templates/ball2.tx",
     "./assets/templates/checkpoint.tx",
     "./assets/templates/coin.tx",
     "./assets/templates/doorBlue.tx",
@@ -105,6 +105,7 @@ const TILESET_FILES = [
     "./assets/tileset_common.tsx",
     "./assets/tileset_dungeon.tsx",
     "./assets/tileset_floaty.tsx",
+    "./assets/tileset_floaty2.tsx",
     "./assets/tileset_talisman.tsx"
 ];
 export var TILESET_XMLS = new Map();
@@ -114,7 +115,7 @@ export var TILESETS = new Map();
 export async function init() {
 
     // Initialize the assets
-    GAME_AUDIO = await getAudio("assets/sounds/Spel_2021_tema.mp3");
+    GAME_AUDIO = await getAudio("assets/sounds/GameX_2021_extended.mp3");
     GAME_AUDIO.volume = 0.15;
     GAME_AUDIO.playbackRate = 1;
     GAME_AUDIO.loop = true;
@@ -616,6 +617,7 @@ function levelFromXml(index, xml, path) {
 
                         
                 case "ball":
+                case "ball2":
                     var x = parseInt(getAttribute("x", obj, templateObject));
                     var y = parseInt(getAttribute("y", obj, templateObject));
                     var w = parseInt(getAttribute("width", obj, templateObject));

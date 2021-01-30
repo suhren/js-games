@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="152">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="160">
  <properties>
   <property name="description" value="Slippery stage"/>
  </properties>
@@ -7,6 +7,7 @@
  <tileset firstgid="65" source="../tileset_common.tsx"/>
  <tileset firstgid="96" source="../tileset_floaty.tsx"/>
  <tileset firstgid="103" source="../tileset_talisman.tsx"/>
+ <tileset firstgid="119" source="../tileset_floaty2.tsx"/>
  <layer id="1" name="Tile Layer 1" width="32" height="32">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -72,49 +73,49 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="Object Layer 2">
-  <object id="126" template="../templates/ball.tx" x="96" y="192" width="32" height="32">
+  <object id="152" template="../templates/ball2.tx" x="96" y="192">
    <properties>
     <property name="line" type="object" value="124"/>
     <property name="speed" type="float" value="30"/>
    </properties>
   </object>
-  <object id="128" template="../templates/ball.tx" x="32" y="384" width="32" height="32">
+  <object id="153" template="../templates/ball2.tx" x="32" y="384">
    <properties>
     <property name="line" type="object" value="127"/>
     <property name="speed" type="float" value="-30"/>
    </properties>
   </object>
-  <object id="130" template="../templates/ball.tx" x="192" y="304" width="32" height="32">
-   <properties>
-    <property name="line" type="object" value="129"/>
-    <property name="speed" type="float" value="30"/>
-   </properties>
-  </object>
-  <object id="132" template="../templates/ball.tx" x="128" y="272" width="32" height="32">
+  <object id="154" template="../templates/ball2.tx" x="128" y="272">
    <properties>
     <property name="line" type="object" value="131"/>
     <property name="speed" type="float" value="-30"/>
    </properties>
   </object>
-  <object id="134" template="../templates/ball.tx" x="320" y="192" width="32" height="32">
+  <object id="155" template="../templates/ball2.tx" x="192" y="304">
    <properties>
-    <property name="line" type="object" value="133"/>
+    <property name="line" type="object" value="129"/>
     <property name="speed" type="float" value="30"/>
    </properties>
   </object>
-  <object id="136" template="../templates/ball.tx" x="352" y="272" width="32" height="32">
-   <properties>
-    <property name="line" type="object" value="135"/>
-    <property name="speed" type="float" value="-30"/>
-   </properties>
-  </object>
-  <object id="138" template="../templates/ball.tx" x="256" y="384" width="32" height="32">
+  <object id="156" template="../templates/ball2.tx" x="256" y="384">
    <properties>
     <property name="line" type="object" value="137"/>
     <property name="speed" type="float" value="-30"/>
    </properties>
   </object>
-  <object id="140" template="../templates/ball.tx" x="416" y="304" width="32" height="32">
+  <object id="157" template="../templates/ball2.tx" x="320" y="192">
+   <properties>
+    <property name="line" type="object" value="133"/>
+    <property name="speed" type="float" value="30"/>
+   </properties>
+  </object>
+  <object id="158" template="../templates/ball2.tx" x="352" y="272">
+   <properties>
+    <property name="line" type="object" value="135"/>
+    <property name="speed" type="float" value="-30"/>
+   </properties>
+  </object>
+  <object id="159" template="../templates/ball2.tx" x="416" y="304">
    <properties>
     <property name="line" type="object" value="139"/>
     <property name="speed" type="float" value="30"/>

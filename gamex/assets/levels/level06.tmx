@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="49">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="52">
  <properties>
   <property name="description" value="Tiny trouble"/>
  </properties>
  <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
  <tileset firstgid="65" source="../tileset_common.tsx"/>
  <tileset firstgid="96" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="103" source="../tileset_floaty2.tsx"/>
  <layer id="1" name="Tile Layer 1" width="24" height="24">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,3,0,0,0,
@@ -62,11 +63,6 @@
   <object id="24" template="../templates/line.tx" x="188" y="139.25">
    <polyline points="4,-43.25 116,-43.25"/>
   </object>
-  <object id="26" template="../templates/ball.tx" x="288" y="64" width="32" height="32">
-   <properties>
-    <property name="line" type="object" value="27"/>
-   </properties>
-  </object>
   <object id="27" template="../templates/line.tx" x="304" y="107.25">
    <polyline points="0,-59.25 0,132.75"/>
   </object>
@@ -94,15 +90,20 @@
     <property name="speed" type="float" value="-120"/>
    </properties>
   </object>
-  <object id="43" template="../templates/ball.tx" x="128" y="240" width="32" height="32">
+  <object id="44" template="../templates/line.tx" x="144" y="284">
+   <polyline points="0,-60 0,68 -96,68 -96,-60 0,-60"/>
+  </object>
+  <object id="49" template="../templates/ball2.tx" x="288" y="64">
+   <properties>
+    <property name="line" type="object" value="27"/>
+   </properties>
+  </object>
+  <object id="50" template="../templates/ball2.tx" x="128" y="240">
    <properties>
     <property name="line" type="object" value="44"/>
    </properties>
   </object>
-  <object id="44" template="../templates/line.tx" x="144" y="284">
-   <polyline points="0,-60 0,68 -96,68 -96,-60 0,-60"/>
-  </object>
-  <object id="46" template="../templates/ball.tx" x="32" y="368" width="32" height="32">
+  <object id="51" template="../templates/ball2.tx" x="32" y="368">
    <properties>
     <property name="line" type="object" value="44"/>
    </properties>

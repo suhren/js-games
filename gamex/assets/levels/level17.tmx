@@ -49,19 +49,19 @@
   <object id="26" template="../templates/line.tx" x="223.333" y="324.667">
    <polyline points="-79.3333,-52.6667 -31.3333,-100.667 64.6667,-4.66667 160.667,-100.667 208.667,-52.6667 160.667,-4.66667 64.6667,-100.667 -31.3333,-4.66667 -79.3333,-52.6667"/>
   </object>
-  <object id="27" template="../templates/ball.tx" x="128" y="288" width="32" height="32">
+  <object id="27" template="../templates/ball2.tx" x="128" y="288" width="32" height="32">
    <properties>
     <property name="line" type="object" value="26"/>
     <property name="speed" type="float" value="20"/>
    </properties>
   </object>
-  <object id="28" template="../templates/ball.tx" x="224" y="288" width="32" height="32">
+  <object id="28" template="../templates/ball2.tx" x="224" y="288" width="32" height="32">
    <properties>
     <property name="line" type="object" value="26"/>
     <property name="speed" type="float" value="20"/>
    </properties>
   </object>
-  <object id="29" template="../templates/ball.tx" x="320" y="288" width="32" height="32">
+  <object id="29" template="../templates/ball2.tx" x="320" y="288" width="32" height="32">
    <properties>
     <property name="line" type="object" value="26"/>
     <property name="speed" type="float" value="20"/>
