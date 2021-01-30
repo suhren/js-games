@@ -7,10 +7,6 @@
  <tileset firstgid="65" source="../tileset_common.tsx"/>
  <tileset firstgid="96" source="../tileset_floaty.tsx"/>
  <layer id="1" name="Tile Layer 1" width="24" height="24">
-  <properties>
-   <property name="description" value="Oscillating obstacle"/>
-   <property name="name" value="Level 6"/>
-  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

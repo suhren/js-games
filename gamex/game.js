@@ -214,17 +214,17 @@ async function init() {
 
     menu = new inter.Menu();
 
-    musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 200, 32);
-    debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 200, 32);
+    musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 250, 32);
+    debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 250, 32);
 
     let buttons = [
-        new inter.Button("Resume", buttonResume, 0, 0, 200, 32),
-        new inter.Button("r: Restart level", restart, 0, 0, 200, 32),
+        new inter.Button("Resume", buttonResume, 0, 0, 250, 32),
+        new inter.Button("r: Restart level", restart, 0, 0, 250, 32),
         debugButton,
         musicButton,
-        new inter.Button("c: Prev level", prevLevel, 0, 0, 200, 32),
-        new inter.Button("v: Next level", nextLevel, 0, 0, 200, 32),
-        new inter.Button("Restart game", start, 0, 0, 200, 32),
+        new inter.Button("c: Prev level", prevLevel, 0, 0, 250, 32),
+        new inter.Button("v: Next level", nextLevel, 0, 0, 250, 32),
+        new inter.Button("Restart game", start, 0, 0, 250, 32),
     ];
 
     menu.init(buttons);

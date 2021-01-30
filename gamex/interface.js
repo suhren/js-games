@@ -21,7 +21,7 @@ export class Menu {
         this.x = 0;
         this.y = 0;
         this.w = 512;
-        this.h = 384;
+        this.h = 450 ;
         this.padding = 24;
         this.buttons = [];
     }
