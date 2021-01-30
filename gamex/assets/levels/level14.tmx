@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="48" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="70">
+ <properties>
+  <property name="description" value="Central circles"/>
+ </properties>
+ <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../tileset_common.tsx"/>
+ <tileset firstgid="96" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="103" source="../tileset_talisman.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="48" height="48">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,4,5,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,4,5,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,12,13,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,12,13,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,25,25,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,25,25,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,28,29,29,30,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,14,25,25,14,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,14,67,67,14,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,22,69,69,22,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,27,33,33,27,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,4,5,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,4,5,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,12,13,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,12,13,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,25,25,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,25,25,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,9,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,11,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,19,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="Object Layer 0">
+  <object id="10" template="../templates/coin.tx" x="216" y="480"/>
+  <object id="11" template="../templates/coin.tx" x="280" y="544"/>
+  <object id="12" template="../templates/coin.tx" x="152" y="544"/>
+  <object id="13" template="../templates/coin.tx" x="216" y="608"/>
+  <object id="14" template="../templates/coin.tx" x="248" y="600"/>
+  <object id="15" template="../templates/coin.tx" x="272" y="576"/>
+  <object id="16" template="../templates/coin.tx" x="272" y="512"/>
+  <object id="17" template="../templates/coin.tx" x="248" y="488"/>
+  <object id="18" template="../templates/coin.tx" x="184" y="488"/>
+  <object id="19" template="../templates/coin.tx" x="160" y="512"/>
+  <object id="20" template="../templates/coin.tx" x="160" y="576"/>
+  <object id="21" template="../templates/coin.tx" x="184" y="600"/>
+  <object id="22" template="../templates/coin.tx" x="536" y="480"/>
+  <object id="23" template="../templates/coin.tx" x="600" y="544"/>
+  <object id="24" template="../templates/coin.tx" x="472" y="544"/>
+  <object id="25" template="../templates/coin.tx" x="536" y="608"/>
+  <object id="26" template="../templates/coin.tx" x="568" y="600"/>
+  <object id="27" template="../templates/coin.tx" x="592" y="576"/>
+  <object id="28" template="../templates/coin.tx" x="592" y="512"/>
+  <object id="29" template="../templates/coin.tx" x="568" y="488"/>
+  <object id="30" template="../templates/coin.tx" x="504" y="488"/>
+  <object id="31" template="../templates/coin.tx" x="480" y="512"/>
+  <object id="32" template="../templates/coin.tx" x="480" y="576"/>
+  <object id="33" template="../templates/coin.tx" x="504" y="600"/>
+  <object id="34" template="../templates/coin.tx" x="536" y="192"/>
+  <object id="35" template="../templates/coin.tx" x="600" y="256"/>
+  <object id="36" template="../templates/coin.tx" x="472" y="256"/>
+  <object id="37" template="../templates/coin.tx" x="536" y="320"/>
+  <object id="38" template="../templates/coin.tx" x="568" y="312"/>
+  <object id="39" template="../templates/coin.tx" x="592" y="288"/>
+  <object id="40" template="../templates/coin.tx" x="592" y="224"/>
+  <object id="41" template="../templates/coin.tx" x="568" y="200"/>
+  <object id="42" template="../templates/coin.tx" x="504" y="200"/>
+  <object id="43" template="../templates/coin.tx" x="480" y="224"/>
+  <object id="44" template="../templates/coin.tx" x="480" y="288"/>
+  <object id="45" template="../templates/coin.tx" x="504" y="312"/>
+  <object id="46" template="../templates/coin.tx" x="216" y="192"/>
+  <object id="47" template="../templates/coin.tx" x="280" y="256"/>
+  <object id="48" template="../templates/coin.tx" x="152" y="256"/>
+  <object id="49" template="../templates/coin.tx" x="216" y="320"/>
+  <object id="50" template="../templates/coin.tx" x="248" y="312"/>
+  <object id="51" template="../templates/coin.tx" x="272" y="288"/>
+  <object id="52" template="../templates/coin.tx" x="272" y="224"/>
+  <object id="53" template="../templates/coin.tx" x="248" y="200"/>
+  <object id="54" template="../templates/coin.tx" x="184" y="200"/>
+  <object id="55" template="../templates/coin.tx" x="160" y="224"/>
+  <object id="56" template="../templates/coin.tx" x="160" y="288"/>
+  <object id="57" template="../templates/coin.tx" x="184" y="312"/>
+ </objectgroup>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" template="../templates/position.tx" x="384" y="384"/>
+  <object id="8" template="../templates/spawn.tx" x="384" y="392"/>
+  <object id="9" template="../templates/goal.tx" x="368" y="368" width="32" height="16"/>
+  <object id="58" template="../templates/position.tx" x="224" y="248"/>
+ </objectgroup>
+ <objectgroup id="3" name="Object Layer 2">
+  <object id="2" template="../templates/ball.tx" x="432" y="400" width="32" height="32">
+   <properties>
+    <property name="center" type="object" value="1"/>
+   </properties>
+  </object>
+  <object id="3" template="../templates/ball.tx" x="496" y="400" width="32" height="32">
+   <properties>
+    <property name="center" type="object" value="1"/>
+   </properties>
+  </object>
+  <object id="4" template="../templates/ball.tx" x="560" y="400" width="32" height="32">
+   <properties>
+    <property name="center" type="object" value="1"/>
+   </properties>
+  </object>
+  <object id="5" template="../templates/ball.tx" x="160" y="400" width="32" height="32">
+   <properties>
+    <property name="center" type="object" value="1"/>
+   </properties>
+  </object>
+  <object id="6" template="../templates/ball.tx" x="224" y="400" width="32" height="32">
+   <properties>
+    <property name="center" type="object" value="1"/>
+   </properties>
+  </object>
+  <object id="7" template="../templates/ball.tx" x="288" y="400" width="32" height="32">
+   <properties>
+    <property name="center" type="object" value="1"/>
+   </properties>
+  </object>
+  <object id="59" template="../templates/ball.tx" x="152" y="256" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="58"/>
+   </properties>
+  </object>
+  <object id="60" template="../templates/ball.tx" x="280" y="256" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="58"/>
+   </properties>
+  </object>
+  <object id="61" template="../templates/position.tx" x="544" y="248"/>
+  <object id="62" template="../templates/ball.tx" x="472" y="256" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="61"/>
+    <property name="speed" type="float" value="-50"/>
+   </properties>
+  </object>
+  <object id="63" template="../templates/ball.tx" x="600" y="256" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="61"/>
+    <property name="speed" type="float" value="-50"/>
+   </properties>
+  </object>
+  <object id="64" template="../templates/position.tx" x="224" y="536"/>
+  <object id="65" template="../templates/ball.tx" x="152" y="544" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="64"/>
+   </properties>
+  </object>
+  <object id="66" template="../templates/ball.tx" x="280" y="544" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="64"/>
+   </properties>
+  </object>
+  <object id="67" template="../templates/position.tx" x="544" y="536"/>
+  <object id="68" template="../templates/ball.tx" x="472" y="544" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="67"/>
+    <property name="speed" type="float" value="-50"/>
+   </properties>
+  </object>
+  <object id="69" template="../templates/ball.tx" x="600" y="544" width="16" height="16">
+   <properties>
+    <property name="center" type="object" value="67"/>
+    <property name="speed" type="float" value="-50"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="48" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="130">
+ <properties>
+  <property name="description" value="Helical Halls"/>
+ </properties>
+ <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../tileset_common.tsx"/>
+ <tileset firstgid="96" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="103" source="../tileset_talisman.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="48" height="48">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,1,13,25,27,25,27,25,12,3,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,
+0,0,0,0,0,9,25,33,33,33,33,33,25,12,2,2,13,25,25,25,25,27,25,25,25,25,25,25,27,25,25,25,25,25,25,25,25,27,25,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,9,33,33,67,67,67,33,33,25,25,25,25,33,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,33,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,9,33,33,67,67,67,33,33,33,33,33,33,33,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,33,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,9,33,33,67,67,67,33,33,4,18,18,5,33,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,33,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,17,5,33,33,33,33,33,4,19,0,0,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,5,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,17,18,18,18,18,18,19,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,25,27,25,22,25,25,25,25,25,25,27,25,25,25,25,25,25,27,25,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,25,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,65,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,6,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,9,95,95,95,12,2,2,2,3,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,4,18,18,18,18,18,18,18,18,18,18,18,5,33,33,33,11,0,9,95,95,95,22,25,27,25,11,0,0,0,0,
+0,0,0,0,0,0,0,0,0,1,2,2,2,13,33,33,33,11,0,1,2,2,2,2,2,2,2,3,0,9,33,33,33,11,0,9,95,95,33,25,33,33,33,11,0,0,0,0,
+0,0,0,0,0,0,0,0,0,9,25,27,25,22,33,33,33,11,0,9,25,27,25,22,25,25,25,11,0,9,33,33,33,11,0,9,95,95,33,33,33,33,33,11,0,0,0,0,
+0,0,0,0,0,0,0,0,0,9,33,33,33,25,33,33,33,11,0,9,33,33,33,25,33,33,33,11,0,9,33,33,33,11,0,9,95,95,33,6,33,33,33,11,0,0,0,0,
+0,0,0,0,0,0,0,0,0,9,33,33,33,33,33,33,33,11,0,9,33,33,33,33,33,69,33,11,0,9,33,33,33,11,0,9,95,95,95,4,18,18,18,19,0,0,0,0,
+0,0,0,0,0,0,0,0,0,9,33,33,33,6,33,33,33,11,0,9,33,33,33,6,33,33,33,11,0,9,33,33,33,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,17,18,18,18,5,33,33,33,11,0,9,33,33,33,4,18,18,18,19,0,9,33,33,33,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,9,33,33,33,12,2,2,2,2,2,13,33,33,33,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,9,33,33,33,25,25,27,25,25,25,22,33,33,33,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,9,33,33,33,33,33,33,33,33,33,25,33,33,33,11,0,9,95,95,95,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,9,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,9,33,33,33,33,33,33,33,33,33,6,33,33,33,11,0,9,33,65,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,17,18,18,18,18,18,18,18,18,18,18,18,18,18,19,0,9,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,12,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,13,30,33,28,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,25,27,25,25,25,25,25,25,25,27,25,25,25,25,25,25,25,27,25,25,33,25,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,18,18,18,5,30,33,28,4,18,18,18,18,18,18,18,18,18,18,18,19,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,25,33,25,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,33,33,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,18,18,18,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" template="../templates/spawn.tx" x="408" y="392"/>
+  <object id="2" template="../templates/goal.tx" x="128" y="176" width="48" height="48"/>
+  <object id="34" template="../templates/checkpoint.tx" x="240" y="288"/>
+  <object id="36" template="../templates/doorYellow.tx" x="592" y="560"/>
+  <object id="37" template="../templates/keyYellow.tx" x="176" y="400"/>
+  <object id="38" template="../templates/doorBlue.tx" x="208" y="400"/>
+  <object id="39" template="../templates/keyBlue.tx" x="400" y="672"/>
+  <object id="40" template="../templates/checkpoint.tx" x="592" y="496"/>
+  <object id="41" template="../templates/keyRed.tx" x="592" y="592"/>
+  <object id="42" template="../templates/doorRed.tx" x="400" y="624"/>
+  <object id="67" template="../templates/doorBlue.tx" x="240" y="208"/>
+  <object id="68" template="../templates/doorRed.tx" x="224" y="208"/>
+  <object id="69" template="../templates/doorGreen.tx" x="208" y="208"/>
+  <object id="70" template="../templates/doorYellow.tx" x="256" y="208"/>
+  <object id="113" template="../templates/keyGreen.tx" x="656" y="368"/>
+ </objectgroup>
+ <objectgroup id="3" name="Object Layer 2">
+  <object id="3" template="../templates/line.tx" x="356" y="420.667">
+   <polyline points="-28,-44.6667 4,-44.6667 4,-12.6667 -28,-12.6667 -28,-44.6667"/>
+  </object>
+  <object id="4" template="../templates/ball.tx" x="352" y="384">
+   <properties>
+    <property name="line" type="object" value="3"/>
+   </properties>
+  </object>
+  <object id="5" template="../templates/line.tx" x="356" y="468.667">
+   <polyline points="-28,-44.6667 4,-44.6667 4,-12.6667 -28,-12.6667 -28,-44.6667"/>
+  </object>
+  <object id="6" template="../templates/ball.tx" x="352" y="432">
+   <properties>
+    <property name="line" type="object" value="5"/>
+    <property name="speed" type="float" value="-50"/>
+   </properties>
+  </object>
+  <object id="7" template="../templates/line.tx" x="356" y="516.667">
+   <polyline points="-28,-44.6667 4,-44.6667 4,-12.6667 -28,-12.6667 -28,-44.6667"/>
+  </object>
+  <object id="8" template="../templates/ball.tx" x="352" y="480">
+   <properties>
+    <property name="line" type="object" value="7"/>
+   </properties>
+  </object>
+  <object id="9" template="../templates/line.tx" x="404" y="516.667">
+   <polyline points="-28,-44.6667 4,-44.6667 4,-12.6667 -28,-12.6667 -28,-44.6667"/>
+  </object>
+  <object id="10" template="../templates/ball.tx" x="400" y="480">
+   <properties>
+    <property name="line" type="object" value="9"/>
+    <property name="speed" type="float" value="-50"/>
+   </properties>
+  </object>
+  <object id="11" template="../templates/line.tx" x="452" y="516.667">
+   <polyline points="-28,-44.6667 4,-44.6667 4,-12.6667 -28,-12.6667 -28,-44.6667"/>
+  </object>
+  <object id="12" template="../templates/ball.tx" x="448" y="480">
+   <properties>
+    <property name="line" type="object" value="11"/>
+   </properties>
+  </object>
+  <object id="104" template="../templates/ball.tx" x="584" y="264">
+   <properties>
+    <property name="line" type="object" value="103"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Object Layer 3">
+  <object id="13" template="../templates/ball.tx" x="488" y="288">
+   <properties>
+    <property name="line" type="object" value="15"/>
+    <property name="speed" type="float" value="30"/>
+   </properties>
+  </object>
+  <object id="14" template="../templates/ball.tx" x="504" y="512">
+   <properties>
+    <property name="line" type="object" value="16"/>
+    <property name="speed" type="float" value="-30"/>
+   </properties>
+  </object>
+  <object id="15" template="../templates/line.tx" x="492" y="392">
+   <polyline points="3.75,113 3.75,-111"/>
+  </object>
+  <object id="16" template="../templates/line.tx" x="496.25" y="383">
+   <polyline points="15.75,121 15.75,-103"/>
+  </object>
+  <object id="19" template="../templates/spike.tx" x="480" y="464"/>
+  <object id="20" template="../templates/spike.tx" x="512" y="464"/>
+  <object id="21" template="../templates/spike.tx" x="480" y="400"/>
+  <object id="22" template="../templates/spike.tx" x="512" y="400"/>
+  <object id="23" template="../templates/spike.tx" x="480" y="336"/>
+  <object id="24" template="../templates/spike.tx" x="512" y="336"/>
+ </objectgroup>
+ <objectgroup id="5" name="Object Layer 4">
+  <object id="25" template="../templates/ball.tx" x="288" y="304" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="28"/>
+   </properties>
+  </object>
+  <object id="26" template="../templates/ball.tx" x="368" y="320" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="31"/>
+   </properties>
+  </object>
+  <object id="27" template="../templates/ball.tx" x="416" y="304" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="32"/>
+   </properties>
+  </object>
+  <object id="28" template="../templates/line.tx" x="320" y="332">
+   <polyline points="-16,-44 0,-44 0,-28 -16,-28 -16,-44"/>
+  </object>
+  <object id="31" template="../templates/line.tx" x="384" y="332">
+   <polyline points="-16,-44 0,-44 0,-28 -16,-28 -16,-44"/>
+  </object>
+  <object id="32" template="../templates/line.tx" x="448" y="332">
+   <polyline points="-16,-44 0,-44 0,-28 -16,-28 -16,-44"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="Object Layer 5">
+  <object id="43" template="../templates/ball.tx" x="240" y="352" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="44"/>
+    <property name="speed" type="float" value="10"/>
+   </properties>
+  </object>
+  <object id="44" template="../templates/line.tx" x="256" y="380">
+   <polyline points="-16,-44 0,-44 0,196 352,196 352,212 -16,212 -16,-44"/>
+  </object>
+  <object id="45" template="../templates/ball.tx" x="592" y="608" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="44"/>
+    <property name="speed" type="float" value="10"/>
+   </properties>
+  </object>
+  <object id="49" template="../templates/spike.tx" x="304" y="576"/>
+  <object id="50" template="../templates/spike.tx" x="320" y="576"/>
+  <object id="52" template="../templates/spike.tx" x="352" y="608"/>
+  <object id="53" template="../templates/spike.tx" x="368" y="608"/>
+  <object id="54" template="../templates/spike.tx" x="432" y="608"/>
+  <object id="55" template="../templates/spike.tx" x="448" y="608"/>
+  <object id="57" template="../templates/spike.tx" x="224" y="464"/>
+  <object id="58" template="../templates/spike.tx" x="224" y="480"/>
+  <object id="59" template="../templates/spike.tx" x="480" y="576"/>
+  <object id="60" template="../templates/spike.tx" x="496" y="576"/>
+  <object id="61" template="../templates/spike.tx" x="256" y="384"/>
+  <object id="62" template="../templates/spike.tx" x="256" y="400"/>
+  <object id="63" template="../templates/spike.tx" x="256" y="416"/>
+  <object id="64" template="../templates/spike.tx" x="256" y="368"/>
+  <object id="66" template="../templates/ball.tx" x="224" y="608" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="44"/>
+    <property name="speed" type="float" value="10"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="Object Layer 6">
+  <object id="103" template="../templates/line.tx" x="608" y="828">
+   <polyline points="-16,-572 0,-572 0,-364 -16,-364 -16,-572"/>
+  </object>
+  <object id="106" template="../templates/ball.tx" x="584" y="296">
+   <properties>
+    <property name="line" type="object" value="103"/>
+   </properties>
+  </object>
+  <object id="107" template="../templates/ball.tx" x="584" y="328">
+   <properties>
+    <property name="line" type="object" value="103"/>
+   </properties>
+  </object>
+  <object id="108" template="../templates/ball.tx" x="584" y="360">
+   <properties>
+    <property name="line" type="object" value="103"/>
+   </properties>
+  </object>
+  <object id="109" template="../templates/ball.tx" x="584" y="392">
+   <properties>
+    <property name="line" type="object" value="103"/>
+   </properties>
+  </object>
+  <object id="110" template="../templates/ball.tx" x="584" y="424">
+   <properties>
+    <property name="line" type="object" value="103"/>
+   </properties>
+  </object>
+  <object id="111" template="../templates/ball.tx" x="584" y="456">
+   <properties>
+    <property name="line" type="object" value="103"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="Object Layer 7">
+  <object id="115" template="../templates/line.tx" x="500" y="736">
+   <polyline points="-188,-520 -204,-536 -188,-552 -156,-520 -124,-552 -92,-520 -60,-552 -28,-520 4,-552 36,-520 52,-536 36,-552 4,-520 -28,-552 -60,-520 -92,-552 -124,-520 -156,-552 -188,-520"/>
+  </object>
+  <object id="117" template="../templates/ball.tx" x="544" y="208">
+   <properties>
+    <property name="line" type="object" value="115"/>
+    <property name="speed" type="float" value="10"/>
+   </properties>
+  </object>
+  <object id="118" template="../templates/ball.tx" x="480" y="208">
+   <properties>
+    <property name="line" type="object" value="115"/>
+    <property name="speed" type="float" value="10"/>
+   </properties>
+  </object>
+  <object id="119" template="../templates/ball.tx" x="416" y="208">
+   <properties>
+    <property name="line" type="object" value="115"/>
+    <property name="speed" type="float" value="10"/>
+   </properties>
+  </object>
+  <object id="120" template="../templates/ball.tx" x="352" y="208">
+   <properties>
+    <property name="line" type="object" value="115"/>
+    <property name="speed" type="float" value="10"/>
+   </properties>
+  </object>
+  <object id="122" template="../templates/coin.tx" x="320" y="192"/>
+  <object id="123" template="../templates/coin.tx" x="416" y="192"/>
+  <object id="124" template="../templates/coin.tx" x="512" y="192"/>
+  <object id="125" template="../templates/coin.tx" x="512" y="224"/>
+  <object id="127" template="../templates/coin.tx" x="416" y="224"/>
+  <object id="129" template="../templates/coin.tx" x="320" y="224"/>
+ </objectgroup>
+</map>

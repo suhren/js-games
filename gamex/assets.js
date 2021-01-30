@@ -78,16 +78,18 @@ export const LEVEL_FILES = [
     "./assets/levels/level01.tmx",
     "./assets/levels/level02.tmx",
     "./assets/levels/level03.tmx",
-    "./assets/levels/level1.tmx",
-    "./assets/levels/level2.tmx",
-    "./assets/levels/level3.tmx",
-    "./assets/levels/level4.tmx",
-    "./assets/levels/level5.tmx",
-    "./assets/levels/level6.tmx",
-    "./assets/levels/level7.tmx",
-    "./assets/levels/level8.tmx",
-    "./assets/levels/level9.tmx",
-    "./assets/levels/level10.tmx"
+    "./assets/levels/level04.tmx",
+    "./assets/levels/level05.tmx",
+    "./assets/levels/level06.tmx",
+    "./assets/levels/level07.tmx",
+    "./assets/levels/level08.tmx",
+    "./assets/levels/level09.tmx",
+    "./assets/levels/level10.tmx",
+    "./assets/levels/level11.tmx",
+    "./assets/levels/level12.tmx",
+    "./assets/levels/level13.tmx",
+    "./assets/levels/level14.tmx",
+    "./assets/levels/level15.tmx"
 ];
 export var LEVEL_XMLS = new Map();
 export const NUM_LEVELS = LEVEL_FILES.length;

@@ -170,6 +170,7 @@ var musicButton;
 function toggleDebug() {
     let debug = drawing.toggleDebug();
     debugButton.text = debug ? "x: Debug: ON" : "x: Debug: OFF";
+    player.invincible = debug;
 }
 
 

@@ -442,6 +442,7 @@ export class Player extends GameOject {
         this.spiritTime = 0.2;
         this.renderer = new drawing.PlayerRenderer(this);
         this.numDeaths = 0;
+        this.invincible = false;
 
         this.coinsSinceLastCheckpoint = new Array();
         this.keysSinceLastCheckpoint = new Array();
@@ -711,6 +712,11 @@ export class Player extends GameOject {
 
 
     die(level) {
+        
+        if (this.invincible) {
+            return;
+        }
+
         this.numDeaths += 1;
         level.objects = level.objects.concat(this.coinsSinceLastCheckpoint);
         level.objects = level.objects.concat(this.keysSinceLastCheckpoint);
