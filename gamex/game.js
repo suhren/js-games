@@ -62,6 +62,7 @@ function keyDown(e) {
     }
     if (showSplashScreen && !gameWinReset) {
         start();
+        toggleMusic();
     }
     // Up arrow (38) or w (87)
     if (e.keyCode == 38 || e.keyCode == 87) {
@@ -198,7 +199,7 @@ function toggleDebug() {
 
 
 function toggleMusic() {
-    if(assets.GAME_AUDIO.paused){
+    if (assets.GAME_AUDIO.paused){
         assets.GAME_AUDIO.play();
         musicButton.text = "m: Music: ON";
     } else {
