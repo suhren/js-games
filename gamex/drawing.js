@@ -218,23 +218,30 @@ export class TilemapRenderer {
 
         // Pre-render all static tiles on a canvas
         this.staticCanvas = document.createElement('canvas');
-        var staticCtx = this.staticCanvas.getContext('2d');
+        this.staticCtx = this.staticCanvas.getContext('2d');
         this.staticCanvas.width = w2sS(cfg.TILE_SIZE * this.ncols);
         this.staticCanvas.height = w2sS(cfg.TILE_SIZE * this.nrows);
         this.s = w2sS(cfg.TILE_SIZE);
+
+        // Pre-render all animated tiles on a canvas
+        this.animatedCanvas = document.createElement('canvas');
+        this.animatedCtx = this.animatedCanvas.getContext('2d');
+        this.animatedCanvas.width = this.staticCanvas.width;
+        this.animatedCanvas.height = this.staticCanvas.height;
 
         for (let row = 0; row < this.nrows; row++) {
             for (let col = 0; col < this.ncols; col++) {
                 let tile = this.tiles[row][col];
                 if (tile != null) {
-                    let x = col * cfg.TILE_SIZE;
-                    let y = row * cfg.TILE_SIZE;
+                    let x = w2sS(col * cfg.TILE_SIZE);
+                    let y = w2sS(row * cfg.TILE_SIZE);
                     if (tile.animated) {
                         this.aTiles.push(tile);
                         this.aTilePos.push([x, y]);
+                        this.animatedCtx.drawImage(tile.getImage(), x, y, this.s, this.s);
                     }
                     else {
-                        staticCtx.drawImage(tile.getImage(), w2sS(x), w2sS(y), this.s, this.s);
+                        this.staticCtx.drawImage(tile.getImage(), x, y, this.s, this.s);
                     }
                 }
             }
@@ -248,7 +255,6 @@ export class TilemapRenderer {
     }
 
     draw() {
-
         // (Clear) draw background color on the entire screen
         ctx.fillStyle = this.bgColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -258,10 +264,17 @@ export class TilemapRenderer {
 
         // Next, draw the animated tiles
         for (let i = 0; i < this.aTiles.length; i++) {
-            let x = w2sX(this.aTilePos[i][0]);
-            let y = w2sY(this.aTilePos[i][1]);
-            ctx.drawImage(this.aTiles[i].getImage(), x, y, this.s, this.s);
+            let tile = this.aTiles[i];
+            if (tile.drawRequired) {
+                let x = this.aTilePos[i][0];
+                let y = this.aTilePos[i][1];
+                this.animatedCtx.drawImage(tile.getImage(), x, y, this.s, this.s);
+                tile.drawRequired = false;
+            }
         }
+
+        // Draw the animated canvas contents
+        ctx.drawImage(this.animatedCanvas, w2sX(0), w2sY(0));
     }
 }
 

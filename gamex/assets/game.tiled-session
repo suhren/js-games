@@ -3,11 +3,11 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "levels/level14.tmx",
+    "activeFile": "levels/level03.tmx",
     "expandedProjectPaths": [
         "C:/Users/Adam/Google Drive/git/js-games/gamex/tiled",
-        ".",
         "templates",
+        ".",
         "levels"
     ],
     "fileStates": {
@@ -64,8 +64,8 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 319.5,
-                "y": 128.5
+                "x": 364.5,
+                "y": 112
             }
         },
         "levels/level03.tmx": {
@@ -73,7 +73,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 383.66666666666663,
-                "y": 383.66666666666663
+                "y": 383.33333333333326
             }
         },
         "levels/level09.tmx": {
@@ -128,8 +128,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 318.5,
-                "y": 413
+                "x": 383.5,
+                "y": 383.5
             }
         },
         "levels/level15.tmx": {
@@ -342,9 +342,9 @@
         "levels/level15.tmx",
         "levels/level01.tmx",
         "levels/level02.tmx",
-        "levels/level03.tmx",
-        "levels/level13.tmx",
         "levels/level14.tmx",
+        "levels/level13.tmx",
+        "levels/level03.tmx",
         "levels/level10.tmx",
         "levels/level09.tmx",
         "levels/level12.tmx",

@@ -30,6 +30,7 @@ async function getAudio(url) {
         let audio = new Audio(url);
         audio.addEventListener("canplaythrough", () => resolve(audio));
         audio.addEventListener("error", (err) => reject(err));
+        audio.load();
     });
 }
 
@@ -792,6 +793,7 @@ export class AnimatedTile {
         this.currentImage = this.images[this.index];
         this.timer = randomize ? utils.random(0, this.currentDuration) : 0;
         this.animated = true;
+        this.redraw = false;
     }
 
     update(dT) {
@@ -801,7 +803,16 @@ export class AnimatedTile {
             this.timer = this.timer % this.currentDuration;
             this.currentDuration = this.durations[this.index];
             this.currentImage = this.images[this.index];
+            this.redraw = true;
         }
+    }
+
+    set drawRequired(value) {
+        this.redraw = value;
+    }
+
+    get drawRequired() {
+        return this.redraw;
     }
 
     getImage() {
