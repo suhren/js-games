@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="24" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="65">
+ <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../tileset_common.tsx"/>
+ <tileset firstgid="96" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="103" source="../tileset_talisman.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="24" height="32">
+  <properties>
+   <property name="description" value="Counter circle"/>
+  </properties>
+  <data encoding="csv">
+0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,
+0,0,0,0,0,1,2,13,25,25,25,25,25,25,25,25,12,2,3,0,0,0,0,0,
+0,0,0,1,2,13,25,27,33,33,33,33,33,33,33,33,27,25,12,2,3,0,0,0,
+0,0,0,9,25,25,33,33,33,33,33,33,33,33,33,33,33,33,25,25,11,0,0,0,
+0,0,1,13,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,12,3,0,0,
+0,0,9,25,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,25,11,0,0,
+0,1,13,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,12,3,0,
+0,9,25,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,25,11,0,
+0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
+0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
+0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
+0,9,33,33,33,33,33,33,33,33,33,67,67,33,33,33,33,33,33,33,33,33,11,0,
+0,9,33,33,33,33,33,33,33,33,33,67,67,33,33,33,33,33,33,33,33,33,11,0,
+0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
+0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
+0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
+0,17,5,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,4,19,0,
+0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,
+0,0,17,5,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,4,19,0,0,
+0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,
+0,0,0,17,18,5,33,33,33,33,33,33,33,33,33,33,33,33,4,18,19,0,0,0,
+0,0,0,0,0,17,18,5,33,33,33,33,33,33,33,33,4,18,19,0,0,0,0,0,
+0,0,0,0,0,0,0,17,5,33,33,33,33,33,33,4,19,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,13,33,33,33,33,33,33,12,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,1,13,27,33,33,33,33,33,33,27,12,3,0,0,0,0,0,0,
+0,0,0,0,0,0,9,25,33,33,33,33,33,33,33,33,25,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,33,33,69,69,33,33,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,33,69,69,69,69,33,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,9,33,33,33,69,69,69,69,33,33,33,11,0,0,0,0,0,0,
+0,0,0,0,0,0,17,5,33,33,33,69,69,33,33,33,4,19,0,0,0,0,0,0,
+0,0,0,0,0,0,0,17,5,33,33,33,33,33,33,4,19,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,19,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="Object Layer 0">
+  <object id="33" template="../templates/coin.tx" x="120" y="264"/>
+  <object id="34" template="../templates/coin.tx" x="120" y="136"/>
+  <object id="35" template="../templates/coin.tx" x="248" y="136"/>
+  <object id="36" template="../templates/coin.tx" x="248" y="260"/>
+  <object id="37" template="../templates/spike.tx" x="64" y="304"/>
+  <object id="38" template="../templates/spike.tx" x="64" y="320"/>
+  <object id="39" template="../templates/spike.tx" x="80" y="320"/>
+  <object id="40" template="../templates/spike.tx" x="96" y="336"/>
+  <object id="41" template="../templates/spike.tx" x="112" y="336"/>
+  <object id="42" template="../templates/spike.tx" x="48" y="272"/>
+  <object id="43" template="../templates/spike.tx" x="48" y="288"/>
+  <object id="44" template="../templates/spike.tx" x="48" y="112"/>
+  <object id="45" template="../templates/spike.tx" x="48" y="128"/>
+  <object id="46" template="../templates/spike.tx" x="320" y="112"/>
+  <object id="47" template="../templates/spike.tx" x="320" y="128"/>
+  <object id="48" template="../templates/spike.tx" x="320" y="272"/>
+  <object id="49" template="../templates/spike.tx" x="320" y="288"/>
+  <object id="50" template="../templates/spike.tx" x="96" y="64"/>
+  <object id="51" template="../templates/spike.tx" x="112" y="64"/>
+  <object id="52" template="../templates/spike.tx" x="256" y="64"/>
+  <object id="53" template="../templates/spike.tx" x="272" y="64"/>
+  <object id="54" template="../templates/spike.tx" x="64" y="80"/>
+  <object id="55" template="../templates/spike.tx" x="80" y="80"/>
+  <object id="56" template="../templates/spike.tx" x="288" y="80"/>
+  <object id="57" template="../templates/spike.tx" x="304" y="80"/>
+  <object id="58" template="../templates/spike.tx" x="288" y="320"/>
+  <object id="59" template="../templates/spike.tx" x="304" y="320"/>
+  <object id="60" template="../templates/spike.tx" x="256" y="336"/>
+  <object id="61" template="../templates/spike.tx" x="272" y="336"/>
+  <object id="62" template="../templates/spike.tx" x="304" y="304"/>
+  <object id="63" template="../templates/spike.tx" x="304" y="96"/>
+  <object id="64" template="../templates/spike.tx" x="64" y="96"/>
+ </objectgroup>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" template="../templates/spawn.tx" x="192" y="448"/>
+  <object id="2" template="../templates/goal.tx" x="176" y="176"/>
+ </objectgroup>
+ <objectgroup id="3" name="Object Layer 2">
+  <object id="3" template="../templates/position.tx" x="192" y="192"/>
+ </objectgroup>
+ <objectgroup id="4" name="Object Layer 3">
+  <object id="4" template="../templates/ball.tx" x="224" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+  <object id="5" template="../templates/ball.tx" x="248" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+  <object id="8" template="../templates/ball.tx" x="120" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+  <object id="9" template="../templates/ball.tx" x="144" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+  <object id="10" template="../templates/ball.tx" x="184" y="240">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+  <object id="11" template="../templates/ball.tx" x="184" y="264">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+  <object id="12" template="../templates/ball.tx" x="184" y="136">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+  <object id="13" template="../templates/ball.tx" x="184" y="160">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="100"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Object Layer 4">
+  <object id="17" template="../templates/ball.tx" x="272" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="18" template="../templates/ball.tx" x="296" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="19" template="../templates/ball.tx" x="320" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="20" template="../templates/ball.tx" x="48" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="21" template="../templates/ball.tx" x="72" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="22" template="../templates/ball.tx" x="96" y="200">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="23" template="../templates/ball.tx" x="184" y="112">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="24" template="../templates/ball.tx" x="184" y="88">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="25" template="../templates/ball.tx" x="184" y="64">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="26" template="../templates/ball.tx" x="184" y="336">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="27" template="../templates/ball.tx" x="184" y="312">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+  <object id="28" template="../templates/ball.tx" x="184" y="288">
+   <properties>
+    <property name="center" type="object" value="3"/>
+    <property name="speed" type="float" value="-100"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

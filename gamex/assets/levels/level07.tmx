@@ -2,7 +2,6 @@
 <map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="30">
  <properties>
   <property name="description" value="Stirring spiral"/>
-  <property name="name" value="Level 4"/>
  </properties>
  <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
  <tileset firstgid="65" source="../tileset_common.tsx"/>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="37">
+ <properties>
+  <property name="description" value="Linear Labyrinth"/>
+ </properties>
+ <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../tileset_common.tsx"/>
+ <tileset firstgid="96" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="103" source="../tileset_talisman.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="32" height="32">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,0,0,
+0,0,0,0,0,9,25,25,25,27,25,25,25,25,25,25,25,25,25,25,25,25,27,25,25,25,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,4,18,18,18,18,18,5,33,33,4,18,18,18,18,18,5,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,1,2,2,2,2,13,33,33,12,2,2,2,2,3,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,25,25,27,25,25,33,33,25,25,27,25,25,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,33,33,33,33,33,33,33,33,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,33,33,33,33,33,33,33,33,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,4,18,18,18,18,18,18,5,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,11,1,2,2,2,2,3,9,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,12,13,33,33,11,9,25,25,25,25,11,9,33,33,12,13,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,25,25,33,33,11,9,33,33,33,33,11,9,33,33,25,25,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,33,33,33,33,11,9,33,67,67,33,11,9,33,33,33,33,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,33,33,33,33,11,9,33,69,69,33,11,9,33,33,33,33,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,4,5,33,33,11,9,33,33,33,33,11,9,33,33,4,5,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,11,17,5,33,33,4,19,9,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,12,2,13,33,33,12,2,13,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,25,27,25,33,33,25,27,25,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,33,33,33,33,33,33,33,33,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,9,33,33,33,33,33,33,33,33,33,33,33,33,11,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,11,17,18,18,18,18,5,33,33,4,18,18,18,18,19,9,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,12,2,2,2,2,2,13,33,33,12,2,2,2,2,2,13,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,25,25,25,25,27,25,25,33,33,25,25,27,25,25,25,25,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,
+0,0,0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,
+0,0,0,0,0,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,19,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" template="../templates/goal.tx" x="240" y="240" width="32" height="16"/>
+  <object id="2" template="../templates/spawn.tx" x="256" y="264"/>
+ </objectgroup>
+ <objectgroup id="3" name="Object Layer 2">
+  <object id="6" template="../templates/ball.tx" x="160" y="176" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="7"/>
+    <property name="speed" type="float" value="40"/>
+   </properties>
+  </object>
+  <object id="7" template="../templates/line.tx" x="169" y="248">
+   <polyline points="-57,8 -57,-168 87,-168 87,-88 7,-88 7,8 -57,8"/>
+  </object>
+  <object id="10" template="../templates/ball.tx" x="96" y="448" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="12"/>
+    <property name="speed" type="float" value="40"/>
+   </properties>
+  </object>
+  <object id="12" template="../templates/line.tx" gid="0" x="169" y="424" rotation="0">
+   <polyline points="-57,-168 -57,8 87,8 87,-72 7,-72 7,-168 -57,-168"/>
+  </object>
+  <object id="16" template="../templates/line.tx" x="347" y="92">
+   <polyline points="-11,164 -11,68 -91,68 -91,-12 53,-12 53,164 -11,164"/>
+  </object>
+  <object id="17" template="../templates/ball.tx" x="384" y="96" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="16"/>
+    <property name="speed" type="float" value="40"/>
+   </properties>
+  </object>
+  <object id="19" template="../templates/line.tx" gid="0" x="347" y="268" rotation="0">
+   <polyline points="-11,-12 -11,84 -91,84 -91,164 53,164 53,-12 -11,-12"/>
+  </object>
+  <object id="20" template="../templates/ball.tx" x="320" y="368" width="32" height="32">
+   <properties>
+    <property name="line" type="object" value="19"/>
+    <property name="speed" type="float" value="40"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Object Layer 3">
+  <object id="21" template="../templates/coin.tx" x="168" y="168"/>
+  <object id="22" template="../templates/coin.tx" x="248" y="168"/>
+  <object id="23" template="../templates/coin.tx" x="328" y="168"/>
+  <object id="24" template="../templates/coin.tx" x="328" y="264"/>
+  <object id="25" template="../templates/coin.tx" x="168" y="264"/>
+  <object id="26" template="../templates/coin.tx" x="168" y="360"/>
+  <object id="27" template="../templates/coin.tx" x="248" y="360"/>
+  <object id="28" template="../templates/coin.tx" x="328" y="360"/>
+  <object id="29" template="../templates/coin.tx" x="248" y="88"/>
+  <object id="30" template="../templates/coin.tx" x="104" y="264"/>
+  <object id="31" template="../templates/coin.tx" x="104" y="88"/>
+  <object id="32" template="../templates/coin.tx" x="104" y="440"/>
+  <object id="33" template="../templates/coin.tx" x="248" y="440"/>
+  <object id="34" template="../templates/coin.tx" x="392" y="440"/>
+  <object id="35" template="../templates/coin.tx" x="392" y="264"/>
+  <object id="36" template="../templates/coin.tx" x="392" y="88"/>
+ </objectgroup>
+</map>

@@ -807,7 +807,7 @@ export function draw(dT, level, menu, elapsedTime) {
         ctx.textBaseline = 'middle';
         ctx.textAlign = "center";
         ctx.fillStyle = "black";
-        let txt = `Level ${level.index+1}`;
+        let txt = level.name != null ? level.name : `Level ${level.index+1}`;
         ctx.fillText(txt, canvas.width / 2, canvas.height / 2 - 16);
         ctx.fillStyle = "white";
         ctx.fillText(txt, canvas.width / 2 - 4, canvas.height / 2 - 16 - 4);
