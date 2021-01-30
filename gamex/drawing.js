@@ -865,3 +865,38 @@ export function drawLoadingScreen() {
 
     ctx.drawImage(canvas, 0, 0);
 }
+
+export function drawEndScreen(gameDuration, numDeaths) {
+    // (Clear) draw background color on the entire screen
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    let cx = canvas.width / 2;
+    let cy = canvas.height / 2;
+
+    let rank = "E - 400 deaths or more"
+    if (numDeaths <= 25) {
+        rank = "S - 25 deaths or less";
+    }
+    else if (numDeaths <= 100) {
+        rank = "A - 100 deaths or less";
+    }
+    else if (numDeaths <= 200) {
+        rank = "B - 200 deaths or less";
+    }
+    else if (numDeaths <= 300) {
+        rank = "C - 300 deaths or less";
+    }
+    else if (numDeaths <= 400) {
+        rank = "D - 400 deaths or less";
+    }
+
+    drawText("YOU WIN", cx, cy - 48, 48, "middle", "center", true);
+    let timeString = gameDuration.toISOString().split('T')[1]
+    timeString = timeString.substring(0, timeString.length - 5);
+    drawText(`Time: ${timeString}`, cx, cy + 9, 32, "middle", "center", true);
+    drawText(`Deaths: ${numDeaths}`, cx, cy + 48, 32, "middle", "center", true);
+    drawText(`Rank: ${rank}`, cx, cy + 96, 32, "middle", "center", true);
+
+    ctx.drawImage(canvas, 0, 0);
+}

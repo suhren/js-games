@@ -94,7 +94,8 @@ export const LEVEL_FILES = [
     "./assets/levels/level16.tmx",
     "./assets/levels/level17.tmx",
     "./assets/levels/level18.tmx",
-    "./assets/levels/level19.tmx"
+    "./assets/levels/level19.tmx",
+    "./assets/levels/level20.tmx"
 ];
 export var LEVEL_XMLS = new Map();
 export const NUM_LEVELS = LEVEL_FILES.length;

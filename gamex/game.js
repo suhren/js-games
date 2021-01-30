@@ -29,6 +29,8 @@ var changingLevel = false;
 var menu = null;
 var started = false;
 var initialized = false;
+var gameWin = false;
+var gameWinReset = false;
 
 
 function mousemove(e) {
@@ -42,11 +44,23 @@ function click(e) {
 
 var spaceDown = false;
 
+
+function resetFromGameWin() {
+    gameWinReset = false;
+    gameWin = false;
+}
+
+
 function keyDown(e) {
-    if (!initialized) {
+    if (!initialized || gameWinReset) {
         return;
     }
-    if (showSplashScreen) {
+    if (gameWin) {
+        showSplashScreen = true;
+        gameWinReset = true;
+        setTimeout(resetFromGameWin, 1000)
+    }
+    if (showSplashScreen && !gameWinReset) {
         start();
     }
     // Up arrow (38) or w (87)
@@ -158,6 +172,15 @@ function nextLevel() {
     changingLevel = false;
 }
 
+let gameDuration = 0;
+
+function showEndScreen() {
+    gameWin = true;
+    gameDuration = new Date(new Date() - startTime);
+    changingLevel = false;
+}
+
+
 function prevLevel() {
     levelIndex = (levelIndex > 0) ? levelIndex - 1 : assets.NUM_LEVELS - 1;
     loadLevel(assets.loadLevelFromIndex(levelIndex));
@@ -196,11 +219,12 @@ async function init() {
 
     let buttons = [
         new inter.Button("Resume", buttonResume, 0, 0, 200, 32),
-        new inter.Button("r: Restart", restart, 0, 0, 200, 32),
+        new inter.Button("r: Restart level", restart, 0, 0, 200, 32),
         debugButton,
         musicButton,
         new inter.Button("c: Prev level", prevLevel, 0, 0, 200, 32),
         new inter.Button("v: Next level", nextLevel, 0, 0, 200, 32),
+        new inter.Button("Restart game", start, 0, 0, 200, 32),
     ];
 
     menu.init(buttons);
@@ -211,8 +235,10 @@ async function init() {
     menu.y = (canvas.height - menu.h) / 2;
     
     initialized = true;
+    levelIndex = 0;
     setInterval(gameLoop, 1000 / cfg.FPS);
 }
+
 
 function start() {
     levelIndex = 0;
@@ -222,6 +248,8 @@ function start() {
     started = true;
     startTime = new Date();
     showSplashScreen = false;
+    menu.active = false;
+    gameWin = false;
 }
 
 
@@ -232,6 +260,16 @@ var dT = 0;
 var showSplashScreen = true;
 
 function gameLoop() {
+    
+    if (gameWin) {
+        drawing.drawEndScreen(gameDuration, player.numDeaths);
+        return;
+    }
+    if (showSplashScreen) {
+        drawing.drawSplashScreen();
+        return;
+    }
+
     // ms -> s
     let currentTime = new Date();
     elapsedTime = new Date(currentTime - startTime);
@@ -240,9 +278,6 @@ function gameLoop() {
     lastLoopTime = new Date();
     if (level != null) {
         drawing.draw(dT, level, menu, elapsedTime);
-    }
-    if (showSplashScreen) {
-        drawing.drawSplashScreen();
     }
 }
 
@@ -273,7 +308,13 @@ function update(dT) {
         level.update(dT);
         if (!changingLevel && level.goal.activated) {
             changingLevel = true;
-            setTimeout(nextLevel, 1000);
+            if (levelIndex < assets.NUM_LEVELS - 1) {
+                setTimeout(nextLevel, 1000);
+            }
+            else {
+                setTimeout(showEndScreen, 1000);
+            }
+            
         }
     }
 }

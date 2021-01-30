@@ -11,9 +11,6 @@
         "levels"
     ],
     "fileStates": {
-        "": {
-            "scaleInDock": 1
-        },
         "C:/Users/Adam/Desktop/test.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -386,9 +383,6 @@
             "dynamicWrapping": false,
             "scaleInDock": 3,
             "scaleInEditor": 4
-        },
-        "tileset_floaty2.tsx": {
-            "dynamicWrapping": false
         },
         "tileset_forest.tsx": {
             "dynamicWrapping": false,
