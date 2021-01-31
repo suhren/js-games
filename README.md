@@ -4,6 +4,4 @@
 
 [Snake](/snake/snake.html)
 
-[Topdown](/topdown/topdown.html)
-
 [GameX](/gamex/index.html)
