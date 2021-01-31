@@ -847,7 +847,7 @@ export function drawSplashScreen() {
     let cx = canvas.width / 2;
     let cy = canvas.height / 2;
 
-    drawText("AMAZING TOP-DOWN GAME", cx, cy, 40, "middle", "center", true);
+    drawText("DEMON DASH", cx, cy, 40, "middle", "center", true);
     drawText("PRESS ANY KEYBOARD KEY", cx, cy  + 64, 32, "middle", "center", true);
 
     ctx.drawImage(canvas, 0, 0);
