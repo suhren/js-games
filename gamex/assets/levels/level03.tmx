@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="48" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="99">
  <properties>
-  <property name="description" value=""/>
-  <property name="name" value=""/>
+  <property name="description" value="Tutorial"/>
  </properties>
  <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
  <tileset firstgid="65" source="../tileset_common.tsx"/>

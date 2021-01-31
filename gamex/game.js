@@ -1,5 +1,4 @@
 import * as go from "./objects.js";
-import * as utils from "./utils.js";
 import * as cfg from "./config.js";
 import * as assets from "./assets.js";
 import * as drawing from "./drawing.js";
@@ -22,136 +21,148 @@ window.onload = function() {
 }
 
 
+// Major game states
+const states = {
+    LOADING: "loading",
+    SPLASH_SCREEN: "splash_screen",
+    RUNNING: "running",
+    LEVEL_CHANGE: "level_change",
+    END_SCREEN: "end_screen",
+    END_SCREEN_TIMEOUT: "end_screen_timeout"
+};
+var state = states.LOADING; 
+
+// Flag true used in RUNNING state to indicate level change
+var changingLevel = false;
+
 var player = null;
 var level;
 var levelIndex = 0;
-var changingLevel = false;
 var menu = null;
-var started = false;
-var initialized = false;
-var gameWin = false;
-var gameWinReset = false;
+var spaceDown = false;
+
+var debugButton;
+var musicButton;
+
+// Keeep track of various time-related variables
+var startTime = 0;
+var levelTime = 0;
+let totalTime = 0;
+var lastLoopTime = new Date();
+var dT = 0;
 
 
 function mousemove(e) {
-    menu.hover(e.offsetX, e.offsetY);
+    if (state == states.RUNNING) {
+        menu.hover(e.offsetX, e.offsetY);
+    }
 }
 
 
 function click(e) {
-    menu.click(e.offsetX, e.offsetY);
-}
-
-var spaceDown = false;
-
-
-function resetFromGameWin() {
-    gameWinReset = false;
-    gameWin = false;
+    if (state == states.RUNNING) {
+        menu.click(e.offsetX, e.offsetY);
+    }
 }
 
 
 function keyDown(e) {
-    if (!initialized || gameWinReset) {
-        return;
-    }
-    if (gameWin) {
-        showSplashScreen = true;
-        gameWinReset = true;
-        setTimeout(resetFromGameWin, 1000)
-    }
-    if (showSplashScreen && !gameWinReset) {
+    if (state == states.SPLASH_SCREEN) {
         start();
-        toggleMusic();
     }
-    // Up arrow (38) or w (87)
-    if (e.keyCode == 38 || e.keyCode == 87) {
-        player.wish.y = -1;
-    }
-    // Down arrow (40) or s (83)
-    if (e.keyCode == 40 || e.keyCode == 83) {
-        player.wish.y = 1;
-    }
-    // Left arrow (37) or a (65)
-    if (e.keyCode == 37 || e.keyCode == 65) {
-        player.wish.x = -1;
-    }
-    // Right arrow (39) or d (68)
-    if (e.keyCode == 39 || e.keyCode == 68) {
-        player.wish.x = 1;
-    }
-    // space key (32)
-    if (e.keyCode == 32) {
-        if (!spaceDown) {
-            player.dash();
+    else if (state == states.RUNNING) {
+        // Up arrow (38) or w (87)
+        if (e.keyCode == 38 || e.keyCode == 87) {
+            player.wish.y = -1;
         }
-        spaceDown = true;
+        // Down arrow (40) or s (83)
+        else if (e.keyCode == 40 || e.keyCode == 83) {
+            player.wish.y = 1;
+        }
+        // Left arrow (37) or a (65)
+        else if (e.keyCode == 37 || e.keyCode == 65) {
+            player.wish.x = -1;
+        }
+        // Right arrow (39) or d (68)
+        else if (e.keyCode == 39 || e.keyCode == 68) {
+            player.wish.x = 1;
+        }
+        // space key (32)
+        else if (e.keyCode == 32) {
+            if (!spaceDown) {
+                player.dash();
+            }
+            spaceDown = true;
+        }
+        // shift key (16)
+        else if (e.keyCode == 16) {
+            player.sneaking = true;
+        }
     }
-    // shift key (16)
-    if (e.keyCode == 16) {
-        player.sneaking = true;
+    else if (state == states.END_SCREEN) {
+        state = states.END_SCREEN_TIMEOUT;
+        setTimeout(showSplashScreen, 1000);
     }
 }
 
 function keyUp(e) {
-    if (!started) {
-        return;
-    }
-    // Up arrow
-    if (e.keyCode == 38 || e.keyCode == 87) {
-        if (player.wish.y < 0) {
-            player.wish.y = 0;
+    if (state == states.RUNNING) {
+        // Up arrow
+        if (e.keyCode == 38 || e.keyCode == 87) {
+            if (player.wish.y < 0) {
+                player.wish.y = 0;
+            }
         }
-    }
-    // Down arrow
-    if (e.keyCode == 40 || e.keyCode == 83) {
-        if (player.wish.y > 0) {
-            player.wish.y = 0;
+        // Down arrow
+        else if (e.keyCode == 40 || e.keyCode == 83) {
+            if (player.wish.y > 0) {
+                player.wish.y = 0;
+            }
         }
-    }
-    // Left arrow
-    if (e.keyCode == 37 || e.keyCode == 65) {
-        if (player.wish.x < 0) {
-            player.wish.x = 0;
+        // Left arrow
+        else if (e.keyCode == 37 || e.keyCode == 65) {
+            if (player.wish.x < 0) {
+                player.wish.x = 0;
+            }
         }
-    }
-    // Right arrow
-    if (e.keyCode == 39 || e.keyCode == 68) {
-        if (player.wish.x > 0) {
-            player.wish.x = 0;
+        // Right arrow
+        else if (e.keyCode == 39 || e.keyCode == 68) {
+            if (player.wish.x > 0) {
+                player.wish.x = 0;
+            }
         }
-    }
-    // x key (88)
-    if (e.keyCode == 88) {
-        toggleDebug();
-    }
-    // m key (77)
-    if (e.keyCode == 77) {
-        toggleMusic();
-    }
-    // r key (82)
-    if (e.keyCode == 82) {
-        restart();
-    }
-    // ESC key (27)
-    if (e.keyCode == 27) {
-        menu.active = !menu.active;
-    }
-    // c key (67)
-    if (e.keyCode == 67) {
-        prevLevel();
-    }
-    // v key (86)
-    if (e.keyCode == 86) {
-        nextLevel();
-    }
-    // space key (32)
-    if (e.keyCode == 32) {
-        spaceDown = false;
-    }
-    // shift key (16)
-    if (e.keyCode == 16) {
-        player.sneaking = false;
+        // x key (88)
+        else if (e.keyCode == 88) {
+            toggleDebug();
+        }
+        // m key (77)
+        else if (e.keyCode == 77) {
+            toggleMusic();
+        }
+        // r key (82)
+        else if (e.keyCode == 82) {
+            restart();
+        }
+        // ESC key (27)
+        else if (e.keyCode == 27) {
+            menu.active = !menu.active;
+        }
+        // c key (67)
+        else if (e.keyCode == 67) {
+            prevLevel();
+        }
+        // v key (86)
+        else if (e.keyCode == 86) {
+            nextLevel();
+        }
+        // space key (32)
+        else if (e.keyCode == 32) {
+            spaceDown = false;
+        }
+        // shift key (16)
+        else if (e.keyCode == 16) {
+            player.sneaking = false;
+        }
     }
 }
 
@@ -159,7 +170,6 @@ function keyUp(e) {
 function buttonResume() {
     menu.active = false;
 }
-
 
 function restart() {
     loadLevel(assets.loadLevelFromIndex(levelIndex));
@@ -173,14 +183,11 @@ function nextLevel() {
     changingLevel = false;
 }
 
-let gameDuration = 0;
-
 function showEndScreen() {
-    gameWin = true;
-    gameDuration = new Date(new Date() - startTime);
+    state = states.END_SCREEN;
+    totalTime = new Date(new Date() - startTime);
     changingLevel = false;
 }
-
 
 function prevLevel() {
     levelIndex = (levelIndex > 0) ? levelIndex - 1 : assets.NUM_LEVELS - 1;
@@ -188,18 +195,18 @@ function prevLevel() {
     menu.active = false;
 }
 
-var debugButton;
-var musicButton;
-
 function toggleDebug() {
     let debug = drawing.toggleDebug();
     debugButton.text = debug ? "x: Debug: ON" : "x: Debug: OFF";
     player.invincible = debug;
 }
 
-
 function toggleMusic() {
-    if (assets.GAME_AUDIO.paused){
+    setMusicEnabled(assets.GAME_AUDIO.paused);
+}
+
+function setMusicEnabled(enabled) {
+    if (enabled) {
         assets.GAME_AUDIO.play();
         musicButton.text = "m: Music: ON";
     } else {
@@ -213,11 +220,12 @@ async function init() {
     drawing.init(document);
     drawing.drawLoadingScreen();
 
-    menu = new inter.Menu();
+    // Wait for assets to load (avoid null references)
+    await assets.init();
 
+    menu = new inter.Menu();
     musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 250, 32);
     debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 250, 32);
-
     let buttons = [
         new inter.Button("Resume", buttonResume, 0, 0, 250, 32),
         new inter.Button("r: Restart level", restart, 0, 0, 250, 32),
@@ -227,17 +235,19 @@ async function init() {
         new inter.Button("v: Next level", nextLevel, 0, 0, 250, 32),
         new inter.Button("Restart game", start, 0, 0, 250, 32),
     ];
-
     menu.init(buttons);
-    // Wait for level JSONs to load (avoid null references)
-    await assets.init();
-
     menu.x = (canvas.width - menu.w) / 2;
     menu.y = (canvas.height - menu.h) / 2;
     
-    initialized = true;
     levelIndex = 0;
+    showSplashScreen();
     setInterval(gameLoop, 1000 / cfg.FPS);
+}
+
+function showSplashScreen() {
+    state = states.SPLASH_SCREEN;
+    setMusicEnabled(false);
+    assets.GAME_AUDIO.currentTime = 0;
 }
 
 
@@ -245,40 +255,30 @@ function start() {
     levelIndex = 0;
     player = new go.Player();
     loadLevel(assets.loadLevelFromIndex(levelIndex));
-    // Set up to call the function "gameLoop" 60 times/second
-    started = true;
     startTime = new Date();
-    showSplashScreen = false;
     menu.active = false;
-    gameWin = false;
+    state = states.RUNNING;
+    setMusicEnabled(true);
 }
 
-
-var startTime = 0;
-var elapsedTime = 0;
-var lastLoopTime = new Date();
-var dT = 0;
-var showSplashScreen = true;
-
 function gameLoop() {
-    
-    if (gameWin) {
-        drawing.drawEndScreen(gameDuration, player.numDeaths);
-        return;
+    if (state == states.RUNNING) {
+        let currentTime = new Date();
+        levelTime = new Date(currentTime - startTime);
+        dT = (currentTime - lastLoopTime) / 1000;
+        update(dT);
+        lastLoopTime = new Date();
+        if (level != null) {
+            drawing.draw(dT, level, menu, levelTime);
+        }
     }
-    if (showSplashScreen) {
+    else if (state == states.SPLASH_SCREEN) {
         drawing.drawSplashScreen();
         return;
     }
-
-    // ms -> s
-    let currentTime = new Date();
-    elapsedTime = new Date(currentTime - startTime);
-    dT = (currentTime - lastLoopTime) / 1000;
-    update(dT);
-    lastLoopTime = new Date();
-    if (level != null) {
-        drawing.draw(dT, level, menu, elapsedTime);
+    else if (state == states.END_SCREEN || state == states.END_SCREEN_TIMEOUT) {
+        drawing.drawEndScreen(totalTime, player.numDeaths);
+        return;
     }
 }
 
