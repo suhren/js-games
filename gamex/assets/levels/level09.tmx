@@ -3,11 +3,11 @@
  <properties>
   <property name="description" value="Collectible Carnage"/>
  </properties>
- <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
- <tileset firstgid="65" source="../tileset_common.tsx"/>
- <tileset firstgid="96" source="../tileset_talisman.tsx"/>
- <tileset firstgid="112" source="../tileset_floaty.tsx"/>
- <tileset firstgid="119" source="../tileset_floaty2.tsx"/>
+ <tileset firstgid="1" source="../images/tileset_dungeon/tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../images/tileset_common/tileset_common.tsx"/>
+ <tileset firstgid="96" source="../images/tileset_talisman/tileset_talisman.tsx"/>
+ <tileset firstgid="112" source="../images/tileset_floaty/tileset_floaty.tsx"/>
+ <tileset firstgid="119" source="../images/tileset_floaty/tileset_floaty2.tsx"/>
  <layer id="1" name="Tile Layer 1" width="40" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

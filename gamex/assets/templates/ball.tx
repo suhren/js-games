@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
- <tileset firstgid="1" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="1" source="../images/tileset_floaty/tileset_floaty.tsx"/>
  <object type="ball" gid="7" width="16" height="16">
   <properties>
    <property name="line" type="object" value="0"/>

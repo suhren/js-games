@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
- <tileset firstgid="1" source="../tileset_common.tsx"/>
+ <tileset firstgid="1" source="../images/tileset_common/tileset_common.tsx"/>
  <object type="key" gid="19" width="16" height="16">
   <properties>
    <property name="color" value="red"/>

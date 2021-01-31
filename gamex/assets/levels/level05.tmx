@@ -3,9 +3,9 @@
  <properties>
   <property name="description" value="Stirring spiral"/>
  </properties>
- <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
- <tileset firstgid="65" source="../tileset_common.tsx"/>
- <tileset firstgid="96" source="../tileset_floaty.tsx"/>
+ <tileset firstgid="1" source="../images/tileset_dungeon/tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../images/tileset_common/tileset_common.tsx"/>
+ <tileset firstgid="96" source="../images/tileset_floaty/tileset_floaty.tsx"/>
  <layer id="1" name="Tile Layer 1" width="32" height="32">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

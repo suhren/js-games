@@ -14,6 +14,16 @@ export var SPRITESHEET_PLAYER_EXPLODE = null;
 export var SPRITESHEET_PLAYER_SPIRIT = null;
 
 
+function getFileName(path) {
+    return path.replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, "");
+}
+
+
+function getDirectory(path) {
+    return path.split("/").slice(0,-1).join("/");
+}
+
+
 async function getImage(url) {
     // https://stackoverflow.com/questions/52059596/loading-an-image-on-web-browser-using-promise
     return new Promise(function (resolve, reject) {
@@ -101,13 +111,12 @@ export var LEVEL_XMLS = new Map();
 export const NUM_LEVELS = LEVEL_FILES.length;
 
 // Tileset XML (Tiled .tsx) files
-const ASSET_DIR = './assets/'
 const TILESET_FILES = [
-    "./assets/tileset_common.tsx",
-    "./assets/tileset_dungeon.tsx",
-    "./assets/tileset_floaty.tsx",
-    "./assets/tileset_floaty2.tsx",
-    "./assets/tileset_talisman.tsx"
+    "./assets/images/tileset_common/tileset_common.tsx",
+    "./assets/images/tileset_dungeon/tileset_dungeon.tsx",
+    "./assets/images/tileset_floaty/tileset_floaty.tsx",
+    "./assets/images/tileset_floaty/tileset_floaty2.tsx",
+    "./assets/images/tileset_talisman/tileset_talisman.tsx"
 ];
 export var TILESET_XMLS = new Map();
 export var TILESETS = new Map();
@@ -169,14 +178,14 @@ export async function init() {
         TILESET_XMLS.set(path, xml);
     }
 
-    SPRITESHEET_PLAYER_IDLE_LEFT = await getImage("assets/images/player/playerIdleLeft.png");
-    SPRITESHEET_PLAYER_IDLE_RIGHT = await getImage("assets/images/player/playerIdleRight.png");
-    SPRITESHEET_PLAYER_RUN_LEFT = await getImage("assets/images/player/playerRunLeft.png");
-    SPRITESHEET_PLAYER_RUN_RIGHT = await getImage("assets/images/player/playerRunRight.png");
-    SPRITESHEET_PLAYER_DASH_LEFT = await getImage("assets/images/player/playerDashLeft.png");
-    SPRITESHEET_PLAYER_DASH_RIGHT = await getImage("assets/images/player/playerDashRight.png");
-    SPRITESHEET_PLAYER_EXPLODE = await getImage("assets/images/player/explosion.png");
-    SPRITESHEET_PLAYER_SPIRIT = await getImage("assets/images/player/spirit.png");
+    SPRITESHEET_PLAYER_IDLE_LEFT = await getImage("assets/images/tileset_player/playerIdleLeft.png");
+    SPRITESHEET_PLAYER_IDLE_RIGHT = await getImage("assets/images/tileset_player/playerIdleRight.png");
+    SPRITESHEET_PLAYER_RUN_LEFT = await getImage("assets/images/tileset_player/playerRunLeft.png");
+    SPRITESHEET_PLAYER_RUN_RIGHT = await getImage("assets/images/tileset_player/playerRunRight.png");
+    SPRITESHEET_PLAYER_DASH_LEFT = await getImage("assets/images/tileset_player/playerDashLeft.png");
+    SPRITESHEET_PLAYER_DASH_RIGHT = await getImage("assets/images/tileset_player/playerDashRight.png");
+    SPRITESHEET_PLAYER_EXPLODE = await getImage("assets/images/tileset_player/explosion.png");
+    SPRITESHEET_PLAYER_SPIRIT = await getImage("assets/images/tileset_player/spirit.png");
     
     for (const [path, xml] of TILESET_XMLS.entries()) {
         // https://www.w3schools.com/jsref/met_document_queryselector.asp
@@ -184,12 +193,12 @@ export async function init() {
         let name = getFileName(path); //root.getAttribute("name");
         // Check if the tileset is a collection of images or a single image
         let image = root.querySelectorAll("tileset > image")[0];
-        let imagePath = (image != null) ? image.getAttribute("source") : null;
+        let xmlDir = getDirectory(path)
+        let imagePath = (image != null) ? xmlDir + "/" + image.getAttribute("source") : null;
         let specs = root.getElementsByTagName("tile");
 
         if (imagePath) {
             // If there is an image, we have a single tilemap tileset
-            imagePath = ASSET_DIR + imagePath;
             let image = await getImage(imagePath);
             let w = root.getAttribute("tilewidth");
             let h = root.getAttribute("tileheight");
@@ -219,7 +228,7 @@ export async function init() {
                 let spec = specs[i];
                 let id = parseInt(spec.getAttribute("id"));
                 let imageSpec = spec.getElementsByTagName("image")[0]
-                let imagePath = ASSET_DIR + imageSpec.getAttribute("source");
+                let imagePath = xmlDir + "/" + imageSpec.getAttribute("source");
                 let image = await getImage(imagePath);
                 tileImages.set(id, image);
             }
@@ -310,11 +319,6 @@ function getXML(url) {
         xhr.send();
     });
 }
-
-function getFileName(path) {
-    return path.replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, "");
-}
-
 
 
 function tiledVector(obj) {

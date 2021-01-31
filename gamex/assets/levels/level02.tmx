@@ -3,8 +3,8 @@
  <properties>
   <property name="description" value="Tutorial"/>
  </properties>
- <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
- <tileset firstgid="65" source="../tileset_common.tsx"/>
+ <tileset firstgid="1" source="../images/tileset_dungeon/tileset_dungeon.tsx"/>
+ <tileset firstgid="65" source="../images/tileset_common/tileset_common.tsx"/>
  <layer id="1" name="Tile Layer 1" width="48" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
