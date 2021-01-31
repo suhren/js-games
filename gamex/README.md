@@ -6,13 +6,16 @@ This is a top-down game made in vanilla Javascript, HTML, and CSS without any ma
 Written by [suhren](https://github.com/suhren)
 
 ##  Sprites and Level design:
-Made by [suhren](https://github.com/suhren) and [rantala-dev](https://github.com/rantala-dev).
+Made by [suhren](https://github.com/suhren) and [rantala-dev](https://github.com/rantala-dev)
 
 ## Sounds Effects:
-Free game sound from Mixkit, available [here](https://mixkit.co/free-sound-effects/game/).
+Free game sound from Mixkit, available [here](https://mixkit.co/free-sound-effects/game/)
 
 ## Music:
 Made by Carl Ekström, check out his Spotify [here](https://open.spotify.com/artist/6RzQcK4tGdBZ4FE8WvMtfP?si=vF7mH0BiRpm_Q2VjqXB5jA)
 
 ## Level editor
-As we wanted to be able to finish this project in a relatively short amount of time, we opted to use a ready-made level editor. Specifically we chose the Free and easy to use level editor "Tiled" available [here](https://www.mapeditor.org/). 
+As we wanted to be able to finish this project in a relatively short amount of time, we opted to use a ready-made level editor. Specifically we chose the Free and easy to use level editor [Tiled](https://github.com/mapeditor/tiled) created by [Thorbjørn Lindeijer](https://github.com/bjorn). It is also available for download [here](https://www.mapeditor.org/).
+
+## Game font
+The font usd in the game is called "Early GameBoy" by [Jimmy Campbell](https://www.dafont.com/jimmy-campbell.d5241), available [here](https://www.dafont.com/early-gameboy.font).
