@@ -1,4 +1,4 @@
-## Game X
+## Demon Dash
 
 This is a top-down game made in vanilla Javascript, HTML, and CSS without any major external dependencies. It was created over the span of roughly three weeks as a small hobby project between some friends. While it was mainly created just for the fun of it, it was also an opportunity to learn some Javascript and HTML at the same time. I.e. goal here was not really to create the "best game possible", but instead just as a learning experience for fun.
 
