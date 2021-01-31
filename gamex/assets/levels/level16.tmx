@@ -1,214 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="24" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="65">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="40" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="28">
  <properties>
-  <property name="description" value="Concentric Circles"/>
+  <property name="description" value="Cramped corridors"/>
  </properties>
  <tileset firstgid="1" source="../tileset_dungeon.tsx"/>
  <tileset firstgid="65" source="../tileset_common.tsx"/>
  <tileset firstgid="96" source="../tileset_floaty.tsx"/>
- <tileset firstgid="103" source="../tileset_talisman.tsx"/>
- <layer id="1" name="Tile Layer 1" width="24" height="32">
-  <properties>
-   <property name="description" value="Counter circle"/>
-  </properties>
+ <layer id="1" name="Tile Layer 1" width="40" height="32">
   <data encoding="csv">
-0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,
-0,0,0,0,0,1,2,13,25,25,25,25,25,25,25,25,12,2,3,0,0,0,0,0,
-0,0,0,1,2,13,25,27,33,33,33,33,33,33,33,33,27,25,12,2,3,0,0,0,
-0,0,0,9,25,25,33,33,33,33,33,33,33,33,33,33,33,33,25,25,11,0,0,0,
-0,0,1,13,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,12,3,0,0,
-0,0,9,25,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,25,11,0,0,
-0,1,13,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,12,3,0,
-0,9,25,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,25,11,0,
-0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
-0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
-0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
-0,9,33,33,33,33,33,33,33,33,33,67,67,33,33,33,33,33,33,33,33,33,11,0,
-0,9,33,33,33,33,33,33,33,33,33,67,67,33,33,33,33,33,33,33,33,33,11,0,
-0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
-0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
-0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,
-0,17,5,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,4,19,0,
-0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,
-0,0,17,5,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,4,19,0,0,
-0,0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,
-0,0,0,17,18,5,33,33,33,33,33,33,33,33,33,33,33,33,4,18,19,0,0,0,
-0,0,0,0,0,17,18,5,33,33,33,33,33,33,33,33,4,18,19,0,0,0,0,0,
-0,0,0,0,0,0,0,17,5,33,33,33,33,33,33,4,19,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,1,13,33,33,33,33,33,33,12,3,0,0,0,0,0,0,0,
-0,0,0,0,0,0,1,13,27,33,33,33,33,33,33,27,12,3,0,0,0,0,0,0,
-0,0,0,0,0,0,9,25,33,33,33,33,33,33,33,33,25,11,0,0,0,0,0,0,
-0,0,0,0,0,0,9,33,33,33,33,69,69,33,33,33,33,11,0,0,0,0,0,0,
-0,0,0,0,0,0,9,33,33,33,69,69,69,69,33,33,33,11,0,0,0,0,0,0,
-0,0,0,0,0,0,9,33,33,33,69,69,69,69,33,33,33,11,0,0,0,0,0,0,
-0,0,0,0,0,0,17,5,33,33,33,69,69,33,33,33,4,19,0,0,0,0,0,0,
-0,0,0,0,0,0,0,17,5,33,33,33,33,33,33,4,19,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,19,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,25,11,0,0,0,0,1,2,3,0,0,0,0,0,0,1,2,2,2,3,0,0,0,0,0,0,
+0,0,1,2,2,2,2,2,2,2,2,2,2,13,33,12,2,2,2,2,13,27,12,2,2,2,2,2,2,13,25,27,25,11,0,0,0,0,0,0,
+0,0,9,27,25,25,25,25,25,25,25,25,25,25,33,25,25,25,25,25,25,33,25,25,25,25,25,25,25,25,33,33,33,11,0,0,0,0,0,0,
+0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,
+0,0,9,33,4,18,18,18,5,33,4,18,18,5,33,4,18,18,18,18,18,18,18,18,18,18,5,33,4,5,33,33,33,11,0,0,0,0,0,0,
+0,0,17,18,19,0,0,0,9,33,11,0,0,9,33,11,0,0,0,0,0,0,0,0,0,0,9,33,11,17,18,18,18,19,0,0,0,0,0,0,
+0,0,1,2,2,2,2,2,13,33,12,2,2,13,33,12,2,2,2,2,2,2,2,2,2,2,13,33,12,2,2,2,2,3,0,0,0,0,0,0,
+0,0,9,27,25,25,25,25,25,33,25,25,25,25,33,25,25,25,25,25,25,25,25,25,25,25,25,33,25,25,25,25,25,11,0,0,0,0,0,0,
+0,0,9,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,
+0,0,9,33,4,18,18,18,5,33,4,18,18,5,33,4,18,18,18,18,18,18,18,18,18,18,5,33,4,18,18,18,18,19,0,0,0,0,0,0,
+0,0,17,18,19,0,0,0,9,33,11,0,0,9,33,11,0,0,0,0,0,0,0,0,0,0,9,33,11,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,11,0,0,9,33,11,0,0,0,0,0,1,2,2,2,3,9,33,11,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,11,1,2,13,33,12,2,2,2,2,2,13,25,27,25,11,9,33,11,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,11,9,25,25,33,25,25,25,25,25,25,25,33,33,33,11,9,33,11,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,11,9,33,33,33,33,33,33,33,33,33,33,33,67,33,11,9,33,11,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,33,11,17,18,5,33,4,18,18,18,18,18,5,33,33,33,11,9,33,11,0,0,0,0,0,0,0,0,0,0,0,
+0,0,1,2,2,2,3,0,9,33,11,0,0,9,33,11,0,0,0,0,0,17,18,18,18,19,9,33,11,0,0,0,0,0,0,0,0,0,0,0,
+0,0,9,25,27,25,12,2,13,33,12,2,2,13,33,12,2,2,2,2,2,2,2,2,2,2,13,33,12,3,0,0,0,0,0,0,0,0,0,0,
+0,0,9,33,33,33,25,25,25,33,25,25,25,25,33,25,25,25,25,25,25,25,25,25,25,25,25,33,27,11,0,0,0,0,0,0,0,0,0,0,
+0,0,9,33,69,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,11,0,0,0,0,0,0,0,0,0,0,
+0,0,9,33,33,33,4,18,18,18,18,18,18,5,33,4,18,18,18,18,18,18,18,18,18,18,18,18,18,19,0,0,0,0,0,0,0,0,0,0,
+0,0,17,18,18,18,19,0,0,0,0,0,0,9,33,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,9,33,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,17,18,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="Object Layer 0">
-  <object id="33" template="../templates/coin.tx" x="120" y="264"/>
-  <object id="34" template="../templates/coin.tx" x="120" y="136"/>
-  <object id="35" template="../templates/coin.tx" x="248" y="136"/>
-  <object id="36" template="../templates/coin.tx" x="248" y="260"/>
-  <object id="37" template="../templates/spike.tx" x="64" y="304"/>
-  <object id="38" template="../templates/spike.tx" x="64" y="320"/>
-  <object id="39" template="../templates/spike.tx" x="80" y="320"/>
-  <object id="40" template="../templates/spike.tx" x="96" y="336"/>
-  <object id="41" template="../templates/spike.tx" x="112" y="336"/>
-  <object id="42" template="../templates/spike.tx" x="48" y="272"/>
-  <object id="43" template="../templates/spike.tx" x="48" y="288"/>
-  <object id="44" template="../templates/spike.tx" x="48" y="112"/>
-  <object id="45" template="../templates/spike.tx" x="48" y="128"/>
-  <object id="46" template="../templates/spike.tx" x="320" y="112"/>
-  <object id="47" template="../templates/spike.tx" x="320" y="128"/>
-  <object id="48" template="../templates/spike.tx" x="320" y="272"/>
-  <object id="49" template="../templates/spike.tx" x="320" y="288"/>
-  <object id="50" template="../templates/spike.tx" x="96" y="64"/>
-  <object id="51" template="../templates/spike.tx" x="112" y="64"/>
-  <object id="52" template="../templates/spike.tx" x="256" y="64"/>
-  <object id="53" template="../templates/spike.tx" x="272" y="64"/>
-  <object id="54" template="../templates/spike.tx" x="64" y="80"/>
-  <object id="55" template="../templates/spike.tx" x="80" y="80"/>
-  <object id="56" template="../templates/spike.tx" x="288" y="80"/>
-  <object id="57" template="../templates/spike.tx" x="304" y="80"/>
-  <object id="58" template="../templates/spike.tx" x="288" y="320"/>
-  <object id="59" template="../templates/spike.tx" x="304" y="320"/>
-  <object id="60" template="../templates/spike.tx" x="256" y="336"/>
-  <object id="61" template="../templates/spike.tx" x="272" y="336"/>
-  <object id="62" template="../templates/spike.tx" x="304" y="304"/>
-  <object id="63" template="../templates/spike.tx" x="304" y="96"/>
-  <object id="64" template="../templates/spike.tx" x="64" y="96"/>
- </objectgroup>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" template="../templates/spawn.tx" x="192" y="448"/>
-  <object id="2" template="../templates/goal.tx" x="176" y="176"/>
- </objectgroup>
- <objectgroup id="3" name="Object Layer 2">
-  <object id="3" template="../templates/position.tx" x="192" y="192"/>
- </objectgroup>
- <objectgroup id="4" name="Object Layer 3">
-  <object id="4" template="../templates/ball.tx" x="224" y="200">
+  <object id="1" template="../templates/spike.tx" x="224" y="368"/>
+  <object id="3" template="../templates/doorRed.tx" x="224" y="224"/>
+  <object id="4" template="../templates/keyRed.tx" x="496" y="128"/>
+  <object id="5" template="../templates/ball.tx" x="96" y="384">
    <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
+    <property name="line" type="object" value="6"/>
    </properties>
   </object>
-  <object id="5" template="../templates/ball.tx" x="248" y="200">
+  <object id="6" template="../templates/line.tx" x="132" y="377.333">
+   <polyline points="-28,-1.33333 308,-1.33333"/>
+  </object>
+  <object id="7" template="../templates/ball.tx" x="144" y="128">
    <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
+    <property name="line" type="object" value="8"/>
    </properties>
   </object>
-  <object id="8" template="../templates/ball.tx" x="120" y="200">
+  <object id="8" template="../templates/line.tx" x="164" y="405.333">
+   <polyline points="-12,-285.333 -12,-29.333"/>
+  </object>
+  <object id="9" template="../templates/goal.tx" x="368" y="288" width="16" height="16"/>
+  <object id="10" template="../templates/spawn.tx" x="72" y="376"/>
+  <object id="11" template="../templates/ball.tx" x="432" y="128">
    <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
+    <property name="line" type="object" value="12"/>
    </properties>
   </object>
-  <object id="9" template="../templates/ball.tx" x="144" y="200">
+  <object id="12" template="../templates/line.tx" x="332" y="393.333">
+   <polyline points="108,-273.333 108,-17.333"/>
+  </object>
+  <object id="13" template="../templates/ball.tx" x="48" y="208">
    <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
+    <property name="line" type="object" value="14"/>
    </properties>
   </object>
-  <object id="10" template="../templates/ball.tx" x="184" y="240">
+  <object id="14" template="../templates/line.tx" x="220" y="369.333">
+   <polyline points="-164,-169.333 300,-169.333"/>
+  </object>
+  <object id="16" template="../templates/spike.tx" x="432" y="192"/>
+  <object id="17" template="../templates/ball.tx" x="224" y="432">
    <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
+    <property name="line" type="object" value="18"/>
+    <property name="speed" type="float" value="25"/>
    </properties>
   </object>
-  <object id="11" template="../templates/ball.tx" x="184" y="264">
+  <object id="18" template="../templates/line.tx" x="244" y="405.333">
+   <polyline points="-12,-317.333 -12,18.667"/>
+  </object>
+  <object id="19" template="../templates/spike.tx" x="224" y="144"/>
+  <object id="20" template="../templates/spike.tx" x="224" y="400"/>
+  <object id="22" template="../templates/line.tx" x="364" y="464">
+   <polyline points="-164,-169.333 -20,-168"/>
+  </object>
+  <object id="23" template="../templates/ball.tx" x="336" y="304">
    <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
+    <property name="line" type="object" value="22"/>
    </properties>
   </object>
-  <object id="12" template="../templates/ball.tx" x="184" y="136">
+  <object id="24" template="../templates/ball.tx" x="48" y="128">
    <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
+    <property name="line" type="object" value="25"/>
    </properties>
   </object>
-  <object id="13" template="../templates/ball.tx" x="184" y="160">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="100"/>
-   </properties>
+  <object id="25" template="../templates/line.tx" x="172" y="289.333">
+   <polyline points="-116,-169.333 300,-169.333"/>
   </object>
- </objectgroup>
- <objectgroup id="5" name="Object Layer 4">
-  <object id="17" template="../templates/ball.tx" x="272" y="200">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
+  <object id="26" template="../templates/text.tx" x="12" y="308" width="120" height="11">
+   <text fontfamily="Courier" pixelsize="8" wrap="1" color="#ffffff" bold="1" halign="center" valign="center">Torch is safe</text>
   </object>
-  <object id="18" template="../templates/ball.tx" x="296" y="200">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="19" template="../templates/ball.tx" x="320" y="200">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="20" template="../templates/ball.tx" x="48" y="200">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="21" template="../templates/ball.tx" x="72" y="200">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="22" template="../templates/ball.tx" x="96" y="200">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="23" template="../templates/ball.tx" x="184" y="112">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="24" template="../templates/ball.tx" x="184" y="88">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="25" template="../templates/ball.tx" x="184" y="64">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="26" template="../templates/ball.tx" x="184" y="336">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="27" template="../templates/ball.tx" x="184" y="312">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
-  <object id="28" template="../templates/ball.tx" x="184" y="288">
-   <properties>
-    <property name="center" type="object" value="3"/>
-    <property name="speed" type="float" value="-100"/>
-   </properties>
-  </object>
+  <object id="27" template="../templates/spike.tx" x="144" y="224"/>
  </objectgroup>
 </map>
