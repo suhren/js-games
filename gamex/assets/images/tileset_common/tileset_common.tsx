@@ -36,24 +36,6 @@
   </properties>
   <image width="16" height="16" source="./Start.png"/>
  </tile>
- <tile id="10">
-  <image width="16" height="16" source="./coin_0.png"/>
-  <animation>
-   <frame tileid="10" duration="150"/>
-   <frame tileid="11" duration="150"/>
-   <frame tileid="12" duration="150"/>
-   <frame tileid="13" duration="150"/>
-  </animation>
- </tile>
- <tile id="11" type="coin">
-  <image width="16" height="16" source="./coin_1.png"/>
- </tile>
- <tile id="12" type="coin">
-  <image width="16" height="16" source="./coin_2.png"/>
- </tile>
- <tile id="13" type="coin">
-  <image width="16" height="16" source="./coin_3.png"/>
- </tile>
  <tile id="14">
   <image width="16" height="16" source="./key_yellow.png"/>
  </tile>
