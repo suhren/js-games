@@ -41,6 +41,7 @@ var levelIndex = 0;
 var menu = null;
 var spaceDown = false;
 
+var developerMode = false;
 var debugButton;
 var musicButton;
 
@@ -131,10 +132,6 @@ function keyUp(e) {
                 player.wish.x = 0;
             }
         }
-        // x key (88)
-        else if (e.keyCode == 88) {
-            toggleDebug();
-        }
         // m key (77)
         else if (e.keyCode == 77) {
             toggleMusic();
@@ -147,14 +144,6 @@ function keyUp(e) {
         else if (e.keyCode == 27) {
             menu.active = !menu.active;
         }
-        // c key (67)
-        else if (e.keyCode == 67) {
-            prevLevel();
-        }
-        // v key (86)
-        else if (e.keyCode == 86) {
-            nextLevel();
-        }
         // space key (32)
         else if (e.keyCode == 32) {
             spaceDown = false;
@@ -162,6 +151,20 @@ function keyUp(e) {
         // shift key (16)
         else if (e.keyCode == 16) {
             player.sneaking = false;
+        }
+        if (developerMode) {
+            // x key (88)
+            if (e.keyCode == 88) {
+                toggleDebug();
+            }
+            // c key (67)
+            else if (e.keyCode == 67) {
+                prevLevel();
+            }
+            // v key (86)
+            else if (e.keyCode == 86) {
+                nextLevel();
+            }
         }
     }
 }
@@ -225,16 +228,19 @@ async function init() {
 
     menu = new inter.Menu();
     musicButton = new inter.Button("m: Music: OFF", toggleMusic, 0, 0, 250, 32);
-    debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 250, 32);
+    
     let buttons = [
         new inter.Button("Resume", buttonResume, 0, 0, 250, 32),
         new inter.Button("r: Restart level", restart, 0, 0, 250, 32),
-        debugButton,
         musicButton,
-        new inter.Button("c: Prev level", prevLevel, 0, 0, 250, 32),
-        new inter.Button("v: Next level", nextLevel, 0, 0, 250, 32),
         new inter.Button("Restart game", start, 0, 0, 250, 32),
     ];
+    if (developerMode) {
+        debugButton = new inter.Button("x: Debug: OFF", toggleDebug, 0, 0, 250, 32);
+        buttons.push(debugButton)
+        buttons.push(new inter.Button("c: Prev level", prevLevel, 0, 0, 250, 32)),
+        buttons.push(new inter.Button("v: Next level", nextLevel, 0, 0, 250, 32))
+    }
     menu.init(buttons);
     menu.x = (canvas.width - menu.w) / 2;
     menu.y = (canvas.height - menu.h) / 2;
