@@ -75,18 +75,22 @@ function keyDown(e) {
         // Up arrow (38) or w (87)
         if (e.keyCode == 38 || e.keyCode == 87) {
             player.wish.y = -1;
+            e.preventDefault();
         }
         // Down arrow (40) or s (83)
         else if (e.keyCode == 40 || e.keyCode == 83) {
             player.wish.y = 1;
+            e.preventDefault();
         }
         // Left arrow (37) or a (65)
         else if (e.keyCode == 37 || e.keyCode == 65) {
             player.wish.x = -1;
+            e.preventDefault();
         }
         // Right arrow (39) or d (68)
         else if (e.keyCode == 39 || e.keyCode == 68) {
             player.wish.x = 1;
+            e.preventDefault();
         }
         // space key (32)
         else if (e.keyCode == 32) {
@@ -94,14 +98,17 @@ function keyDown(e) {
                 player.dash();
             }
             spaceDown = true;
+            e.preventDefault();
         }
         // shift key (16)
         else if (e.keyCode == 16) {
             player.sneaking = true;
+            e.preventDefault();
         }
     }
     else if (state == states.END_SCREEN) {
         state = states.END_SCREEN_TIMEOUT;
+        e.preventDefault();
         setTimeout(showSplashScreen, 1000);
     }
 }
