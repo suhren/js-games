@@ -5,3 +5,5 @@
 [Snake](/snake/snake.html)
 
 [Demon Dasher](/demon-dasher/index.html)
+
+[Side Scroller](/side-scroller/Builds/WebGL/index.html)
